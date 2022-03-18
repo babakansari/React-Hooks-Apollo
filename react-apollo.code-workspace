@@ -1,0 +1,39 @@
+{
+	"folders": [
+		{
+			"path": "client"
+		},
+		{
+			"path": "server"
+		}
+	],
+	"settings": {
+		"files.autoSave": "onFocusChange"
+	},
+	"launch": {
+		"version": "0.2.0",
+		"configurations": [
+			{
+				// "preLaunchTask": "Run Client", // The name of the task defined 
+				"type": "pwa-chrome",
+				"request": "launch",
+				"name": "Run...",
+				"url": "http://localhost:3000",
+				"webRoot": "\\client"
+			}
+		]
+	},
+	"tasks": {
+		"version": "2.0.0",
+		"tasks": [
+			{
+				"label": "Run Client",
+				"command": "yarn",
+				"args": [
+					"start"
+				],
+				"type": "shell"
+			}
+		]
+	}
+}
