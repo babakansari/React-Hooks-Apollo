@@ -42,7 +42,9 @@
 				"label": "Run Client",
 				"command": "yarn",
 				"args": [
-					"start"
+					"start",
+					"--cwd",
+					"${fileDirname}\\client"
 				],
 				"type": "shell",
 				"options": {
