@@ -1,5 +1,6 @@
 // import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 // import NavBar from './components/NavBar'
+import Header from "./components/Header";
 
 function App() {
   return (
@@ -20,7 +21,7 @@ function App() {
     //   </div>
     // </Router>
     <div>
-      Babak
+      <Header></Header>
     </div>
   );
 }
