@@ -1,6 +1,8 @@
 // import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 // import NavBar from './components/NavBar'
 import Header from "./components/Header";
+import { ThemeProvider } from "@material-ui/styles"
+import theme from "./components/Theme";
 
 function App() {
   return (
@@ -20,9 +22,10 @@ function App() {
     //     </section>
     //   </div>
     // </Router>
-    <div>
+    
+    <ThemeProvider theme={theme}>
       <Header></Header>
-    </div>
+    </ThemeProvider>
   );
 }
 
