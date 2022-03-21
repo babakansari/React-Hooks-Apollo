@@ -1,6 +1,10 @@
-// import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import {  BrowserRouter as Router, Routes, Route  } from 'react-router-dom';
 // import NavBar from './components/NavBar'
-import Header from "./components/Header";
+import { Container } from "@mui/material";
+import Header from "./components/common/Header";
+import HomePage from './components/common/HomePage'
+import RostersPage from './components/roster/RosterPage'
+import CrewPage from './components/roster/CrewPage'
 
 function App() {
 
@@ -21,10 +25,16 @@ function App() {
     //     </section>
     //   </div>
     // </Router>
-    
-    <div>
-      <Header></Header>
-    </div>
+    <Router>
+      <Container>
+        <Header/>
+        <Routes>
+          <Route path="/" element={<HomePage/>} />
+          <Route path="roster/RosterPage" element={<RostersPage/>} />
+          <Route path="roster/CrewPage" element={<CrewPage/>} />
+        </Routes>
+      </Container>
+    </Router>
   );
 }
 

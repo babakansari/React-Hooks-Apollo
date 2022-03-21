@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-import theme from "./components/Theme";
+import theme from "./components/common/Theme";
 import { ThemeProvider } from "@material-ui/styles"
 
 ReactDOM.render(
