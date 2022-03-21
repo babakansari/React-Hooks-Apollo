@@ -1,36 +1,36 @@
 import * as React from 'react';
-import { AppBar, Toolbar, Container,  Button, Typography } from "@mui/material";
+import { AppBar, Container, Typography, Tabs, Tab } from "@mui/material";
+import { makeStyles } from "@material-ui/styles"
 
-const pages = ['Products', 'Pricing', 'Blog'];
+
+const useStyles = makeStyles( t=>({
+    toolbar: t.mixins.toolbar
+  }));
 
 const Header = () => {
-    const [setAnchorElNav] = React.useState(null);
+    const classes = useStyles();
+    const [menuItem, setMenuItem]= React.useState(0);
 
-    const handleCloseNavMenu = () => {
-      setAnchorElNav(null);
+    const handleChange = (event, value) => {
+        setMenuItem( value );
     };
 
     return ( 
-        <AppBar color='secondary'>
-            <Container maxWidth="x3">
-                <Toolbar >
-                    
-                       {pages.map((page) => (
-                            <Button
-                                key={page}
-                                onClick={handleCloseNavMenu}
-                                sx={{ my: 2, color: 'white', display: 'block' }}
-                            >
-                                <Typography>
-                                    {page}
-                                </Typography>
-                                
-                            </Button>
-                        ))}
-
-                </Toolbar>
-            </Container>
-        </AppBar>
+        <div>
+            <AppBar>
+                <Container maxWidth="x3">
+                    <Tabs value={menuItem} onChange={handleChange} textColor='white' indicatorColor='secondary'>
+                        <Tab label="Item One" />
+                        <Tab label="Item Two" />
+                        <Tab label="Item Three" />
+                    </Tabs>
+                </Container>
+            </AppBar>
+            <div className={classes.toolbar}/>
+            <Typography>{menuItem}</Typography>
+        </div>
+        
+        
      );
 }
 
