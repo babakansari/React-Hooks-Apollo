@@ -7,13 +7,26 @@ const useStyles = makeStyles( t=>({
     toolbar: t.mixins.toolbar
   }));
 
+const menuRouteMap = new Map([
+    ['/', { index: 0, label: 'Home'}],
+    ['/roster/RosterPage', { index: 1, label: 'Roster'}],
+    ['/roster/CrewPage', { index: 2, label: 'Crew'}],
+  ]);
+
 const Header = () => {
     const classes = useStyles();
     const [menuItem, setMenuItem]= React.useState(0);
-
+    
     const handleChange = (event, value) => {
         setMenuItem( value );
     };
+
+    React.useEffect( ()=>{
+        const currentMenuItem = menuRouteMap.get(window.location.pathname);
+        if( currentMenuItem.index !== menuItem ){
+            setMenuItem( currentMenuItem.index );
+        }
+    }, [menuItem] );
 
     return ( 
         <div>
@@ -22,9 +35,13 @@ const Header = () => {
                     <Toolbar>
                         <Typography variant='h6'> ( React Apollo App ) </Typography>
                         <Tabs value={menuItem} onChange={handleChange} textColor='inherit' indicatorColor='secondary' variant='scrollable'>
-                            <Tab label="Home" LinkComponent={RouterLink} to="/"/>
-                            <Tab label="Roster" LinkComponent={RouterLink} to="roster/RosterPage"/>
-                            <Tab label="Crew" LinkComponent={RouterLink} to="roster/CrewPage"/>
+                            { Array.from( menuRouteMap.keys() ).map( (key) =>{
+                                    const menu = menuRouteMap.get(key);
+                                    return (
+                                        <Tab key={menu.index} label={menu.label} LinkComponent={RouterLink} to={key}/>
+                                    );
+                                })
+                            }
                         </Tabs>
                     </Toolbar>
                 </Container>
@@ -32,7 +49,6 @@ const Header = () => {
             <div className={classes.toolbar}/>
             <Typography>{menuItem}</Typography>
         </div>
-        
         
      );
 }
