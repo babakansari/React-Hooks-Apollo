@@ -2,16 +2,11 @@ import * as React from 'react';
 import { AppBar, Container, Typography, Tabs, Tab, Toolbar } from "@mui/material";
 import { makeStyles } from "@material-ui/styles"
 import { Link as RouterLink } from 'react-router-dom';
+import menuRouteMap from './MenuMap'
 
 const useStyles = makeStyles( t=>({
     toolbar: t.mixins.toolbar
   }));
-
-const menuRouteMap = new Map([
-    ['/', { index: 0, label: 'Home'}],
-    ['/roster/RosterPage', { index: 1, label: 'Roster'}],
-    ['/roster/CrewPage', { index: 2, label: 'Crew'}],
-  ]);
 
 const Header = () => {
     const classes = useStyles();

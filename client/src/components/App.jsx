@@ -1,13 +1,12 @@
 import {  BrowserRouter as Router, Routes, Route  } from 'react-router-dom';
-// import NavBar from './components/NavBar'
 import { Container } from "@mui/material";
-import Header from "./components/common/Header";
-import HomePage from './components/common/HomePage'
-import RostersPage from './components/roster/RosterPage'
-import CrewPage from './components/roster/CrewPage'
+import Header from "./common/Header";
+import HomePage from './common/HomePage'
+import RostersPage from './roster/RosterPage'
+import CrewPage from './roster/CrewPage'
+import menuRouteMap, {getKeyByLabel} from './common/MenuMap'
 
 function App() {
-
   return (
     // <Router ref={(router) => this.router = router}>
     //   <div>
@@ -29,9 +28,10 @@ function App() {
       <Container>
         <Header/>
         <Routes>
-          <Route path="/" element={<HomePage/>} />
-          <Route path="roster/RosterPage" element={<RostersPage/>} />
-          <Route path="roster/CrewPage" element={<CrewPage/>} />
+
+          <Route path={getKeyByLabel(menuRouteMap, 'Home')} element={<HomePage/>} />
+          <Route path={getKeyByLabel(menuRouteMap, 'Roster')} element={<RostersPage/>} />
+          <Route path={getKeyByLabel(menuRouteMap, 'Crew')} element={<CrewPage/>} />
         </Routes>
       </Container>
     </Router>
