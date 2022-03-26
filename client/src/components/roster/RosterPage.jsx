@@ -1,13 +1,18 @@
-import React from "react";
-import { Typography } from "@mui/material";
+import DataGrid from 'react-data-grid';
+
+const columns = [
+  { key: 'id', name: 'ID' },
+  { key: 'title', name: 'Title' }
+];
+
+const rows = [
+  { id: 0, title: 'Example' },
+  { id: 1, title: 'Demo' }
+];
+
 
 function RostersPage () {
-  return  (
-    <div>
-      <Typography variant="h2">Rosters</Typography>
-
-    </div>
-  );
+  return <DataGrid columns={columns} rows={rows} />;
 }
 
 export default RostersPage;
