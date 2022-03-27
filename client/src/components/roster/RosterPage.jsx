@@ -5,7 +5,7 @@ import {
 import * as React from 'react';
 import createRowData, {getData, columns} from "./createRowData";
 
-const ROW_COUNT = 5000;
+const ROW_COUNT = 200000;
 const data = createRowData(ROW_COUNT);
 
 function RostersPage() {

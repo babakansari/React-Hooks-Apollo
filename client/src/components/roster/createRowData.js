@@ -81,6 +81,23 @@ export function getData(data, [col, row]) {
   };
 }
 
+function timeElapse(startTime) {
+  const endTime = new Date();
+  var timeDiff = endTime - startTime; //in ms
+  // strip the ms
+  timeDiff /= 1000;
+
+  // get seconds 
+  var seconds = Math.round(timeDiff);
+  return seconds;
+}
+
 export default function createRowData(count) {
-  return [...Array(count).keys()].map(i => createFakeRow(i));
+  const startTime = new Date();
+  try{
+    console.log(`Generating data`);
+    return [...Array(count).keys()].map(i => createFakeRow(i));
+  } finally {
+    console.log(`Data generation done (${timeElapse(startTime)} seconds)`);
+  }
 }
