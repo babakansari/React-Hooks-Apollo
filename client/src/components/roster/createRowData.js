@@ -12,18 +12,18 @@ function createFakeRow(index) {
   return {
     id: index,
     avartar: makeid(50),
-    county: index,
+    county: makeid(20),
     email: makeid(50),
     title: makeid(50),
     firstName: makeid(50),
     lastName: makeid(50),
     street: index,
-    zipCode: makeid(50),
-    date: makeid(50),
+    zipCode: index,
+    date: Date.now(),
     bs: index,
     catchPhrase: index,
-    companyName: makeid(50),
-    words: index,
+    companyName: index,
+    words:index,
     sentence: index
   };
 }
