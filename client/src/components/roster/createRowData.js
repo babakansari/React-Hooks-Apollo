@@ -3,23 +3,39 @@ import {
   GridCellKind
 } from "@glideapps/glide-data-grid";
 
-export const columns = [
+const ROW_COUNT = 10001;
+const COL_COUNT = 366;
+const COLUMN_WIDTH = 100;
+
+const columns = [
   { title: "id",          id: "id",          width: 50 },
-  { title: "avartar",     id: "avartar",     width: 100 },
-  { title: "county",      id: "county",      width: 100 },
-  { title: "email",       id: "email",       width: 200 },
-  { title: "title",       id: "title",       width: 200 },
-  { title: "firstName",   id: "firstName",   width: 100 },
-  { title: "lastName",    id: "lastName",    width: 100 },
-  { title: "street",      id: "street",      width: 100 },
-  { title: "zipCode",     id: "zipCode",     width: 100 },
-  { title: "date",        id: "date",        width: 100 },
-  { title: "bs",          id: "bs",          width: 100 },
-  { title: "catchPhrase", id: "catchPhrase", width: 100 },
-  { title: "companyName", id: "companyName", width: 100 },
-  { title: "sentence",    id: "sentence",    width: 100 },
-  { title: "words",       id: "words",       width: 100 }
+  { title: "avartar",     id: "avartar",     width: COLUMN_WIDTH },
+  { title: "county",      id: "county",      width: COLUMN_WIDTH },
+  { title: "email",       id: "email",       width: COLUMN_WIDTH },
+  { title: "title",       id: "title",       width: COLUMN_WIDTH },
+  { title: "firstName",   id: "firstName",   width: COLUMN_WIDTH },
+  { title: "lastName",    id: "lastName",    width: COLUMN_WIDTH },
+  { title: "street",      id: "street",      width: COLUMN_WIDTH },
+  { title: "zipCode",     id: "zipCode",     width: COLUMN_WIDTH },
+  { title: "date",        id: "date",        width: COLUMN_WIDTH },
+  { title: "bs",          id: "bs",          width: COLUMN_WIDTH },
+  { title: "catchPhrase", id: "catchPhrase", width: COLUMN_WIDTH },
+  { title: "companyName", id: "companyName", width: COLUMN_WIDTH },
+  { title: "sentence",    id: "sentence",    width: COLUMN_WIDTH },
+  { title: "words",       id: "words",       width: COLUMN_WIDTH }
 ];
+
+export function getColumn(){
+  
+  for(let i=0; i<COL_COUNT; i++){
+    columns.push({
+      title: `col${i}`,
+      id: `col${i}`,
+      width: COLUMN_WIDTH
+    });
+  }
+  return columns;
+}
 
 function makeid(length) {
   var result           = '';
@@ -33,23 +49,27 @@ charactersLength));
 }
 
 function createFakeRow(index) {
-  return {
+  const rows = {
     id: index,
     avartar: makeid(50),
-    county: makeid(50),
+    county: makeid(20),
     email: makeid(50),
     title: makeid(50),
     firstName: makeid(50),
     lastName: makeid(50),
     street: index,
     zipCode: index,
-    date:  Date.now(),
+    date: Date.now(),
     bs: index,
     catchPhrase: index,
     companyName: index,
-    sentence: index,
-    words: index
+    words:index,
+    sentence: index
   };
+  for(let i=0; i<COL_COUNT; i++){
+    rows[`col${i}`] = i;
+  }
+  return rows;
 }
 
 export function getData(data, [col, row]) {
@@ -72,7 +92,16 @@ export function getData(data, [col, row]) {
     "sentence",
     "words",
   ];
+  for(let i=0; i<COL_COUNT; i++){
+    const colName = `col${i}`;
+    if(!indexes.includes(colName)){
+      indexes.push(colName);
+    } else {
+      console.log(`colName = ${colName}`);
+    }
+  }
   const d = dataRow[indexes[col]]
+  
   return {
       kind: GridCellKind.Text,
       allowOverlay: false,
@@ -92,11 +121,11 @@ function timeElapse(startTime) {
   return seconds;
 }
 
-export default function createRowData(count) {
+export default function createRowData() {
   const startTime = new Date();
   try{
     console.log(`Generating data`);
-    return [...Array(count).keys()].map(i => createFakeRow(i));
+    return [...Array(ROW_COUNT).keys()].map(i => createFakeRow(i));
   } finally {
     console.log(`Data generation done (${timeElapse(startTime)} seconds)`);
   }

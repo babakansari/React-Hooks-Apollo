@@ -3,10 +3,10 @@ import {
   DataEditor
 } from "@glideapps/glide-data-grid";
 import * as React from 'react';
-import createRowData, {getData, columns} from "./createRowData";
+import createRowData, {getData, getColumn} from "./createRowData";
 
-const ROW_COUNT = 100005;
-const data = createRowData(ROW_COUNT);
+const data = createRowData();
+const columns = getColumn();
 
 function RostersPage() {
   const getContent = React.useCallback((cell) => {
