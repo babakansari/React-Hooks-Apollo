@@ -9,8 +9,8 @@ const COLUMN_WIDTH = 100;
 
 const columns = [
   { title: "id",          id: "id",          width: 50 },
-  { title: "avartar",     id: "avartar",     width: COLUMN_WIDTH },
-  { title: "county",      id: "county",      width: COLUMN_WIDTH },
+  { title: "avartar",     id: "avartar",     width: 200 },
+  { title: "county",      id: "county",      width: 150 },
   { title: "email",       id: "email",       width: COLUMN_WIDTH },
   { title: "title",       id: "title",       width: COLUMN_WIDTH },
   { title: "firstName",   id: "firstName",   width: COLUMN_WIDTH },
@@ -67,7 +67,7 @@ function createFakeRow(index) {
     sentence: index
   };
   for(let i=0; i<COL_COUNT; i++){
-    rows[`col${i}`] = i;
+    rows[`col${i}`] = i*index;
   }
   return rows;
 }
