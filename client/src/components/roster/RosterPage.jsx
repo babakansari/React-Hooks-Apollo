@@ -1,16 +1,16 @@
 import React from "react";
 import ReactDataGrid from "react-data-grid";
-import createRowData, { columns } from "./createRowData";
+import createRowData, { getCols } from "./createRowData";
 
-const ROW_COUNT = 100005;
-const rows = createRowData(ROW_COUNT);
+
+const rows = createRowData();
 
 function RostersPage() {
   
   return (
     <div style = {{height:"100vh"}}>
       <ReactDataGrid
-        columns={columns}
+        columns={getCols()}
         rowGetter={i => rows[i]}
         rows={rows}
         minHeight={600}

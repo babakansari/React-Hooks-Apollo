@@ -1,3 +1,7 @@
+const ROW_COUNT = 5001;
+const COL_COUNT = 366;
+
+const COLUMN_WIDTH = 140;
 function makeid(length) {
     var result           = '';
     var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
@@ -9,7 +13,7 @@ function makeid(length) {
    return result;
 }
 function createFakeRow(index) {
-  return {
+  const cols = {
     id: index,
     avartar: makeid(50),
     county: makeid(20),
@@ -26,11 +30,13 @@ function createFakeRow(index) {
     words:index,
     sentence: index
   };
+  for(let i=0; i<COL_COUNT; i++){
+    cols[`col${i}`] = i;
+  }
+  return cols;
 }
 
-const COLUMN_WIDTH = 140;
-
-export const columns = [
+const columns = [
   {
     key: "id",
     name: "ID",
@@ -97,6 +103,18 @@ export const columns = [
   }
 ];
 
+export function getCols(){
+
+  for(let i=0; i<COL_COUNT; i++){
+    columns.push({
+      key: `col${i}`,
+      name: `col${i}`,
+      width: COLUMN_WIDTH
+    });
+  }
+  return columns;
+}
+
 function timeElapse(startTime) {
   const endTime = new Date();
   var timeDiff = endTime - startTime; //in ms
@@ -108,11 +126,11 @@ function timeElapse(startTime) {
   return seconds;
 }
 
-export default function createRowData(count) {
+export default function createRowData() {
   const startTime = new Date();
   try{
     console.log(`Generating data`);
-    return [...Array(count).keys()].map(i => createFakeRow(i));
+    return [...Array(ROW_COUNT).keys()].map(i => createFakeRow(i));
   } finally {
     console.log(`Data generation done (${timeElapse(startTime)} seconds)`);
   }
