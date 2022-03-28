@@ -1,7 +1,7 @@
-const ROW_COUNT = 5001;
+const ROW_COUNT = 10001;
 const COL_COUNT = 366;
+const COLUMN_WIDTH = 100;
 
-const COLUMN_WIDTH = 140;
 function makeid(length) {
     var result           = '';
     var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
@@ -13,7 +13,7 @@ function makeid(length) {
    return result;
 }
 function createFakeRow(index) {
-  const cols = {
+  const rows = {
     id: index,
     avartar: makeid(50),
     county: makeid(20),
@@ -31,9 +31,9 @@ function createFakeRow(index) {
     sentence: index
   };
   for(let i=0; i<COL_COUNT; i++){
-    cols[`col${i}`] = i;
+    rows[`col${i}`] = i;
   }
-  return cols;
+  return rows;
 }
 
 const columns = [
