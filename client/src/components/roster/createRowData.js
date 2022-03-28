@@ -30,8 +30,8 @@ function createFakeRow(index) {
     words:index,
     sentence: index
   };
-  for(let i=0; i<COL_COUNT; i++){
-    rows[`col${i}`] = i;
+  for(let i=1; i<=COL_COUNT; i++){
+    rows[`col${i}`] = i*(index+1);
   }
   return rows;
 }
