@@ -5,7 +5,7 @@ import {
 import * as React from 'react';
 import createRowData, {getData, columns} from "./createRowData";
 
-const ROW_COUNT = 200000;
+const ROW_COUNT = 100005;
 const data = createRowData(ROW_COUNT);
 
 function RostersPage() {
@@ -15,8 +15,8 @@ function RostersPage() {
 
   return (
     <div>
-      <DataEditorContainer width={1000} height={500}>
-        <DataEditor getCellContent={getContent} columns={columns} rows={data.length} />
+      <DataEditorContainer width={1000} height={600} >
+        <DataEditor getCellContent={getContent} columns={columns} rows={data.length} freezeColumns={4}/>
       </DataEditorContainer>
     </div>
   );
