@@ -1,12 +1,16 @@
 import React from "react";
-import { Typography } from "@mui/material";
+import { Typography, Grid } from "@mui/material";
 
 function CrewPage () {
   return  (
-    <div>
-      <Typography variant="h2">Crew</Typography>
-
-    </div>
+    <Grid Container direction="row">
+      <Grid item Container direction="column">
+        <Grid item>
+          <Typography variant="h2">Crew</Typography>
+        </Grid>
+      </Grid>
+     
+    </Grid>
   );
 }
 
