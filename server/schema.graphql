@@ -5,7 +5,7 @@ type Query {
 }
 
 type Mutation {
-    createCrew(name: String!, rankId: ID!): ID
+    createCrew(name: String!, rankId: ID!): Crew
 }
 
 type Rank {

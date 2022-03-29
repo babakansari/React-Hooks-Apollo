@@ -8,7 +8,8 @@ const Query = {
 
 const Mutation = {
     createCrew: (root, {name, rankId}) => {
-        return db.rostering.create({name, rankId})
+        const id = db.rostering.create({name, rankId});
+        return  db.rostering.get(id);
     }
 };
 
