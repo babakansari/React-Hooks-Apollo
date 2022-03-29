@@ -1191,6 +1191,13 @@ normalize-url@^4.1.0:
   resolved "https://registry.npmjs.org/normalize-url/-/normalize-url-4.5.1.tgz"
   integrity sha512-9UZCFRHQdNrfTpGg8+1INIg93B6zE0aXMVFkw1WFwvO4SlZywU6aLg5Of0Ap/PgcbSw4LNxvMWXMeugwMCX0AA==
 
+notarealdb@^0.2.2:
+  version "0.2.2"
+  resolved "https://registry.yarnpkg.com/notarealdb/-/notarealdb-0.2.2.tgz#ef68b4c0b4b458e059cd90ad6ce9301be013f90c"
+  integrity sha512-mp3YjtP6pHhHTDhSFbDdEOLzRQ0Aj219ti64lsW/NZyPUxVUwSTZiTtto9Zm5C/nWyKxuO4OeaEAV61h/LAlDQ==
+  dependencies:
+    shortid "2.2.8"
+
 object-assign@^4:
   version "4.1.1"
   resolved "https://registry.npmjs.org/object-assign/-/object-assign-4.1.1.tgz"
@@ -1411,6 +1418,11 @@ sha.js@^2.4.11:
   dependencies:
     inherits "^2.0.1"
     safe-buffer "^5.0.1"
+
+shortid@2.2.8:
+  version "2.2.8"
+  resolved "https://registry.yarnpkg.com/shortid/-/shortid-2.2.8.tgz#033b117d6a2e975804f6f0969dbe7d3d0b355131"
+  integrity sha1-AzsRfWoul1gE9vCWnb59PQs1UTE=
 
 signal-exit@^3.0.2:
   version "3.0.7"

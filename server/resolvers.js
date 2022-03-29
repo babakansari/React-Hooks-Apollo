@@ -1,7 +1,7 @@
-const resolvers = {
-    Query: {
-        user: () => 'User Babak'
-    }
+import db from './db.js';
+
+const Query = {
+    rostering: () => db.rostering.list()
 };
 
-export default resolvers;
+export default { Query };
