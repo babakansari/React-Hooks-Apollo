@@ -4,6 +4,10 @@ type Query {
     rostering: [Crew] 
 }
 
+type Mutation {
+    createCrew(name: String!, rankId: ID!): ID
+}
+
 type Rank {
     id: ID!
     title: String!
