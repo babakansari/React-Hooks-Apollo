@@ -4,5 +4,5 @@ const store = new DataStore('./data');
 
 export default {
   rostering: store.collection('rostering'),
-  //: store.collection('users')
+  ranks: store.collection('ranks')
 };

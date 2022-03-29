@@ -1,8 +1,14 @@
 type Query {
-    rostering: [crew] 
+    rostering: [Crew] 
 }
 
-type crew {
+type Rank {
     id: ID!
-    name: String
+    title: String!
+}
+
+type Crew {
+    id: ID!
+    name: String!
+    rank: Rank
 }
