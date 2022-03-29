@@ -1,7 +1,7 @@
 import db from './db.js';
 
 const Query = {
-    crew: (root, args) => db.rostering.get(args.id), 
+    crew: (root, {id}) => db.rostering.get(id), 
     rostering: () => db.rostering.list()
 };
 
