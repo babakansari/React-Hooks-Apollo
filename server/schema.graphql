@@ -1,4 +1,5 @@
 type Query {
+    crew(id: ID!): Crew
     rostering: [Crew] 
 }
 
