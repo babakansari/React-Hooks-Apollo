@@ -4,8 +4,13 @@ type Query {
     rostering: [Crew] 
 }
 
+input cerateCrewInput {
+    name: String!
+    rankId: ID!
+}
+
 type Mutation {
-    createCrew(name: String!, rankId: ID!): Crew
+    createCrew(input: cerateCrewInput): Crew
 }
 
 type Rank {
