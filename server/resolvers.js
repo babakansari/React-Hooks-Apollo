@@ -1,3 +1,4 @@
+import { AuthenticationError } from 'apollo-server-express';
 import db from './db.js';
 
 const Query = {
@@ -7,7 +8,19 @@ const Query = {
 };
 
 const Mutation = {
-    createCrew: (root, {input}) => {
+    createCrew: (root, {input}, context) => {
+        // Check user is authenticated
+        //  POST http://localhost:9000/login
+        //  JSON Body:
+        //  {
+        //     "email":"bob", 
+        //     "password": "bob"
+        //  }
+        //  Header:
+        //  Authorization   bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJyeTlwYndkTzIiLCJpYXQiOjE2NDg2MTExOTJ9.OqhZzSZkcbyWx9d_VGQDNV6hqz7U4iY5GEP1yfvHIVw
+        if(!context.user){
+            throw new AuthenticationError("Authentication error");
+        }
         const id = db.rostering.create(input);
         return  db.rostering.get(id);
     }

@@ -1,0 +1,21 @@
+[
+    {
+      "id": "BJrp-DudG",
+      "email": "alice@facegle.io",
+      "password": "alice123",
+      "rankId": "HJRa-2"
+    },
+    {
+      "id": "ry9pbwdOz",
+      "email": "bob@goobook.co",
+      "password": "bob123",
+      "rankId": "HJRa-1"
+    },
+    {
+      "id": "ry9pbwdO2",
+      "email": "bob",
+      "password": "bob",
+      "rankId": "HJRa-2"
+    }
+  ]
+  

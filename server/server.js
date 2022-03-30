@@ -5,17 +5,17 @@ import cors from 'cors';
 import bodyParser from 'body-parser';
 import expressJwt from 'express-jwt';
 import resolvers from './resolvers.js';
+import jwt from 'jsonwebtoken';
+import db from './db.js';
 
 const port = 9000;
 const jwtSecret = Buffer.from('Zn8Q5tyZ/G1MHltc4F/gTkVJMlrbKiZt', 'base64');
 
 const app = express();
 app.use(cors(), bodyParser.json(), expressJwt({
-  secret: jwtSecret, algorithms: ['RS256'],
+  secret: jwtSecret, algorithms: ['HS256'],
   credentialsRequired: false
 }));
-
-// expressJwt({ secret:  process.env.JWT_SECRET, algorithms: ['RS256'] });
 
 app.post('/login', (req, res) => {
   const {email, password} = req.body;
@@ -24,7 +24,7 @@ app.post('/login', (req, res) => {
     res.sendStatus(401);
     return;
   }
-  const token = jwt.sign({sub: user.id}, jwtSecret);
+  const token = jwt.sign({sub: user.id, email}, jwtSecret);
   res.send({token});
 });
 
@@ -33,9 +33,15 @@ const typeDefs = gql(fs.readFileSync('./schema.graphql', {encoding: 'utf8'}  ));
 
 let apolloServer = null;
 async function startServer() {
+    const context = ({req}) => (
+      {
+        user: req.user
+      }
+    );
     apolloServer = new ApolloServer({
         typeDefs,
         resolvers,
+        context
     });
     await apolloServer.start();
     apolloServer.applyMiddleware({app, path: '/graphql'});
