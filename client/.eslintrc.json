@@ -4,6 +4,7 @@
         "es2021": true
     },
     "extends": [
+        "plugin:react-hooks/recommended",
         "react-app"
     ],
     "parserOptions": {
@@ -14,8 +15,10 @@
         "sourceType": "module"
     },
     "plugins": [
-        "react"
+        "react",
+        "react-hooks"
     ],
     "rules": {
+        "react-hooks/rules-of-hooks": "error"
     }
 }
