@@ -4,6 +4,7 @@ import Header from "./common/Header";
 import HomePage from './common/HomePage'
 import RostersPage from './roster/RosterPage'
 import CrewPage from './roster/CrewPage'
+import Login from './login/Login'
 import menuRouteMap, {getKeyByLabel} from './common/MenuMap'
 
 function App() {
@@ -28,10 +29,10 @@ function App() {
       <Container>
         <Header/>
         <Routes>
-
           <Route path={getKeyByLabel(menuRouteMap, 'Home')} element={<HomePage/>} />
           <Route path={getKeyByLabel(menuRouteMap, 'Roster')} element={<RostersPage/>} />
           <Route path={getKeyByLabel(menuRouteMap, 'Crew')} element={<CrewPage/>} />
+          <Route path={getKeyByLabel(menuRouteMap, 'Login')} element={<Login/>} />
         </Routes>
       </Container>
     </Router>
