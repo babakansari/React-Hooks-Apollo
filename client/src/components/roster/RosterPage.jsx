@@ -18,7 +18,9 @@ function RostersPage() {
 
   return (
     <div>
-      <DataEditorContainer width={1000} height={600} >
+      <DataEditorContainer width={1000} height={600} onScrollCapture={ (e)=>{
+        console.log(`scroll: ${JSON.stringify(e)}`)
+      }}>
         <DataEditor ref={gridRef} getCellContent={getContent} columns={cols} rows={data.length} freezeColumns={4} onHeaderClicked={(colIndex, event) =>{
           gridRef.current.scrollTo(colIndex, 500);
           const newColumns = [...columns];
