@@ -22,7 +22,7 @@ function RostersPage() {
         <DataEditor ref={gridRef} getCellContent={getContent} columns={cols} rows={data.length} freezeColumns={4} onHeaderClicked={(colIndex, event) =>{
           gridRef.current.scrollTo(colIndex, 500);
           const newColumns = [...columns];
-          newColumns[0].icon = "headerMarkdown";
+          newColumns[0].icon = newColumns[0].icon ? undefined : "headerMarkdown";
           setCols(newColumns);
           console.log(`Col: ${colIndex}, Ref: ${JSON.stringify(gridRef.current.columns)}`);
         }}/>
