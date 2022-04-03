@@ -13,7 +13,7 @@ const Mutation = {
         //  POST http://localhost:9000/login
         //  JSON Body:
         //  {
-        //     "email":"bob", 
+        //     "username":"bob", 
         //     "password": "bob"
         //  }
         //  Header:

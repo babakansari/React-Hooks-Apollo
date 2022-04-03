@@ -12,19 +12,20 @@ const port = 9000;
 const jwtSecret = Buffer.from('Zn8Q5tyZ/G1MHltc4F/gTkVJMlrbKiZt', 'base64');
 
 const app = express();
+
 app.use(cors(), bodyParser.json(), expressJwt({
   secret: jwtSecret, algorithms: ['HS256'],
   credentialsRequired: false
 }));
 
 app.post('/login', (req, res) => {
-  const {email, password} = req.body;
-  const user = db.users.list().find((user) => user.email === email);
+  const {username, password} = req.body;
+  const user = db.users.list().find((user) => user.username === username);
   if (!(user && user.password === password)) {
     res.sendStatus(401);
     return;
   }
-  const token = jwt.sign({sub: user.id, email}, jwtSecret);
+  const token = jwt.sign({sub: user.id, username}, jwtSecret);
   res.send({token});
 });
 

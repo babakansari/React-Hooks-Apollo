@@ -1,6 +1,7 @@
 import React from "react";
 import { Typography, Grid, TextField, Button } from "@mui/material";
 import { makeStyles } from "@material-ui/styles";
+import axios from "axios";
 import { loginReducer, initialLoginState } from "./LoginReducer";
 
 const useStyles = makeStyles(theme => ({
@@ -14,6 +15,22 @@ function Login () {
   const [formState, dispatch] = React.useReducer(loginReducer, initialLoginState);
 
   function onLogin(){
+
+    const authenticate = async () => {
+      try {
+        let response = await axios.post( 'http://localhost:9000/login', formState );
+        if (response.status === 200) {
+          alert(`token: ${response.data.token}`);
+          return;
+        }
+      } catch(err) {
+        alert(err);
+      }
+      
+    };
+
+    authenticate();
+
     dispatch({
       type:"AUTHENTICATE",
       data: { username: formState.username, password: formState.password }
