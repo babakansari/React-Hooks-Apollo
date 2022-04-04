@@ -1,22 +1,9 @@
 import { ApolloClient, ApolloLink, HttpLink, InMemoryCache } from 'apollo-boost';
-import gql from 'graphql-tag';
 
 const endpointURL = "http://localhost:9000/graphql";
 
-export async function loadRostering(token) {
-    
-    const query = gql`{
-        rostering {
-            id
-            name
-            rank {
-                id
-                title
-            }
-        }
-    }`;
+export async function executeQuery(query, token) {
     const apolloClient = createApolloClient(token);
-
     const {data} = await apolloClient.query({ 
         query, 
         fetchPolicy: 'no-cache' 

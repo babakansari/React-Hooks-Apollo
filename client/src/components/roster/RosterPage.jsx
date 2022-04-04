@@ -1,7 +1,8 @@
 import React from "react";
 import { Typography } from "@mui/material";
-import { loadRostering } from "../../api/request"
+import { executeQuery } from "../../api/request"
 import { useToken } from "../common/Auth";
+import { rosteringQuery } from './RosteringQueries';
 
 function RostersPage () {
   const [rostering, setRostering] = React.useState([]);
@@ -9,7 +10,7 @@ function RostersPage () {
  
   React.useEffect( () => {
     async function fetchData(){
-      const rostering = await loadRostering(token);
+      const rostering = await executeQuery(rosteringQuery, token);
       setRostering(rostering);
     }
     fetchData();
