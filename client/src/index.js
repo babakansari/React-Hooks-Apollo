@@ -4,6 +4,9 @@ import App from './components/App';
 import reportWebVitals from './reportWebVitals';
 import theme from "./components/common/Theme";
 import { ThemeProvider } from "@material-ui/styles"
+import axios from "axios";
+
+axios.defaults.withCredentials = true;
 
 ReactDOM.render(
   <React.StrictMode>

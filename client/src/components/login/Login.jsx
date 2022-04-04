@@ -3,6 +3,7 @@ import { Typography, Grid, TextField, Button } from "@mui/material";
 import { makeStyles } from "@material-ui/styles";
 import axios from "axios";
 import { loginReducer, initialLoginState } from "./LoginReducer";
+import { useCookies } from 'react-cookie';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -13,6 +14,7 @@ const useStyles = makeStyles(theme => ({
 function Login () {
   const classes = useStyles();
   const [formState, dispatch] = React.useReducer(loginReducer, initialLoginState);
+  const [{token}] = useCookies([]);
 
   function onLogin(){
 
@@ -20,7 +22,7 @@ function Login () {
       try {
         let response = await axios.post( 'http://localhost:9000/login', formState );
         if (response.status === 200) {
-          alert(`token: ${response.data.token}`);
+          alert(`token: ${JSON.stringify(response.data)} => ${token}`);
           return;
         }
       } catch(err) {
