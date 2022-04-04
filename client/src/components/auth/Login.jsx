@@ -3,7 +3,6 @@ import { Typography, Grid, TextField, Button } from "@mui/material";
 import { makeStyles } from "@material-ui/styles";
 import axios from "axios";
 import { loginReducer, initialLoginState } from "./LoginReducer";
-import { useToken } from "../common/Auth";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -14,8 +13,7 @@ const useStyles = makeStyles(theme => ({
 function Login () {
   const classes = useStyles();
   const [formState, dispatch] = React.useReducer(loginReducer, initialLoginState);
-  const [token] = useToken();
- 
+
   function onLogin(){
 
     const authenticate = async () => {

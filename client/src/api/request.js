@@ -3,18 +3,6 @@ import gql from 'graphql-tag';
 
 const endpointURL = "http://localhost:9000/graphql";
 
-// Disable caching
-const defaultOptions = {
-    watchQuery: {
-        fetchPolicy: 'no-cache',
-        errorPolicy: 'ignore',
-    },
-    query: {
-        fetchPolicy: 'no-cache',
-        errorPolicy: 'all',
-    },
-};
-
 export async function loadRostering(token) {
     
     const query = gql`{
@@ -29,7 +17,10 @@ export async function loadRostering(token) {
     }`;
     const apolloClient = createApolloClient(token);
 
-    const {data} = await apolloClient.query({ query });
+    const {data} = await apolloClient.query({ 
+        query, 
+        fetchPolicy: 'no-cache' 
+    });
     return data.rostering;
 }
 
@@ -50,8 +41,7 @@ function createApolloClient(token) {
             authLink,
             new HttpLink({ uri: endpointURL })
         ]),
-        cache: new InMemoryCache(),
-        defaultOptions
+        cache: new InMemoryCache()
     });
     return apolloClient;
 }
