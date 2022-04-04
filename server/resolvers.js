@@ -4,7 +4,13 @@ import db from './db.js';
 const Query = {
     rank: (root, {id}) => db.ranks.get(id),
     crew: (root, {id}) => db.rostering.get(id), 
-    rostering: () => db.rostering.list()
+    //rostering: () => db.rostering.list()
+    rostering: (root, {}, context) => {
+        if(!context.user){
+            throw new AuthenticationError("Authentication error");
+        }
+        return db.rostering.list()
+    },
 };
 
 const Mutation = {

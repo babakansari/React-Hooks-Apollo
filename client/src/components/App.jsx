@@ -2,11 +2,11 @@ import {  BrowserRouter as Router, Routes, Route  } from 'react-router-dom';
 import React  from 'react';
 import { Container } from "@mui/material";
 import Header from "./common/Header";
-import HomePage from './common/HomePage'
-import RostersPage from './roster/RosterPage'
-import CrewPage from './roster/CrewPage'
-import Login from './login/Login'
-import menuRouteMap, {getKeyByLabel} from './common/MenuMap'
+import HomePage from './common/HomePage';
+import RostersPage from './roster/RosterPage';
+import CrewPage from './roster/CrewPage';
+import Login from './auth/Login';
+import menuRouteMap, {getKeyByLabel} from './common/MenuMap';
 
 function App() {
   return (

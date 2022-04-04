@@ -1,13 +1,15 @@
 import React from "react";
 import { Typography } from "@mui/material";
 import { loadRostering } from "../../api/request"
+import { useToken } from "../common/Auth";
 
 function RostersPage () {
   const [rostering, setRostering] = React.useState([]);
-
+  const [token] = useToken();
+ 
   React.useEffect( () => {
     async function fetchData(){
-      const rostering = await loadRostering();
+      const rostering = await loadRostering(token);
       setRostering(rostering);
     }
     fetchData();
@@ -15,7 +17,7 @@ function RostersPage () {
 
   return  (
     <div>
-      <Typography variant="h2">Rosters</Typography>
+      <Typography variant="h2">Rosters (Requires authentication)</Typography>
       <ul >
         {rostering.map(
           (crew) => {

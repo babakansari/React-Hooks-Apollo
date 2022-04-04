@@ -3,7 +3,7 @@ import { Typography, Grid, TextField, Button } from "@mui/material";
 import { makeStyles } from "@material-ui/styles";
 import axios from "axios";
 import { loginReducer, initialLoginState } from "./LoginReducer";
-import { useCookies } from 'react-cookie';
+import { useToken } from "../common/Auth";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -14,19 +14,19 @@ const useStyles = makeStyles(theme => ({
 function Login () {
   const classes = useStyles();
   const [formState, dispatch] = React.useReducer(loginReducer, initialLoginState);
-  const [{token}] = useCookies([]);
-
+  const [token] = useToken();
+ 
   function onLogin(){
 
     const authenticate = async () => {
       try {
         let response = await axios.post( 'http://localhost:9000/login', formState );
         if (response.status === 200) {
-          alert(`token: ${JSON.stringify(response.data)} => ${token}`);
+          alert(`Authentication successful (token: ${JSON.stringify(response.data)})`);
           return;
         }
       } catch(err) {
-        alert(err);
+        alert(`Authentication failed (${err})`);
       }
       
     };

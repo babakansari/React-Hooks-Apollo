@@ -14,11 +14,13 @@ const jwtSecret = Buffer.from('Zn8Q5tyZ/G1MHltc4F/gTkVJMlrbKiZt', 'base64');
 
 const app = express();
 
-app.use(cors({ origin:["http://localhost:3000"], credentials: true }), bodyParser.json(), expressJwt({
+app.use(cors({ origin:["http://localhost:3000", "https://studio.apollographql.com"], credentials: true }), bodyParser.json(), expressJwt({
   secret: jwtSecret, algorithms: ['HS256'],
   credentialsRequired: false
 }));
+
 app.use(cookieParser());
+
 app.post('/login', (req, res) => {
   const {username, password} = req.body;
   const user = db.users.list().find((user) => user.username === username);
@@ -31,7 +33,6 @@ app.post('/login', (req, res) => {
   res.cookie("token", token);
   res.sendStatus(200);
 });
-
 
 const typeDefs = gql(fs.readFileSync('./schema.graphql', {encoding: 'utf8'}  ));
 
