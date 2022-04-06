@@ -5,16 +5,17 @@ import reportWebVitals from './reportWebVitals';
 import theme from "./components/common/Theme";
 import { ThemeProvider } from "@material-ui/styles"
 import axios from "axios";
-// import { ApolloProvider } from '@apollo/react-hooks';
+import { ApolloProvider } from '@apollo/react-hooks';
+import { apolloClient } from './api/ApolloClient';
 
 axios.defaults.withCredentials = true;
 
 ReactDOM.render(
   <React.StrictMode>
      <ThemeProvider theme={theme}>
-      {/* <ApolloProvider> */}
+      <ApolloProvider client={apolloClient}>
         <App />
-      {/* </ApolloProvider> */}
+      </ApolloProvider>
     </ThemeProvider>
   </React.StrictMode>,
   document.getElementById('root')

@@ -1,6 +1,6 @@
 import React from "react";
 import { Typography } from "@mui/material";
-import { executeQuery } from "../../api/request"
+import { executeQuery } from "../../api/Request"
 import { rosteringQuery } from './RosteringQueries';
 
 function RostersPage () {
