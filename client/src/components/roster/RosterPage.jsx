@@ -4,13 +4,19 @@ import { rosteringQuery } from './RosteringQueries';
 import { useQuery } from '@apollo/react-hooks';
 
 function RostersPage () {
-  const {data} = useQuery(rosteringQuery, {
+  const {loading, error, data} = useQuery(rosteringQuery, {
     fetchPolicy: 'no-cache' 
   });
 
-  if(!data){
+  if(error){
     return (<div>
-      <Typography variant="h2">No Rostering (Requires authentication)</Typography>
+      <Typography variant="h2">Rostering (Authentication is required)</Typography>
+    </div>);
+  }
+
+  if(loading){
+    return (<div>
+      <Typography variant="h2">Rostering (Loading...)</Typography>
     </div>);
   }
 
