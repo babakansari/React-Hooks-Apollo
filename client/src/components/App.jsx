@@ -10,22 +10,6 @@ import menuRouteMap, {getKeyByLabel} from './common/MenuMap';
 
 function App() {
   return (
-    // <Router ref={(router) => this.router = router}>
-    //   <div>
-    //     <NavBar />
-    //     <section className="section">
-    //       <div className="container">
-    //         <Switch>
-    //           <Route exact path="/"  />
-    //           <Route path="/companies/:companyId"  />
-    //           <Route exact path="/jobs/new" />
-    //           <Route path="/jobs/:jobId" />
-    //           <Route exact path="/login" />
-    //         </Switch>
-    //       </div>
-    //     </section>
-    //   </div>
-    // </Router>
     <Router>
       <Container>
         <Header/>

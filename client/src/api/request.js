@@ -1,9 +1,10 @@
 import { ApolloClient, ApolloLink, HttpLink, InMemoryCache } from 'apollo-boost';
+import { setContext } from '@apollo/client/link/context';
 
 const endpointURL = "http://localhost:9000/graphql";
 
-export async function executeQuery(query, token) {
-    const apolloClient = createApolloClient(token);
+export async function executeQuery(query) {
+    
     const {data} = await apolloClient.query({ 
         query, 
         fetchPolicy: 'no-cache' 
@@ -11,24 +12,22 @@ export async function executeQuery(query, token) {
     return data.rostering;
 }
 
-function createApolloClient(token) {
-    const authLink = new ApolloLink((operation, forward) => {
+const authLink = setContext((_, { headers }) => {
+    // get the authentication token from local storage if it exists
+    const token = sessionStorage.getItem('token');
+    // return the headers to the context so httpLink can read them
+    return {
+      headers: {
+        ...headers,
+        authorization: token ? `Bearer ${token}` : "",
+      }
+    }
+  });
 
-        operation.setContext(({ headers }) => ({
-            headers: {
-                authorization: `bearer ${token}`,
-                ...headers
-            }
-        }));
-        return forward(operation);
-    });
-
-    const apolloClient = new ApolloClient({
-        link: ApolloLink.from([
-            authLink,
-            new HttpLink({ uri: endpointURL })
-        ]),
-        cache: new InMemoryCache()
-    });
-    return apolloClient;
-}
+export const apolloClient = new ApolloClient({
+    link: ApolloLink.from([
+        authLink,
+        new HttpLink({ uri: endpointURL })
+    ]),
+    cache: new InMemoryCache()
+});

@@ -1,16 +1,14 @@
 import React from "react";
 import { Typography } from "@mui/material";
 import { executeQuery } from "../../api/request"
-import { useToken } from "../common/Auth";
 import { rosteringQuery } from './RosteringQueries';
 
 function RostersPage () {
   const [rostering, setRostering] = React.useState([]);
-  const [token] = useToken();
  
   React.useEffect( () => {
     async function fetchData(){
-      const rostering = await executeQuery(rosteringQuery, token);
+      const rostering = await executeQuery(rosteringQuery);
       setRostering(rostering);
     }
     fetchData();

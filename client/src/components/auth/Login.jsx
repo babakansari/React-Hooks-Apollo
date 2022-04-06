@@ -20,10 +20,12 @@ function Login () {
       try {
         let response = await axios.post( 'http://localhost:9000/login', formState );
         if (response.status === 200) {
+          sessionStorage.setItem('token', response.data.token);
           alert(`Authentication successful (token: ${JSON.stringify(response.data)})`);
           return;
         }
       } catch(err) {
+        sessionStorage.setItem('token', '');
         alert(`Authentication failed (${err})`);
       }
       
