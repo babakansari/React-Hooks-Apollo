@@ -1,24 +1,24 @@
 import React from "react";
 import { Typography } from "@mui/material";
-import { executeQuery } from "../../api/Request"
 import { rosteringQuery } from './RosteringQueries';
+import { useQuery } from '@apollo/react-hooks';
 
 function RostersPage () {
-  const [rostering, setRostering] = React.useState([]);
- 
-  React.useEffect( () => {
-    async function fetchData(){
-      const rostering = await executeQuery(rosteringQuery);
-      setRostering(rostering);
-    }
-    fetchData();
-  },[]);
+  const {data} = useQuery(rosteringQuery, {
+    fetchPolicy: 'no-cache' 
+  });
+
+  if(!data){
+    return (<div>
+      <Typography variant="h2">No Rostering (Requires authentication)</Typography>
+    </div>);
+  }
 
   return  (
     <div>
-      <Typography variant="h2">Rosters (Requires authentication)</Typography>
+      <Typography variant="h2">Rostering</Typography>
       <ul >
-        {rostering.map(
+        {data.rostering.map(
           (crew) => {
             return (
               <li key={crew.id}>
