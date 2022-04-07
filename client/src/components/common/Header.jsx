@@ -42,7 +42,13 @@ const Header = () => {
                 </Container>
             </AppBar>
             <div className={classes.toolbar}/>
-            <Typography>{menuItem}</Typography>
+            <Typography visibility={false}> </Typography>
+            <hr
+        style={{
+            height: 50,
+            border: 0
+        }}
+    />
         </div>
         
      );

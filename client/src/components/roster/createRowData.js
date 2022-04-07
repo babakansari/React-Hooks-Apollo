@@ -3,7 +3,7 @@ import {
   GridCellKind
 } from "@glideapps/glide-data-grid";
 
-const ROW_COUNT = 10001;
+export const ROW_COUNT = 100;
 const COL_COUNT = 366;
 const COLUMN_WIDTH = 100;
 
