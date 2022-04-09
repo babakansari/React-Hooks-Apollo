@@ -22,7 +22,12 @@ function RostersPage () {
 
   return  (
     <div>
-      <Typography variant="h2">Rostering</Typography>
+      <div>
+        <Typography variant="h2">Rostering</Typography>
+      </div>
+      <div>
+        <Typography >bearer {sessionStorage.getItem('token')}</Typography>
+      </div>
       <ul >
         {data.rostering.map(
           (crew) => {
