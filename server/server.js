@@ -7,9 +7,11 @@ import expressJwt from 'express-jwt';
 import resolvers from './resolvers.js';
 import jwt from 'jsonwebtoken';
 import db from './db.js';
+import dotenv from 'dotenv';
+dotenv.config({ path: './.env' });
 
-const port = 9000;
-const jwtSecret = Buffer.from('Zn8Q5tyZ/G1MHltc4F/gTkVJMlrbKiZt', 'base64');
+const port = process.env.APOLLO_SERVER_PORT;
+const jwtSecret = Buffer.from(process.env.APOLLO_JWT_SECRET, 'base64');
 
 const app = express();
 
