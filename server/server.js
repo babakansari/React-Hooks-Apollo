@@ -11,11 +11,12 @@ import dotenv from 'dotenv';
 dotenv.config({ path: './.env' });
 
 const port = process.env.APOLLO_SERVER_PORT;
-const jwtSecret = Buffer.from(process.env.APOLLO_JWT_SECRET, 'base64');
+const jwtSecret = Buffer.from(process.env.APOLLO_JWT_SECRET[1], 'base64');
+const corsOrigin = process.env.ACCESS_CONTROL_ALLOW_ORIGIN.split(',');
 
 const app = express();
 
-app.use(cors({ origin:["http://localhost:3000", "https://studio.apollographql.com"], credentials: true }), bodyParser.json(), expressJwt({
+app.use(cors({ origin: corsOrigin, credentials: true }), bodyParser.json(), expressJwt({
   secret: jwtSecret, algorithms: ['HS256'],
   credentialsRequired: false
 }));
