@@ -3,7 +3,7 @@ import { AppBar, Container, Typography, Tabs, Tab, Toolbar } from "@mui/material
 import { makeStyles } from "@material-ui/styles"
 import { Link as RouterLink } from 'react-router-dom';
 import menuRouteMap from './MenuMap'
-import { AppContext } from "../AppContext";
+import { AppContext } from "../context/AppContext";
 
 const useStyles = makeStyles( t=>({
     toolbar: t.mixins.toolbar
@@ -34,7 +34,7 @@ const Header = () => {
                             ?
                                 <Typography variant='h6'> ( User - {JSON.stringify(appContext.State.claims.username)} ) </Typography>
                             :
-                                <Typography variant='h6'> ( Not Authenticated ) </Typography>}
+                                <Typography variant='h6'> ( Not Authenticated ) </Typography> }
                         
                         <Tabs value={menuItem} onChange={handleChange} textColor='inherit' indicatorColor='secondary' variant='scrollable'>
                             { Array.from( menuRouteMap.keys() ).map( (key) =>{

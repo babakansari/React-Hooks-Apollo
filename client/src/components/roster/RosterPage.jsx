@@ -10,7 +10,7 @@ function RostersPage () {
 
   if(error){
     return (<div>
-      <Typography variant="h2">Rostering (Authentication is required)</Typography>
+      <Typography variant="h2">Rostering (Error loading page...)</Typography>
     </div>);
   }
 
