@@ -2,8 +2,17 @@ import React from "react";
 import { Typography } from "@mui/material";
 import { rosteringQuery } from './RosteringQueries';
 import { useQuery } from '@apollo/react-hooks';
+import { AppContext } from "../context/AppContext";
 
 function RostersPage () {
+  const appContext = React.useContext(AppContext);
+
+  if(!appContext.State.claims.username){
+    return (<div>
+      <Typography variant="h2">Requires Authentication...</Typography>
+    </div>);
+  }
+
   const {loading, error, data} = useQuery(rosteringQuery, {
     fetchPolicy: 'no-cache' 
   });
