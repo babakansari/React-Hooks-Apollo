@@ -3,14 +3,14 @@ import { AppBar, Container, Typography, Tabs, Tab, Toolbar } from "@mui/material
 import { makeStyles } from "@material-ui/styles"
 import { Link as RouterLink } from 'react-router-dom';
 import menuRouteMap from './MenuMap'
-import { ApplicationContext } from "../App";
+import { AppContext } from "../AppContext";
 
 const useStyles = makeStyles( t=>({
     toolbar: t.mixins.toolbar
   }));
 
 const Header = () => {
-    const applicationContext = React.useContext(ApplicationContext);
+    const appContext = React.useContext(AppContext);
     const classes = useStyles();
     const [menuItem, setMenuItem]= React.useState(0);
     
@@ -30,9 +30,9 @@ const Header = () => {
             <AppBar>
                 <Container maxWidth="x3">
                     <Toolbar>
-                        { applicationContext.State.claims.username 
+                        { appContext.State.claims.username 
                             ?
-                                <Typography variant='h6'> ( User - {JSON.stringify(applicationContext.State.claims.username)} ) </Typography>
+                                <Typography variant='h6'> ( User - {JSON.stringify(appContext.State.claims.username)} ) </Typography>
                             :
                                 <Typography variant='h6'> ( Not Authenticated ) </Typography>}
                         

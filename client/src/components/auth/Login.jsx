@@ -3,7 +3,7 @@ import { Typography, Grid, TextField, Button } from "@mui/material";
 import { makeStyles } from "@material-ui/styles";
 import axios from "axios";
 import { loginReducer, initialLoginState } from "./LoginReducer";
-import { ApplicationContext } from "../App";
+import { AppContext } from "../AppContext";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -12,7 +12,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 function Login () {
-  const applicationContext = useContext(ApplicationContext);
+  const appContext = useContext(AppContext);
   const classes = useStyles();
   const [formState, dispatch] = React.useReducer(loginReducer, initialLoginState);
 
@@ -24,7 +24,7 @@ function Login () {
         if (response.status === 200) {
           sessionStorage.setItem('token', response.data.token);
           // alert(`Authentication successful (token: ${JSON.stringify(response.data)})`);
-          applicationContext.Dispatch({
+          appContext.Dispatch({
             type: "LOGGED_IN",
             payload: formState.username
           });
@@ -32,7 +32,7 @@ function Login () {
         }
       } catch(err) {
         sessionStorage.setItem('token', '');
-        applicationContext.Dispatch({
+        appContext.Dispatch({
           type: "LOGGED_OUT"
         });
       }

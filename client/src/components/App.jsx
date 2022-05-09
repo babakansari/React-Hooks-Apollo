@@ -1,5 +1,5 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import React, { useReducer } from 'react';
+import React from 'react';
 import { Container } from "@mui/material";
 import Header from "./common/Header";
 import HomePage from './common/HomePage';
@@ -7,40 +7,12 @@ import RostersPage from './roster/RosterPage';
 import CrewPage from './roster/CrewPage';
 import Login from './auth/Login';
 import menuRouteMap, {getKeyByLabel} from './common/MenuMap';
-
-export const ApplicationContext = React.createContext();
-
-const initialState = { 
-  claims: { 
-    username: null
-  } 
-};
-
-const ApplicationReducer = (state, action) => {
-  switch(action.type) {
-    case 'LOGGED_IN':
-      return { 
-        claims: { 
-          username: action.payload 
-        } 
-      };
-    case 'LOGGED_OUT':
-      return { 
-        claims: { 
-          username: null
-        } 
-      };
-    default:
-      return state;
-
-  }
-}
+import { AppContextProvider } from './AppContext';
 
 function App() {
-  const [ state, dispatch ] = useReducer(ApplicationReducer, initialState);
-
+  
   return (
-    <ApplicationContext.Provider value={{ State: state, Dispatch: dispatch }}>
+    <AppContextProvider>
       <Router>
         <Container>
           <Header/>
@@ -52,7 +24,7 @@ function App() {
           </Routes>
         </Container>
       </Router>
-    </ApplicationContext.Provider>
+    </AppContextProvider>
   );
 }
 
