@@ -3,12 +3,14 @@ import { AppBar, Container, Typography, Tabs, Tab, Toolbar } from "@mui/material
 import { makeStyles } from "@material-ui/styles"
 import { Link as RouterLink } from 'react-router-dom';
 import menuRouteMap from './MenuMap'
+import { ApplicationContext } from "../App";
 
 const useStyles = makeStyles( t=>({
     toolbar: t.mixins.toolbar
   }));
 
 const Header = () => {
+    const applicationContext = React.useContext(ApplicationContext);
     const classes = useStyles();
     const [menuItem, setMenuItem]= React.useState(0);
     
@@ -28,7 +30,12 @@ const Header = () => {
             <AppBar>
                 <Container maxWidth="x3">
                     <Toolbar>
-                        <Typography variant='h6'> ( React Apollo App ) </Typography>
+                        { applicationContext.State.claims.username 
+                            ?
+                                <Typography variant='h6'> ( User - {JSON.stringify(applicationContext.State.claims.username)} ) </Typography>
+                            :
+                                <Typography variant='h6'> ( Not Authenticated ) </Typography>}
+                        
                         <Tabs value={menuItem} onChange={handleChange} textColor='inherit' indicatorColor='secondary' variant='scrollable'>
                             { Array.from( menuRouteMap.keys() ).map( (key) =>{
                                     const menu = menuRouteMap.get(key);

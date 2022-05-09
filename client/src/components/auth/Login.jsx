@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Typography, Grid, TextField, Button } from "@mui/material";
 import { makeStyles } from "@material-ui/styles";
 import axios from "axios";
 import { loginReducer, initialLoginState } from "./LoginReducer";
+import { ApplicationContext } from "../App";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -11,6 +12,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 function Login () {
+  const applicationContext = useContext(ApplicationContext);
   const classes = useStyles();
   const [formState, dispatch] = React.useReducer(loginReducer, initialLoginState);
 
@@ -21,22 +23,22 @@ function Login () {
         let response = await axios.post( 'http://localhost:9000/login', formState );
         if (response.status === 200) {
           sessionStorage.setItem('token', response.data.token);
-          alert(`Authentication successful (token: ${JSON.stringify(response.data)})`);
+          // alert(`Authentication successful (token: ${JSON.stringify(response.data)})`);
+          applicationContext.Dispatch({
+            type: "LOGGED_IN",
+            payload: formState.username
+          });
           return;
         }
       } catch(err) {
         sessionStorage.setItem('token', '');
-        alert(`Authentication failed (${err})`);
+        applicationContext.Dispatch({
+          type: "LOGGED_OUT"
+        });
       }
-      
     };
 
     authenticate();
-
-    dispatch({
-      type:"AUTHENTICATE",
-      data: { username: formState.username, password: formState.password }
-    })
   }
 
   function onInputFormData(e){

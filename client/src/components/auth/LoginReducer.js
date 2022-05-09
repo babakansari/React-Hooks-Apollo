@@ -11,10 +11,6 @@ export function loginReducer( state, action ){
                 [action.name]: action.value
             };
         }
-        case "AUTHENTICATE": {
-            console.log(`Authenticate: ${action.data.username}, ${action.data.password}`);
-            return action.data;
-        }
         default:
             return state;
     }
