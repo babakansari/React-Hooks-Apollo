@@ -6,6 +6,9 @@ import * as React from 'react';
 import createRowData, {getData, getColumn, ROW_COUNT} from "./createRowData";
 import {Slider, Grid, TextField } from '@mui/material';
 import { blue } from '@mui/material/colors';
+import {
+  GridCellKind
+} from "@glideapps/glide-data-grid";
 
 const data = createRowData();
 const columns = getColumn();
@@ -38,6 +41,25 @@ function RostersPage() {
     setShowSearch(false)
   }, []);
 
+  const cellsForSelection = (selection) => 
+  {
+    console.log(`selection= ${selection.x}, ${selection.y} `);
+    const result = [];
+    for(const row of data) {
+      result.push(  [
+        {},
+        {},
+        {
+          kind: GridCellKind.Text,
+          allowOverlay: false,
+          displayData: row['county'],
+          data: row['county'],
+        }
+      ]);
+    }
+    return result;
+  }
+
   return (
     <Grid container spacing={5} >
       <Grid container>
@@ -65,7 +87,9 @@ function RostersPage() {
         <DataEditorContainer width={1000} height={600}>
           <DataEditor 
               ref={gridRef} 
-              getCellContent={getContent} columns={cols} rows={data.length} 
+              getCellContent={getContent} 
+              columns={cols} 
+              rows={data.length} 
               freezeColumns={4} 
               getRowThemeOverride={getRowThemeOverride}
               onVisibleRegionChanged={
@@ -84,7 +108,7 @@ function RostersPage() {
               }
 
               showSearch={true} 
-              // getCellsForSelection={true} 
+              getCellsForSelection={ cellsForSelection } 
               onSearchClose={onSearchClose}
               // keybindings={{search: true}} 
           />
