@@ -3,12 +3,9 @@ import {
   DataEditor
 } from "@glideapps/glide-data-grid";
 import * as React from 'react';
-import createRowData, {getData, getColumn, ROW_COUNT} from "./createRowData";
+import createRowData, {getData, getColumn, getSearchData, ROW_COUNT} from "./createRowData";
 import {Slider, Grid, TextField } from '@mui/material';
 import { blue } from '@mui/material/colors';
-import {
-  GridCellKind
-} from "@glideapps/glide-data-grid";
 
 const data = createRowData();
 const columns = getColumn();
@@ -41,24 +38,10 @@ function RostersPage() {
     setShowSearch(false)
   }, []);
 
-  const cellsForSelection = (selection) => 
+  const cellsForSelection = React.useCallback((selection) => 
   {
-    console.log(`selection= ${selection.x}, ${selection.y} `);
-    const result = [];
-    for(const row of data) {
-      result.push(  [
-        {},
-        {},
-        {
-          kind: GridCellKind.Text,
-          allowOverlay: false,
-          displayData: row['county'],
-          data: row['county'],
-        }
-      ]);
-    }
-    return result;
-  }
+    return getSearchData(data);
+  });
 
   return (
     <Grid container spacing={5} >

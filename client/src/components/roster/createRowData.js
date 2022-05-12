@@ -121,6 +121,23 @@ function timeElapse(startTime) {
   return seconds;
 }
 
+export const getSearchData = (data) => {
+  const result = [];
+  for(const row of data) {
+    result.push(  [
+      {},
+      {},
+      {
+        kind: GridCellKind.Text,
+        allowOverlay: false,
+        displayData: row['county'],
+        data: row['county'],
+      }
+    ]);
+  }
+  return result;
+}
+
 export default function createRowData() {
   const startTime = new Date();
   try{
