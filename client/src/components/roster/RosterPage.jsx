@@ -4,7 +4,8 @@ import {
 } from "@glideapps/glide-data-grid";
 import * as React from 'react';
 import createRowData, {getData, getColumn, ROW_COUNT} from "./createRowData";
-import {Slider, Grid} from '@mui/material';
+import {Slider, Grid, TextField } from '@mui/material';
+import { blue } from '@mui/material/colors';
 
 const data = createRowData();
 const columns = getColumn();
@@ -23,8 +24,25 @@ function RostersPage() {
     return `#${value}`;
   }
 
+  const getRowThemeOverride = React.useCallback((row) => {
+      if (row % 2 === 0) {
+          return {
+              bgCell: blue[50]
+          }
+      }
+      return undefined;
+  }, []);
+
+  const [showSearch, setShowSearch] = React.useState(false);
+  const onSearchClose = React.useCallback(() => {
+    setShowSearch(false)
+  }, []);
+
   return (
     <Grid container spacing={5} >
+      <Grid container>
+        <TextField id="standard-basic" label="Search" variant="standard" />
+      </Grid>
       <Grid item>
         <Slider
           ref={sliderRef}
@@ -45,20 +63,30 @@ function RostersPage() {
       </Grid>
       <Grid item>
         <DataEditorContainer width={1000} height={600}>
-          <DataEditor ref={gridRef} getCellContent={getContent} columns={cols} rows={data.length} freezeColumns={4} 
+          <DataEditor 
+              ref={gridRef} 
+              getCellContent={getContent} columns={cols} rows={data.length} 
+              freezeColumns={4} 
+              getRowThemeOverride={getRowThemeOverride}
               onVisibleRegionChanged={
                 (range) =>{
                   // console.log(` y: ${range.y}, slider: ${sliderRef.current}`);
                   setY(range.y);
                 }
               }
+
               onHeaderClicked={(colIndex, event) =>{
-                const newColumns = [...columns];
-                newColumns[0].icon = newColumns[0].icon ? undefined : "headerMarkdown";
-                setCols(newColumns);
-                // log(`Col: ${colIndex}, Ref: ${JSON.stringify(gridRef.current.columns)}`);
+                  const newColumns = [...columns];
+                  newColumns[0].icon = newColumns[0].icon ? undefined : "headerMarkdown";
+                  setCols(newColumns);
+                  // log(`Col: ${colIndex}, Ref: ${JSON.stringify(gridRef.current.columns)}`);
+                }
               }
-            }
+
+              showSearch={true} 
+              // getCellsForSelection={true} 
+              onSearchClose={onSearchClose}
+              // keybindings={{search: true}} 
           />
         </DataEditorContainer>
       </Grid>
