@@ -6,16 +6,18 @@ import * as React from 'react';
 import createRowData, {getData, getColumn, getSearchData, ROW_COUNT} from "./createRowData";
 import {Slider, Grid, TextField } from '@mui/material';
 import { blue } from '@mui/material/colors';
+import * as Lodash from 'lodash';
 
 const data = createRowData();
 const columns = getColumn();
 
 function RostersPage() {
   const [cols, setCols] = React.useState(columns);
+  const [foundRows, setFoundRows] = React.useState([]);
   const [y, setY] = React.useState(0);
   const getContent = React.useCallback((cell) => {
     return getData(data, cell);
-  }, [data]);
+  }, [data, foundRows]);
 
   const gridRef = React.useRef(null);
   const sliderRef = React.useRef(null);
@@ -25,23 +27,48 @@ function RostersPage() {
   }
 
   const getRowThemeOverride = React.useCallback((row) => {
-      if (row % 2 === 0) {
-          return {
-              bgCell: blue[50]
-          }
+      if( foundRows.indexOf(row.toString())>=0 ) {
+        return {
+                  bgCell: blue[50]
+              }
       }
       return undefined;
-  }, []);
+  }, [foundRows]);
 
   const cellsForSelection = React.useCallback((selection) => 
   {
     return getSearchData(data, selection);
   }, [data]);
 
+  
+  function onSearch(e){
+    const value = e.target.value;
+
+    if(value.length<1){
+      setFoundRows([]);
+      return;
+    }
+  
+    const indexes = Lodash.keys(Lodash.pickBy(data, 
+      function(v, k){
+        //if( v.county.startsWith(value) ) {
+        if( v.county.indexOf(value)>=0 ) {
+          return true;
+        }
+      }
+    ));
+
+    setFoundRows(indexes);
+    if(indexes.length>0){
+      gridRef.current.scrollTo(0, indexes[0].toString());
+    }
+
+  }
+
   return (
     <Grid container spacing={5} >
       <Grid container>
-        <TextField id="standard-basic" label="Search" variant="standard" />
+        <TextField id="search" label="Search" variant="standard" onChange={ onSearch }/>
       </Grid>
       <Grid item>
         <Slider
@@ -72,7 +99,6 @@ function RostersPage() {
               getRowThemeOverride={getRowThemeOverride}
               onVisibleRegionChanged={
                 (range) =>{
-                  // console.log(` y: ${range.y}, slider: ${sliderRef.current}`);
                   setY(range.y);
                 }
               }
