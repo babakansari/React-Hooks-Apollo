@@ -14,6 +14,8 @@ const columns = getColumn();
 function RostersPage() {
   const [cols, setCols] = React.useState(columns);
   const [foundRows, setFoundRows] = React.useState([]);
+  const [totalFound, setTotalFound] = React.useState();
+
   const [y, setY] = React.useState(0);
   const getContent = React.useCallback((cell) => {
     return getData(data, cell);
@@ -42,25 +44,30 @@ function RostersPage() {
 
   
   function onSearch(e){
-    const value = e.target.value;
+    const value = e.target.value.toUpperCase();
 
     if(value.length<1){
       setFoundRows([]);
+      setTotalFound();
       return;
     }
   
     const indexes = Lodash.keys(Lodash.pickBy(data, 
       function(v, k){
         //if( v.county.startsWith(value) ) {
-        if( v.county.indexOf(value)>=0 ) {
+        if( v.county.toUpperCase().indexOf(value)>=0 ) {
           return true;
         }
       }
     ));
 
     setFoundRows(indexes);
-    if(indexes.length>0){
+    const matches = indexes.length;
+    if(matches>0){
       gridRef.current.scrollTo(0, indexes[0].toString());
+      setTotalFound((matches==1) ? `${matches} match` : `${matches} matches`);
+    } else {
+      setTotalFound();
     }
 
   }
@@ -68,7 +75,7 @@ function RostersPage() {
   return (
     <Grid container spacing={5} >
       <Grid container>
-        <TextField id="search" label="Search" variant="standard" onChange={ onSearch }/>
+        <TextField id="search" label="Search county" variant="standard" helperText={ totalFound } onChange={ onSearch }/>
       </Grid>
       <Grid item>
         <Slider
