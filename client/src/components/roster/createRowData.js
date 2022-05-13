@@ -10,7 +10,7 @@ const COLUMN_WIDTH = 100;
 const columns = [
   { title: "id",          id: "id",          width: 50 },
   { title: "avartar",     id: "avartar",     width: 200 },
-  { title: "county",      id: "county",      width: 150 },
+  { title: "county",      id: "county",      width: 250 },
   { title: "email",       id: "email",       width: COLUMN_WIDTH },
   { title: "title",       id: "title",       width: COLUMN_WIDTH },
   { title: "firstName",   id: "firstName",   width: COLUMN_WIDTH },
@@ -121,19 +121,21 @@ function timeElapse(startTime) {
   return seconds;
 }
 
-export const getSearchData = (data) => {
+export const getSearchData = (data, selection) => {
   const result = [];
-  for(const row of data) {
-    result.push(  [
-      {},
-      {},
-      {
-        kind: GridCellKind.Text,
-        allowOverlay: false,
-        displayData: row['county'],
-        data: row['county'],
-      }
-    ]);
+  for (let y = selection.y; y < selection.y + selection.height; y++) {
+      const row = data[y];
+      result.push(  [
+        {},
+        {},
+        {
+          kind: GridCellKind.Text,
+          allowOverlay: false,
+          displayData: row['county'],
+          data: row['county'],
+        }
+      ]);
+
   }
   return result;
 }

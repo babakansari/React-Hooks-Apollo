@@ -15,7 +15,7 @@ function RostersPage() {
   const [y, setY] = React.useState(0);
   const getContent = React.useCallback((cell) => {
     return getData(data, cell);
-  }, []);
+  }, [data]);
 
   const gridRef = React.useRef(null);
   const sliderRef = React.useRef(null);
@@ -33,15 +33,10 @@ function RostersPage() {
       return undefined;
   }, []);
 
-  const [showSearch, setShowSearch] = React.useState(false);
-  const onSearchClose = React.useCallback(() => {
-    setShowSearch(false)
-  }, []);
-
   const cellsForSelection = React.useCallback((selection) => 
   {
-    return getSearchData(data);
-  });
+    return getSearchData(data, selection);
+  }, [data]);
 
   return (
     <Grid container spacing={5} >
@@ -92,8 +87,6 @@ function RostersPage() {
 
               showSearch={true} 
               getCellsForSelection={ cellsForSelection } 
-              onSearchClose={onSearchClose}
-              // keybindings={{search: true}} 
           />
         </DataEditorContainer>
       </Grid>
