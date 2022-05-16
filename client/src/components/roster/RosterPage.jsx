@@ -7,9 +7,14 @@ import { Typography, Grid, TextField } from "@mui/material";
 import { rosteringQuery } from './RosteringQueries';
 import { useQuery } from '@apollo/react-hooks';
 import { AppContext } from "../context/AppContext";
+import { blue } from '@mui/material/colors';
+import * as Lodash from 'lodash';
 
 function RostersPage () {
   const appContext = React.useContext(AppContext);
+  const [foundRows, setFoundRows] = React.useState([]);
+  const [totalFound, setTotalFound] = React.useState();
+  const gridRef = React.useRef(null);
 
   if(!appContext.State.claims.username){
     return (<div>
@@ -23,7 +28,47 @@ function RostersPage () {
   
   const getContent = React.useCallback((cell) => {
     return getData(cell);
-  }, [data]);
+  }, [data, foundRows]);
+
+  const getRowThemeOverride = React.useCallback((row) => {
+    if( foundRows.indexOf(row.toString())>=0 ) {
+      return {
+                bgCell: blue[50]
+            }
+    }
+    return undefined;
+  }, [foundRows]);
+
+  function onSearch(e){
+    const value = e.target.value.toUpperCase();
+
+    if(value.length<1){
+      setFoundRows([]);
+      setTotalFound();
+      return;
+    }
+  
+    const found = Lodash.pickBy(data.rostering, 
+      function(v, k){
+        //if( v.name && v.name.startsWith(value) ) {
+        if( v.name && v.name.toUpperCase().indexOf(value)>=0 ) {
+          return true;
+        }
+      }
+    );
+    
+    const indexes = Lodash.keys(found);
+
+    setFoundRows(indexes);
+    const matches = indexes.length;
+    if(matches>0){
+      gridRef.current.scrollTo(0, indexes[0]);
+      setTotalFound((matches===1) ? `${matches} match` : `${matches} matches`);
+    } else {
+      setTotalFound();
+    }
+
+  }
 
   if(error){
     return (<div>
@@ -45,7 +90,6 @@ function RostersPage () {
 
   function getData([col, row]) {
     const rostering = data.rostering;
-    console.dir(rostering);
     const dataRow = rostering[row];
     const cell = dataRow[columns[col].title];
 
@@ -60,16 +104,17 @@ function RostersPage () {
   return (
     <Grid container spacing={5} >
       <Grid item >
-        <TextField id="search" label="Search county" variant="standard" />
+        <TextField id="search" label="Search name" variant="standard" helperText={ totalFound } onChange={ onSearch }/>
       </Grid>
       <Grid item>
 
           {<DataEditor 
               width={1000} 
-              
+              ref={gridRef} 
               getCellContent={getContent} 
               columns={columns} 
               rows={data.rostering.length}
+              getRowThemeOverride={getRowThemeOverride}
           />}
 
       </Grid>
