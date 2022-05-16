@@ -1,5 +1,9 @@
 import React from "react";
-import { Typography } from "@mui/material";
+import {
+  DataEditor,
+  GridCellKind
+} from "@glideapps/glide-data-grid";
+import { Typography, Grid, TextField } from "@mui/material";
 import { rosteringQuery } from './RosteringQueries';
 import { useQuery } from '@apollo/react-hooks';
 import { AppContext } from "../context/AppContext";
@@ -16,6 +20,10 @@ function RostersPage () {
   const {loading, error, data} = useQuery(rosteringQuery, {
     fetchPolicy: 'no-cache' 
   });
+  
+  const getContent = React.useCallback((cell) => {
+    return getData(cell);
+  }, [data]);
 
   if(error){
     return (<div>
@@ -29,28 +37,43 @@ function RostersPage () {
     </div>);
   }
 
-  return  (
-    <div>
-      <div>
-        <Typography variant="h2">Rostering</Typography>
-      </div>
-      <div>
-        <Typography >bearer {sessionStorage.getItem('token')}</Typography>
-      </div>
-      <ul >
-        {data.rostering.map(
-          (crew) => {
-            return (
-              <li key={crew.id}>
-                <div>
-                  <Typography key={crew.id}>{crew.name}</Typography>
-                </div>
-              </li>
-            );
-          }
-        )}
-      </ul>
-    </div>
+  const columns = [
+    { title: "id", width: 100 },
+    { title: "name", width: 100 },
+    { title: "rank", width: 500 },
+  ];
+
+  function getData([col, row]) {
+    const rostering = data.rostering;
+    console.dir(rostering);
+    const dataRow = rostering[row];
+    const cell = dataRow[columns[col].title];
+
+    return {
+        kind: GridCellKind.Text,
+        allowOverlay: false,
+        displayData: JSON.stringify(cell),
+        data: cell,
+    };
+  }
+
+  return (
+    <Grid container spacing={5} >
+      <Grid item >
+        <TextField id="search" label="Search county" variant="standard" />
+      </Grid>
+      <Grid item>
+
+          {<DataEditor 
+              width={1000} 
+              
+              getCellContent={getContent} 
+              columns={columns} 
+              rows={data.rostering.length}
+          />}
+
+      </Grid>
+    </Grid>
   );
 }
 
