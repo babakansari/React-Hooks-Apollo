@@ -1,7 +1,7 @@
 import { ApolloClient, ApolloLink, HttpLink, InMemoryCache } from 'apollo-boost';
 import { setContext } from '@apollo/client/link/context';
 
-const endpointURL = "http://localhost:9000/graphql";
+const endpointURL = process.env.REACT_APP_APOLLO_SERVER_URL;
 
 const authLink = setContext((_, { headers }) => {
     // get the authentication token from local storage if it exists
