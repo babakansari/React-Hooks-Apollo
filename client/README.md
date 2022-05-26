@@ -1,6 +1,15 @@
 # Sample React client App
 
-This is a sample react client app using Apollo client
+This is a sample React app using Apollo client to work with an Apollo Server.
+
+Setup Okta:
+- Create or use an Okta account (e.g. Use google account to login to okta [developer](hrrps://developer.okta.com) ). 
+- Create an Okta application:
+  - Sign-in redirect URIs: `http://localhost:3000/callback`
+  - Sign-out redirect URIs: `http://localhost:3000`
+  - Save Client ID (`REACT_APP_OKTA_CLIENTID`) and Domain (`REACT_APP_OKTA_DOMAIN`) in the `.env` file.
+  - [Grant cross-origin access](https://developer.okta.com/docs/guides/enable-cors/main/#grant-cross-origin-access-to-websites) to websites 
+    - Add your website ([localhost](http://localhost:3000)) to the trusted origins in API security for CORS access
 
 ## Available Scripts
 

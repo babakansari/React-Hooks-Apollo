@@ -11,7 +11,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-function Login () {
+function BasicLogin () {
   const appContext = useContext(AppContext);
   const classes = useStyles();
   const [formState, dispatch] = React.useReducer(loginReducer, initialLoginState);
@@ -52,7 +52,7 @@ function Login () {
     <Grid>
       <Grid item >
         <Grid item className={classes.root}>
-          <Typography variant="h2">Authentication</Typography>
+          <Typography variant="h2">Basic Authentication</Typography>
         </Grid>
         <Grid item className={classes.root}>
           <TextField label="User name" name="username" value={formState.username} onChange={ onInputFormData }/>
@@ -68,4 +68,4 @@ function Login () {
   );
 }
 
-export default Login;
+export default BasicLogin;

@@ -2,7 +2,8 @@ const menuRouteMap = new Map([
     ['/', { index: 0, label: 'Home'}],
     ['/roster/RosterPage', { index: 1, label: 'Roster'}],
     ['/roster/CrewPage', { index: 2, label: 'Crew'}],
-    ['/auth/Login', { index: 3, label: 'Login'}],
+    ['/auth/BasicLogin', { index: 3, label: 'BasicLogin'}],
+    ['/auth/OktaLogin', { index: 4, label: 'OktaLogin'}],
   ]);
 
 export const getKeyByLabel = (map, label) => {
