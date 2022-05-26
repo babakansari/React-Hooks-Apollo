@@ -10,6 +10,8 @@ Setup Okta:
   - Save Client ID (`REACT_APP_OKTA_CLIENTID`) and Domain (`REACT_APP_OKTA_DOMAIN`) in the `.env` file.
   - [Grant cross-origin access](https://developer.okta.com/docs/guides/enable-cors/main/#grant-cross-origin-access-to-websites) to websites 
     - Add your website ([localhost](http://localhost:3000)) to the trusted origins in API security for CORS access
+  - Create or use an Okta user to login to the app
+    - Use the provided hint for Basic Login password
 
 ## Available Scripts
 

@@ -58,7 +58,7 @@ function BasicLogin () {
           <TextField label="User name" name="username" value={formState.username} onChange={ onInputFormData }/>
         </Grid>
         <Grid item className={classes.root}>
-          <TextField label="Password" name="password" type="password" value={formState.password} onChange={ onInputFormData }/>
+          <TextField label="Password" name="password" type="password" value={formState.password} onChange={ onInputFormData } placeholder="bob"/>
         </Grid>
         <Grid item className={classes.root}>
           <Button variant="contained" onClick={onLogin}>Login</Button>
