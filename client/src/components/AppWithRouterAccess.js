@@ -9,7 +9,7 @@ import RostersPage from './roster/RosterPage';
 import CrewPage from './roster/CrewPage';
 import BasicLogin from './auth/BasicLogin';
 import OktaLogin from './auth/OktaLogin';
-import menuRouteMap, {getKeyByLabel} from './common/MenuMap';
+import { getPathByLabel } from './common/MenuMap';
 
 const AppWithRouterAccess = () => {
   const history = useNavigate();
@@ -34,11 +34,11 @@ const AppWithRouterAccess = () => {
         <Header/>
         <Security oktaAuth={oktaAuth} restoreOriginalUri={restoreOriginalUri}>
         <Routes>
-            <Route path={getKeyByLabel(menuRouteMap, 'Home')} element={<HomePage/>} />
-            <Route path={getKeyByLabel(menuRouteMap, 'Roster')} element={<RostersPage/>} />
-            <Route path={getKeyByLabel(menuRouteMap, 'Crew')} element={<CrewPage/>} />
-            <Route path={getKeyByLabel(menuRouteMap, 'BasicLogin')} element={<BasicLogin/>} />
-            <Route path={getKeyByLabel(menuRouteMap, 'OktaLogin')} element={<OktaLogin/>} />
+            <Route path={getPathByLabel('Home')} element={<HomePage/>} />
+            <Route path={getPathByLabel('Roster')} element={<RostersPage/>} />
+            <Route path={getPathByLabel('Crew')} element={<CrewPage/>} />
+            <Route path={getPathByLabel('BasicLogin')} element={<BasicLogin/>} />
+            <Route path={getPathByLabel('OktaLogin')} element={<OktaLogin/>} />
             <Route path='/auth/callback' component={LoginCallback} />
         </Routes>
         </Security>

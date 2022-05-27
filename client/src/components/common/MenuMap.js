@@ -6,12 +6,18 @@ const menuRouteMap = new Map([
     ['/auth/OktaLogin', { index: 4, label: 'OktaLogin'}],
   ]);
 
-export const getKeyByLabel = (map, label) => {
-  for (let [key, value] of map.entries()) {
+export const getPathByLabel = (label) => {
+  for (let [key, value] of menuRouteMap.entries()) {
     if (value.label === label) {
       return key;
     }
   }
 }
 
-export default menuRouteMap;
+export const getIndexByPath = (path) => {
+  return menuRouteMap.get(path);
+}
+
+export const getPaths = () => {
+  return menuRouteMap.keys();
+}

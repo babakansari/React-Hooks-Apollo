@@ -2,7 +2,7 @@ import * as React from 'react';
 import { AppBar, Container, Typography, Tabs, Tab, Toolbar } from "@mui/material";
 import { makeStyles } from "@material-ui/styles"
 import { Link as RouterLink } from 'react-router-dom';
-import menuRouteMap from './MenuMap'
+import { getIndexByPath, getPaths } from './MenuMap';
 import { AppContext } from "../context/AppContext";
 
 const useStyles = makeStyles( t=>({
@@ -16,16 +16,16 @@ const Header = () => {
 
     const handleChange = (event, value) => {
         appContext.Dispatch({
-            type: "NAVIGATE",
+            type: 'NAVIGATE',
             payload: value
           });
     };
 
     React.useEffect( ()=>{
-        const currentMenuItem = menuRouteMap.get(window.location.pathname);
+        const currentMenuItem = getIndexByPath(window.location.pathname);
         if( currentMenuItem && currentMenuItem.index !== menuIndex ){
             appContext.Dispatch({
-                type: "NAVIGATE",
+                type: 'NAVIGATE',
                 payload: currentMenuItem.index
               });
         }
@@ -43,8 +43,8 @@ const Header = () => {
                                 <Typography variant='h6'> ( Not Authenticated ) </Typography> }
                         
                         <Tabs value={menuIndex} onChange={handleChange} textColor='inherit' indicatorColor='secondary' variant='scrollable'>
-                            { Array.from( menuRouteMap.keys() ).map( (key) =>{
-                                    const menu = menuRouteMap.get(key);
+                            { Array.from( getPaths() ).map( (key) =>{
+                                    const menu = getIndexByPath(key);
                                     return (
                                         <Tab key={menu.index} label={menu.label} LinkComponent={RouterLink} to={key}/>
                                     );
