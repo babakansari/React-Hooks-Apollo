@@ -20,7 +20,7 @@ const AppWithRouterAccess = () => {
   const oktaAuth = new OktaAuth({
     issuer: process.env.REACT_APP_OKTA_DOMAIN+'/oauth2/default',
     clientId: process.env.REACT_APP_OKTA_CLIENTID,
-    redirectUri: window.location.origin + '/callback',
+    redirectUri: window.location.origin + '/auth/OktaLogin',
     onAuthRequired: onAuthRequired,
     pkce: true
   });
@@ -39,6 +39,7 @@ const AppWithRouterAccess = () => {
             <Route path={getKeyByLabel(menuRouteMap, 'Crew')} element={<CrewPage/>} />
             <Route path={getKeyByLabel(menuRouteMap, 'BasicLogin')} element={<BasicLogin/>} />
             <Route path={getKeyByLabel(menuRouteMap, 'OktaLogin')} element={<OktaLogin/>} />
+            <Route path='/auth/callback' component={LoginCallback} />
         </Routes>
         </Security>
     </Container>

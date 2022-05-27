@@ -1,6 +1,6 @@
 export const initialLoginState = {
         username: "babakansari@hotmail.com",
-        password: null
+        password: ""
     };
 
 export function loginReducer( state, action ){

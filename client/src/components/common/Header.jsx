@@ -20,7 +20,7 @@ const Header = () => {
 
     React.useEffect( ()=>{
         const currentMenuItem = menuRouteMap.get(window.location.pathname);
-        if( currentMenuItem.index !== menuItem ){
+        if( currentMenuItem && currentMenuItem.index !== menuItem ){
             setMenuItem( currentMenuItem.index );
         }
     }, [menuItem] );
