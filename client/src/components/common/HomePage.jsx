@@ -1,9 +1,8 @@
-import React, { useContext } from "react";
-import { useNavigate } from 'react-router-dom';
+import React from "react";
 import { useOktaAuth } from '@okta/okta-react';
 import { makeStyles } from "@material-ui/styles";
 import { Typography, Grid, Button } from "@mui/material";
-import { AppContext } from "../context/AppContext";
+import useMenu from './MenuManager';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -12,18 +11,9 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const HomePage = () => {
-  const appContext = useContext(AppContext);
   const classes = useStyles();
   const { authState, oktaAuth } = useOktaAuth();
-  const navigate = useNavigate();
-
-  function navigateToMenu(menuIndex){
-    navigate('/auth/OktaLogin');
-    appContext.Dispatch({
-      type: 'NAVIGATE',
-      payload: menuIndex
-    });
-  }
+  const { navigateTo } = useMenu();
 
   if (!authState) {
     return <div>Loading...</div>;
@@ -31,7 +21,7 @@ const HomePage = () => {
 
   const button = authState.isAuthenticated ?
     <Button onClick={() => {oktaAuth.signOut()}} variant="contained">Logout</Button> :
-    <Button onClick={() => {navigateToMenu(4)}} variant="contained">Login</Button>;
+    <Button onClick={() => {navigateTo(4)}} variant="contained">Login</Button>;
 
   return (
     <Grid>

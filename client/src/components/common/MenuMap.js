@@ -14,6 +14,14 @@ export const getPathByLabel = (label) => {
   }
 }
 
+export const getPathByIndex = (index) => {
+  for (let [key, value] of menuRouteMap.entries()) {
+    if (value.index === index) {
+      return key;
+    }
+  }
+}
+
 export const getIndexByPath = (path) => {
   return menuRouteMap.get(path);
 }
