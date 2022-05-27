@@ -16,7 +16,7 @@ function RostersPage () {
   const [totalFound, setTotalFound] = React.useState();
   const gridRef = React.useRef(null);
 
-  if(!appContext.State.claims.username){
+  if(!appContext.State.username){
     return (<div>
       <Typography variant="h2">Requires Authentication...</Typography>
     </div>);

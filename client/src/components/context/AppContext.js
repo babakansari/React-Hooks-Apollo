@@ -1,11 +1,8 @@
 import React, { useReducer } from 'react';
 import AppContextReducer from './AppContextReducer';
+import AppState from './AppState';
 
-const initialState = { 
-    claims: { 
-      username: null
-    } 
-}
+const initialState = new AppState(null, 0);
 
 export const AppContext = React.createContext();
 

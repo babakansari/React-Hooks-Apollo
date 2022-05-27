@@ -1,21 +1,22 @@
+import AppState from './AppState';
+
 const AppContextReducer = (state, action) => {
+    const newState = new AppState(state.username, state.menuIndex);
+
     switch(action.type) {
         case 'LOGGED_IN':
-            return { 
-                claims: { 
-                    username: action.payload 
-                } 
-            };
+            newState.username = action.payload;
+            break;
         case 'LOGGED_OUT':
-            return { 
-                claims: { 
-                    username: null
-                } 
-            };
+            newState.username = null;
+            break;
+        case 'NAVIGATE':
+            newState.menuIndex = action.payload;
+            break;
         default:
-        return state;
-
+            break;
     }
+    return newState;
 }
 
 export default AppContextReducer;

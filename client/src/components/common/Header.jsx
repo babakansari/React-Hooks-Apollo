@@ -12,31 +12,37 @@ const useStyles = makeStyles( t=>({
 const Header = () => {
     const appContext = React.useContext(AppContext);
     const classes = useStyles();
-    const [menuItem, setMenuItem]= React.useState(0);
-    
+    const menuIndex = appContext.State.menuIndex ? appContext.State.menuIndex : 0;
+
     const handleChange = (event, value) => {
-        setMenuItem( value );
+        appContext.Dispatch({
+            type: "NAVIGATE",
+            payload: value
+          });
     };
 
     React.useEffect( ()=>{
         const currentMenuItem = menuRouteMap.get(window.location.pathname);
-        if( currentMenuItem && currentMenuItem.index !== menuItem ){
-            setMenuItem( currentMenuItem.index );
+        if( currentMenuItem && currentMenuItem.index !== menuIndex ){
+            appContext.Dispatch({
+                type: "NAVIGATE",
+                payload: currentMenuItem.index
+              });
         }
-    }, [menuItem] );
+    }, [menuIndex] );
 
     return ( 
         <div>
             <AppBar>
                 <Container maxWidth="x3">
                     <Toolbar>
-                        { appContext.State.claims.username 
-                            ?
-                                <Typography variant='h6'> ( User - {JSON.stringify(appContext.State.claims.username)} ) </Typography>
+                        { 
+                            appContext.State.username ?
+                                <Typography variant='h6'> ( User - {JSON.stringify(appContext.State.username)} ) </Typography>
                             :
                                 <Typography variant='h6'> ( Not Authenticated ) </Typography> }
                         
-                        <Tabs value={menuItem} onChange={handleChange} textColor='inherit' indicatorColor='secondary' variant='scrollable'>
+                        <Tabs value={menuIndex} onChange={handleChange} textColor='inherit' indicatorColor='secondary' variant='scrollable'>
                             { Array.from( menuRouteMap.keys() ).map( (key) =>{
                                     const menu = menuRouteMap.get(key);
                                     return (
