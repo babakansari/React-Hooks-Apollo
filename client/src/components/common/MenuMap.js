@@ -22,7 +22,7 @@ export const getPathByIndex = (index) => {
   }
 }
 
-export const getIndexByPath = (path) => {
+export const getRouteByPath = (path) => {
   return menuRouteMap.get(path);
 }
 
