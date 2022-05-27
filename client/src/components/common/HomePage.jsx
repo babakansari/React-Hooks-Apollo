@@ -18,7 +18,7 @@ const HomePage = () => {
   if (!authState) {
     return <div>Loading...</div>;
   }
-
+  
   const button = authState.isAuthenticated ?
     <Grid item className={classes.root}>
       <Button onClick={() => {oktaAuth.signOut()}} variant="contained">Logout</Button> 

@@ -1,14 +1,14 @@
 import { useContext } from "react";
-import { useNavigate } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import { AppContext } from "../context/AppContext";
 import { getPathByIndex, getPathByLabel, getRouteByPath } from './MenuMap';
 
 const useMenu = () => {
-    const navigate = useNavigate();
+    const navigate = useHistory();
     const appContext = useContext(AppContext);
     return {
       navigateToIndex: (menuIndex) => {
-        navigate(getPathByIndex(menuIndex));
+        navigate.push(getPathByIndex(menuIndex));
         appContext.Dispatch({
           type: 'NAVIGATE',
           payload: menuIndex
@@ -18,8 +18,8 @@ const useMenu = () => {
       navigateToLabel: (label) => {
         const path = getPathByLabel(label);
         const route = getRouteByPath(path);
-        console.log(`path: ${path}, index: ${JSON.stringify(route)}`);
-        navigate(path);
+
+        navigate.push(path);
         appContext.Dispatch({
           type: 'NAVIGATE',
           payload: route.index
