@@ -16,8 +16,7 @@ const Oktalogin = () => {
   const classes = useStyles();
   const [formState, dispatch] = React.useReducer(loginReducer, initialLoginState);
   const [authenticationFailed, setAuthenticationFailed] = React.useState(false);
-  
-
+  const isAuthenticated = authState && authState.isAuthenticated;
   const handleClose = (event, reason) => {
     if (reason === 'clickaway') {
       return;
@@ -56,8 +55,7 @@ const Oktalogin = () => {
       value: e.target.value
     });
   }
-  
-  const loginForm = (authState && authState.isAuthenticated) ? 
+  const loginForm = (isAuthenticated) ? 
                     <div>
                       <Grid item className={classes.root}>
                         <Button variant="contained" onClick={onLogout}>Logout</Button>
