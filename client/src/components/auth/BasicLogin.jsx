@@ -3,8 +3,7 @@ import { Typography, Grid, TextField, Button } from "@mui/material";
 import { makeStyles } from "@material-ui/styles";
 import axios from "axios";
 import { loginReducer, initialLoginState } from "./LoginReducer";
-import { AppContext } from "../context/AppContext";
-import useCookies from "./CookieManager";
+import useSession from "./SessionManager";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -13,10 +12,9 @@ const useStyles = makeStyles(theme => ({
 }));
 
 function BasicLogin () {
-  const appContext = React.useContext(AppContext);
   const classes = useStyles();
   const [formState, dispatch] = React.useReducer(loginReducer, initialLoginState);
-  const cookies = useCookies('user-session-object');
+  const session = useSession();
 
   function onLogin(){
 
@@ -24,20 +22,15 @@ function BasicLogin () {
       try {
         let response = await axios.post( 'http://localhost:9000/login', formState );
         if (response.status === 200) {
-          cookies.set({
+          session.create({
             token: response.data.token,
             username: formState.username
           });
-          appContext.Dispatch({
-            type: "LOGGED_IN"
-          });
+          
           return;
         }
       } catch(err) {
-        cookies.remove();
-        appContext.Dispatch({
-          type: "LOGGED_OUT"
-        });
+        session.clear();
       }
     };
 

@@ -8,16 +8,15 @@ import { rosteringQuery } from './RosteringQueries';
 import { useQuery } from '@apollo/react-hooks';
 import { blue } from '@mui/material/colors';
 import * as Lodash from 'lodash';
-import useCookies from "../auth/CookieManager";
+import useSession from "../auth/SessionManager";
 
 function RostersPage () {
-  const cookies = useCookies('user-session-object');
+  const session = useSession();
   const [foundRows, setFoundRows] = React.useState([]);
   const [totalFound, setTotalFound] = React.useState();
   const gridRef = React.useRef(null);
-  const isAuthenticated = cookies && cookies.get();
 
-  if(!isAuthenticated) {
+  if(!session.isAuthenticated()) {
     return (<div>
       <Typography variant="h2">Requires Authentication...</Typography>
     </div>);

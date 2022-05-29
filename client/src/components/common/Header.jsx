@@ -4,7 +4,7 @@ import { makeStyles } from "@material-ui/styles"
 import { Link as RouterLink } from 'react-router-dom';
 import { getRouteByPath, getPaths } from './MenuMap';
 import { AppContext } from "../context/AppContext";
-import useCookies from "../auth/CookieManager";
+import useSession from "../auth/SessionManager";
 
 const useStyles = makeStyles( t=>({
     toolbar: t.mixins.toolbar
@@ -12,10 +12,9 @@ const useStyles = makeStyles( t=>({
 
 const Header = () => {
     const appContext = React.useContext(AppContext);
-    const cookie = useCookies('user-session-object');
     const classes = useStyles();
     const menuIndex = appContext.State.menuIndex ? appContext.State.menuIndex : 0;
-    const isAuthenticated = appContext.State.authenticated || (cookie && cookie.get());
+    const session = useSession();
     
     const handleChange = (event, value) => {
         appContext.Dispatch({
@@ -40,9 +39,8 @@ const Header = () => {
                 <Container maxWidth="x3">
                     <Toolbar>
                         { 
-                            // cookie && cookie.get()?
-                            isAuthenticated ?
-                                <Typography variant='h6'> ( User - {JSON.stringify(cookie.get().username)} ) </Typography>
+                            session.isAuthenticated() ?
+                                <Typography variant='h6'> ( User - {session.username} ) </Typography>
                             :
                                 <Typography variant='h6'> ( Not Authenticated ) </Typography> }
                         
