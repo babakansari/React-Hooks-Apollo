@@ -31,8 +31,8 @@ const AppWithRouterAccess = () => {
 
   return (
     <Container>
-        <Header/>
-        <Security oktaAuth={oktaAuth} restoreOriginalUri={restoreOriginalUri}>
+      <Security oktaAuth={oktaAuth} restoreOriginalUri={restoreOriginalUri}>
+          <Header/>
           <Route path={getPathByLabel('Home')} component={HomePage} exact={true} />
           <Route path={getPathByLabel('Roster')} component={RostersPage} />
           <Route path={getPathByLabel('Crew')} component={CrewPage} />

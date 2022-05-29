@@ -3,6 +3,7 @@ import { useOktaAuth } from '@okta/okta-react';
 import { makeStyles } from "@material-ui/styles";
 import { Typography, Grid, Button } from "@mui/material";
 import useMenu from './MenuManager';
+import useSession from "../auth/SessionManager";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -14,20 +15,19 @@ const HomePage = () => {
   const classes = useStyles();
   const { authState, oktaAuth } = useOktaAuth();
   const { navigateToLabel } = useMenu();
+  const session = useSession(); 
 
   if (!authState) {
     return <div>Loading...</div>;
   }
-  
-  const button = authState.isAuthenticated ?
-    <Grid item className={classes.root}>
-      <Button onClick={() => {oktaAuth.signOut()}} variant="contained">Logout</Button> 
-    </Grid>:
-    <Grid item className={classes.root}>
-      <Button onClick={() => {navigateToLabel('BasicLogin')}} variant="contained">Basic Login</Button>-
-      <Button onClick={() => {navigateToLabel('OktaLogin')}} variant="contained">Okta Login</Button>
-    </Grid>;
 
+  const oktaButton = authState.isAuthenticated ?
+                      <Button onClick={() => {oktaAuth.signOut()}} variant="contained">Okta Logout</Button> :
+                      <Button onClick={() => {navigateToLabel('OktaLogin')}} variant="contained">Okta Login</Button>;
+
+  const basicButton = session.isAuthenticated() ?
+                      <Button onClick={() => {session.clear()}} variant="contained">Basic Logout</Button> :
+                      <Button onClick={() => {navigateToLabel('BasicLogin')}} variant="contained">Basic Login</Button>;
   return (
     <Grid>
       <Grid item >
@@ -38,7 +38,7 @@ const HomePage = () => {
           <Typography variant="caption">Sample SPA Web application using React, Material UI and Apollo</Typography>
         </Grid>
         <Grid item className={classes.root}>
-          {button}
+          {oktaButton}-{basicButton}
         </Grid>
       </Grid>
     </Grid>

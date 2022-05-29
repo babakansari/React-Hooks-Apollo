@@ -5,6 +5,7 @@ import { Link as RouterLink } from 'react-router-dom';
 import { getRouteByPath, getPaths } from './MenuMap';
 import { getAppContext } from "../context/AppContext";
 import useSession from "../auth/SessionManager";
+import { useOktaAuth } from '@okta/okta-react';
 
 const useStyles = makeStyles( t=>({
     toolbar: t.mixins.toolbar
@@ -15,6 +16,9 @@ const Header = () => {
     const classes = useStyles();
     const menuIndex = appContext.State.menuIndex ? appContext.State.menuIndex : 0;
     const session = useSession();
+    const { authState, oktaAuth } = useOktaAuth();
+    const isAuthenticated = session.isAuthenticated() || (authState && authState.isAuthenticated);
+    const username = session.isAuthenticated() ? session.username : (authState && authState.isAuthenticated ? "okta username" : null);
     
     const handleChange = (event, value) => {
         appContext.Dispatch({
@@ -39,8 +43,8 @@ const Header = () => {
                 <Container maxWidth="x3">
                     <Toolbar>
                         { 
-                            session.isAuthenticated() ?
-                                <Typography variant='h6'> ( User - {session.username} ) </Typography>
+                            isAuthenticated ?
+                                <Typography variant='h6'> ( User - {username} ) </Typography>
                             :
                                 <Typography variant='h6'> ( Not Authenticated ) </Typography> }
                         
