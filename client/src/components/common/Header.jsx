@@ -16,7 +16,7 @@ const Header = () => {
     const classes = useStyles();
     const menuIndex = appContext.State.menuIndex ? appContext.State.menuIndex : 0;
     const session = useSession();
-    const { authState, oktaAuth } = useOktaAuth();
+    const { authState } = useOktaAuth();
     const isAuthenticated = session.isAuthenticated() || (authState && authState.isAuthenticated);
     const username = session.isAuthenticated() ? session.username : (authState && authState.isAuthenticated ? "okta username" : null);
     

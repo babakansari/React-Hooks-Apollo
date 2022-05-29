@@ -8,7 +8,7 @@ const useSession = () => {
     
     return {
         ...userSessionCookie,
-        create: (session) => {
+        signIn: (session) => {
             cookies.set(session, 1);
             if(appContext) {
                 appContext.Dispatch({
@@ -17,7 +17,7 @@ const useSession = () => {
             }
         },
 
-        clear: () => {
+        signOut: () => {
             cookies.remove();
             if(appContext) {
                 appContext.Dispatch({

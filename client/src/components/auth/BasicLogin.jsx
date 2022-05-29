@@ -22,7 +22,7 @@ function BasicLogin () {
       try {
         let response = await axios.post( 'http://localhost:9000/login', formState );
         if (response.status === 200) {
-          session.create({
+          session.signIn({
             token: response.data.token,
             username: formState.username
           });
@@ -30,7 +30,7 @@ function BasicLogin () {
           return;
         }
       } catch(err) {
-        session.clear();
+        session.signOut();
       }
     };
 

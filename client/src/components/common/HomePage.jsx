@@ -26,7 +26,7 @@ const HomePage = () => {
                       <Button onClick={() => {navigateToLabel('OktaLogin')}} variant="contained">Okta Login</Button>;
 
   const basicButton = session.isAuthenticated() ?
-                      <Button onClick={() => {session.clear()}} variant="contained">Basic Logout</Button> :
+                      <Button onClick={() => {session.signOut()}} variant="contained">Basic Logout</Button> :
                       <Button onClick={() => {navigateToLabel('BasicLogin')}} variant="contained">Basic Login</Button>;
   return (
     <Grid>
