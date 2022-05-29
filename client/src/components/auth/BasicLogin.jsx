@@ -29,8 +29,7 @@ function BasicLogin () {
             username: formState.username
           });
           appContext.Dispatch({
-            type: "LOGGED_IN",
-            payload: formState.username
+            type: "LOGGED_IN"
           });
           return;
         }
