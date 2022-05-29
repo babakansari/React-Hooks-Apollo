@@ -72,7 +72,7 @@ function RostersPage () {
 
   if(error){
     return (<div>
-      <Typography variant="h2">Rostering (Error loading page...)</Typography>
+      <Typography variant="h2">Rostering (Error loading page...{error})</Typography>
     </div>);
   }
 

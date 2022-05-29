@@ -7,12 +7,12 @@ const endpointURL = process.env.REACT_APP_APOLLO_SERVER_URL;
 const authLink = setContext((_, { headers }) => {
     // get the authentication token from local storage if it exists
     const session = useSession();
-    const token = session.token;
+    
     // return the headers to the context so httpLink can read them
     return {
       headers: {
         ...headers,
-        authorization: token ? `Bearer ${token}` : "",
+        authorization: session.token ? `Bearer ${session.token}` : "",
       }
     }
   });
