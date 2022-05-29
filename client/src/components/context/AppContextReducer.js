@@ -5,10 +5,10 @@ const AppContextReducer = (state, action) => {
 
     switch(action.type) {
         case 'LOGGED_IN':
-            newState.username = action.payload;
+            newState.authenticated = true;
             break;
         case 'LOGGED_OUT':
-            newState.username = null;
+            newState.authenticated = false;
             break;
         case 'NAVIGATE':
             newState.menuIndex = action.payload;

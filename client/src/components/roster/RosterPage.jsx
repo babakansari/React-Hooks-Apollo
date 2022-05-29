@@ -6,17 +6,18 @@ import {
 import { Typography, Grid, TextField } from "@mui/material";
 import { rosteringQuery } from './RosteringQueries';
 import { useQuery } from '@apollo/react-hooks';
-import { AppContext } from "../context/AppContext";
 import { blue } from '@mui/material/colors';
 import * as Lodash from 'lodash';
+import useCookies from "../auth/CookieManager";
 
 function RostersPage () {
-  const appContext = React.useContext(AppContext);
+  const cookies = useCookies('user-session-object');
   const [foundRows, setFoundRows] = React.useState([]);
   const [totalFound, setTotalFound] = React.useState();
   const gridRef = React.useRef(null);
+  const isAuthenticated = cookies && cookies.get();
 
-  if(!appContext.State.username){
+  if(!isAuthenticated) {
     return (<div>
       <Typography variant="h2">Requires Authentication...</Typography>
     </div>);

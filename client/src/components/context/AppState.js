@@ -1,6 +1,6 @@
 class AppState {
-    constructor(username, menuIndex) {
-        this.username = username;
+    constructor(authenticated, menuIndex) {
+        this.authenticated = authenticated;
         this.menuIndex = menuIndex;
     }
 }
