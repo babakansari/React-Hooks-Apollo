@@ -9,7 +9,7 @@ const useSession = () => {
     return {
         ...userSessionCookie,
         create: (session) => {
-            cookies.set(session);
+            cookies.set(session, 1);
             if(appContext) {
                 appContext.Dispatch({
                     type: "LOGGED_IN"
@@ -27,8 +27,7 @@ const useSession = () => {
         },
 
         isAuthenticated: () => {
-            const isAuthenticated = (appContext && appContext.State.authenticated) || (cookies && userSessionCookie);
-            return isAuthenticated;
+            return (appContext && appContext.State.authenticated) || (cookies && userSessionCookie);
         },
     };
   }
