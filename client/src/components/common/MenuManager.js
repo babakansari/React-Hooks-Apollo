@@ -1,11 +1,10 @@
-import { useContext } from "react";
 import { useHistory } from 'react-router-dom';
-import { AppContext } from "../context/AppContext";
+import { getAppContext } from "../context/AppContext";
 import { getPathByIndex, getPathByLabel, getRouteByPath } from './MenuMap';
 
 const useMenu = () => {
     const navigate = useHistory();
-    const appContext = useContext(AppContext);
+    const appContext = getAppContext();
     return {
       navigateToIndex: (menuIndex) => {
         navigate.push(getPathByIndex(menuIndex));

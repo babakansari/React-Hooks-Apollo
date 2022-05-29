@@ -3,7 +3,7 @@ import { AppBar, Container, Typography, Tabs, Tab, Toolbar } from "@mui/material
 import { makeStyles } from "@material-ui/styles"
 import { Link as RouterLink } from 'react-router-dom';
 import { getRouteByPath, getPaths } from './MenuMap';
-import { AppContext } from "../context/AppContext";
+import { getAppContext } from "../context/AppContext";
 import useSession from "../auth/SessionManager";
 
 const useStyles = makeStyles( t=>({
@@ -11,7 +11,7 @@ const useStyles = makeStyles( t=>({
   }));
 
 const Header = () => {
-    const appContext = React.useContext(AppContext);
+    const appContext = getAppContext();
     const classes = useStyles();
     const menuIndex = appContext.State.menuIndex ? appContext.State.menuIndex : 0;
     const session = useSession();
