@@ -14,7 +14,7 @@ const useCookies = (name) => {
                 date.setTime(date.getTime() + (days*24*60*60*1000));
                 expires = "; expires=" + date.toUTCString();
             }
-            document.cookie = name + "=" + (serialize(value) || "")  + expires + "; path=/;SameSite=Lax";
+            document.cookie = `${name}=${(serialize(value) || "")};expires=${expires}; path=/;SameSite=Lax`;
         },
         get: () => {
             var nameEQ = name + "=";
