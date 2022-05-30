@@ -22,6 +22,7 @@ const AppWithRouterAccess = () => {
     clientId: process.env.REACT_APP_OKTA_CLIENTID,
     redirectUri: window.location.origin + '/auth/callback',
     onAuthRequired: onAuthRequired,
+    scopes: ['openid', 'profile', 'email'],
     pkce: true
   });
 
