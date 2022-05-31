@@ -27,7 +27,8 @@ const useSession = () => {
         },
 
         isAuthenticated: () => {
-            return (appContext && appContext.State.authenticated) || (cookies && userSessionCookie);
+            const isAuthenticated = (appContext && appContext.State.authenticated) || (cookies && userSessionCookie);
+            return isAuthenticated ? true : false;
         },
     };
   }

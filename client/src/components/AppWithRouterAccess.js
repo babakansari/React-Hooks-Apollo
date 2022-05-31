@@ -10,6 +10,7 @@ import CrewPage from './roster/CrewPage';
 import BasicLogin from './auth/BasicLogin';
 import OktaLogin from './auth/OktaLogin';
 import { getPathByLabel } from './common/MenuMap';
+import { CustomRoute } from './CustomRoute';
 
 const AppWithRouterAccess = () => {
   const history = useHistory();
@@ -36,7 +37,7 @@ const AppWithRouterAccess = () => {
       <Security oktaAuth={oktaAuth} restoreOriginalUri={restoreOriginalUri}>
           <Header/>
           <Route path={getPathByLabel('Home')} component={HomePage} exact={true} />
-          <Route path={getPathByLabel('Roster')} component={RostersPage} />
+          <CustomRoute label={'Roster'} component={RostersPage} />
           <Route path={getPathByLabel('Crew')} component={CrewPage} />
           <Route path={getPathByLabel('BasicLogin')} component={BasicLogin} />
           <Route path={getPathByLabel('OktaLogin')} component={OktaLogin} />
