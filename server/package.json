@@ -12,6 +12,7 @@
   "author": "Babak Ansari",
   "license": "ISC",
   "dependencies": {
+    "@okta/jwt-verifier": "^2.3.0",
     "apollo-server-express": "^3.6.6",
     "body-parser": "^1.19.2",
     "cors": "^2.8.5",

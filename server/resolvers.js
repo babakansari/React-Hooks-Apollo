@@ -15,14 +15,6 @@ const Query = {
 const Mutation = {
     createCrew: (root, {input}, context) => {
         // Check user is authenticated
-        //  POST http://localhost:9000/login
-        //  JSON Body:
-        //  {
-        //     "username":"bob", 
-        //     "password": "bob"
-        //  }
-        //  Header:
-        //  Authorization   bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJyeTlwYndkTzIiLCJpYXQiOjE2NDg2MTExOTJ9.OqhZzSZkcbyWx9d_VGQDNV6hqz7U4iY5GEP1yfvHIVw
         if(!context.user){
             throw new AuthenticationError("Authentication error");
         }
