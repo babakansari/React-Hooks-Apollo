@@ -10,7 +10,7 @@ export const CustomRoute = ({ label, component }) => {
   const session = useSession();
   const isBasicAuthenticated = session.isAuthenticated()
   const isOktaAuthenticated = authState && authState.isAuthenticated;
-  console.log(`isBasicAuthenticated=${isBasicAuthenticated} - isOktaAuthenticated=${isOktaAuthenticated}`);
+
   return isBasicAuthenticated || isOktaAuthenticated
     ? <Route path={getPathByLabel(label)} component={component} />
     : <SecureRoute path={getPathByLabel(label)} component={component} />;
