@@ -20,7 +20,7 @@ const AppWithRouterAccess = () => {
   };
 
   const oktaAuth = new OktaAuth({
-    issuer: process.env.REACT_APP_OKTA_DOMAIN+'/oauth2/default',
+    issuer: `${process.env.REACT_APP_OKTA_DOMAIN}/oauth2/${process.env.REACT_APP_OKTA_AUTH_SERVER_ID}`,
     clientId: process.env.REACT_APP_OKTA_CLIENTID,
     redirectUri: window.location.origin + redirectPath,
     onAuthRequired: onAuthRequired,
