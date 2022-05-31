@@ -17,14 +17,6 @@ const HomePage = () => {
   const { navigateToLabel } = useMenu();
   const session = useSession(); 
 
-
-  // TODO: (BA) this code show where to get okta user name
-  if(authState){
-    console.log(`claims = ${JSON.stringify(authState.idToken && authState.idToken.claims.preferred_username)}`);
-  }
-  
-  
-
   if (!authState) {
     return <div>Loading...</div>;
   }

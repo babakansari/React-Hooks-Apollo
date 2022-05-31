@@ -18,7 +18,7 @@ const Header = () => {
     const session = useSession();
     const { authState } = useOktaAuth();
     const isAuthenticated = session.isAuthenticated() || (authState && authState.isAuthenticated);
-    const username = session.isAuthenticated() ? session.username : (authState && authState.isAuthenticated ? "okta username" : null);
+    const username = session.isAuthenticated() ? session.username : (authState && authState.isAuthenticated ? authState.idToken && authState.idToken.claims.preferred_username : null);
     
     const handleChange = (event, value) => {
         appContext.Dispatch({
