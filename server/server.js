@@ -43,18 +43,7 @@ app.post('/login', (req, res) => {
 });
 
 app.get('/users', (req, res) => {
-  res.json({
-    messages: [
-      {
-        date: new Date(),
-        text: 'I AM LEGEND',
-      },
-      {
-        date: new Date(new Date().getTime() - 1000 * 60 * 60),
-        text: 'BEEP BOOP BEEP BOOP!',
-      },
-    ],
-  });
+  res.json(db.rostering);
 });
 
 const typeDefs = gql(fs.readFileSync('./schema.graphql', {encoding: 'utf8'}  ));
