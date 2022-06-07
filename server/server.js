@@ -14,6 +14,11 @@ const app = express();
 
 app.use(cors({ origin: Settings.corsOrigin, credentials: true }), bodyParser.json(), (req, res, next) => {
   const authorizationType = req.get('authorizationType');
+  if(req.originalUrl == '/login'){
+    next();
+    return;
+  }
+  console.log();
   switch (authorizationType) {
     case 'babak-basic-auth':
       BasicMiddleWare(req, res, next);
@@ -22,7 +27,7 @@ app.use(cors({ origin: Settings.corsOrigin, credentials: true }), bodyParser.jso
       OktaMiddleWare(req, res, next);
       break;
     default:
-      next();
+      res.status(401).send('Authorization Error');
   }
 });
 
