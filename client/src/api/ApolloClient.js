@@ -12,7 +12,8 @@ const authLink = setContext((_, { headers }) => {
     return {
       headers: {
         ...headers,
-        authorization: session.token ? `Bearer ${session.token}` : "",
+        authorization: session.token ? `Bearer ${session.token}` : '',
+        authorizationType: session.token ? 'babak-basic-auth' : 'babak-okta-auth',
       }
     }
   });
