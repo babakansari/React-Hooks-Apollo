@@ -3,43 +3,23 @@ import { ApolloServer, gql } from 'apollo-server-express';
 import express from 'express';
 import cors from 'cors';
 import bodyParser from 'body-parser';
-import expressJwt from 'express-jwt';
 import resolvers from './resolvers.js';
 import jwt from 'jsonwebtoken';
 import db from './db.js';
-import dotenv from 'dotenv';
-import AuthRequired from './okta/AuthRequired.js';
-
-dotenv.config({ path: './.env' });
-
-const port = process.env.APOLLO_SERVER_PORT;
-const jwtSecret = Buffer.from(process.env.APOLLO_JWT_SECRET[1], 'base64');
-const corsOrigin = process.env.ACCESS_CONTROL_ALLOW_ORIGIN.split(',');
+import Settings from './Settings.js';
+import OktaMiddleWare from './authorization/oktaMiddleWare.js';
+import BasicMiddleWare from './authorization/basicMiddleWare.js';
 
 const app = express();
-const jwtMiddleware = expressJwt({
-  secret: jwtSecret, algorithms: ['HS256'],
-  credentialsRequired: false
-});
-//console.log(` ${jwtMiddleTier}`);
-// app.use(cors({ origin: corsOrigin, credentials: true }), bodyParser.json(), expressJwt({
-//   secret: jwtSecret, algorithms: ['HS256'],
-//   credentialsRequired: false
-// }));
-//app.use(cors());
-app.use(cors({ origin: corsOrigin, credentials: true }), bodyParser.json(), (req, res, next) => {
-  //console.log(`${JSON.stringify(util.inspect(req))}`);
-  //console.log(` AUTH: ${JSON.stringify(req.get('authorizationType'))}`);
-  // console.dir(req.rawHeaders);
-  //next()
-  //
+
+app.use(cors({ origin: Settings.corsOrigin, credentials: true }), bodyParser.json(), (req, res, next) => {
   const authorizationType = req.get('authorizationType');
   switch (authorizationType) {
     case 'babak-basic-auth':
-      jwtMiddleware(req, res, next);
+      BasicMiddleWare(req, res, next);
       break;
     case 'babak-okta-auth':
-      AuthRequired(req, res, next);
+      OktaMiddleWare(req, res, next);
       break;
     default:
       next();
@@ -53,7 +33,7 @@ app.post('/login', (req, res) => {
     res.sendStatus(401);
     return;
   }
-  const token = jwt.sign({sub: user.id, username}, jwtSecret);
+  const token = jwt.sign({sub: user.id, username}, Settings.jwtSecret);
   res.send({token});
 });
 
@@ -91,4 +71,4 @@ async function startServer() {
 }
 startServer();
 
-app.listen({port}, () => console.info(`Server started on port ${port}`));
+app.listen(Settings.port, () => console.info(`Server started on port ${Settings.port}`));

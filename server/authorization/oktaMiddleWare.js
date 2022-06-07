@@ -1,6 +1,7 @@
 import OktaJwtVerifier from '@okta/jwt-verifier';
+import Settings from '../Settings.js';
 
-const AuthRequired = (req, res, next) => {
+const OktaMiddleWare = (req, res, next) => {
   const authHeader = req.headers.authorization || '';
   const match = authHeader.match(/Bearer (.+)/);
 
@@ -8,11 +9,10 @@ const AuthRequired = (req, res, next) => {
     res.status(401);
     return next('Unauthorized');
   }
-  const OKTA_DOMAIN = process.env.OKTA_DOMAIN;
-  const AUTH_SERVER_ID = process.env.AUTH_SERVER_ID;
+
   const accessToken = match[1];
-  const audience = 'api://default';
-  const issuer = `https://${OKTA_DOMAIN}/oauth2/${AUTH_SERVER_ID}`;
+  const audience = Settings.audience;
+  const issuer = `https://${Settings.okta_domain}/oauth2/${Settings.auth_server_id}`;
   const oktaJwtVerifier = new OktaJwtVerifier({
     issuer
   });
@@ -33,4 +33,4 @@ const AuthRequired = (req, res, next) => {
   );
 };
 
-export default AuthRequired;
+export default OktaMiddleWare;
