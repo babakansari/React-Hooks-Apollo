@@ -7,15 +7,21 @@ import { ThemeProvider } from "@material-ui/styles"
 import axios from "axios";
 import { ApolloProvider } from '@apollo/react-hooks';
 import { apolloClient } from './api/ApolloClient';
+import SecurityProvider from './components/SecurityProvider';
+import { BrowserRouter as Router } from 'react-router-dom';
 
 axios.defaults.withCredentials = true;
 
 ReactDOM.render(
   <React.StrictMode>
      <ThemeProvider theme={theme}>
-      <ApolloProvider client={apolloClient}>
-        <App />
-      </ApolloProvider>
+      <Router>
+        <SecurityProvider>
+          <ApolloProvider client={apolloClient}>
+            <App />
+          </ApolloProvider>
+        </SecurityProvider>
+      </Router>
     </ThemeProvider>
   </React.StrictMode>,
   document.getElementById('root')

@@ -1,15 +1,15 @@
 import React from 'react';
-import { BrowserRouter as Router } from 'react-router-dom';
 import { AppContextProvider } from './context/AppContext';
-import OktaSecurityProvider from './OktaSecurityProvider';
+import Routes from './Routes';
+import { Container } from "@mui/material";
 
 function App() {
 
   return (
     <AppContextProvider>
-      <Router>
-        <OktaSecurityProvider/>
-      </Router>
+      <Container>
+        <Routes/>
+      </Container>
     </AppContextProvider>
   );
 }

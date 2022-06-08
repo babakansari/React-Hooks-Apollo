@@ -2,11 +2,8 @@ import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { Security } from '@okta/okta-react';
 import { OktaAuth, toRelativeUrl } from '@okta/okta-auth-js';
-import { Container } from "@mui/material";
-import Routes from './Routes'
 
-
-const OktaSecurityProvider = () => {
+const SecurityProvider = ({ children }) => {
   const history = useHistory();
   const redirectPath = process.env.REACT_APP_OKTA_CALLBACK_PATH;
   const onAuthRequired = () => {
@@ -23,15 +20,15 @@ const OktaSecurityProvider = () => {
   });
 
   const restoreOriginalUri = async (_oktaAuth, originalUri) => {
-    history.replace(toRelativeUrl(originalUri, window.location.origin));
+    const relativeUrl = toRelativeUrl(originalUri, window.location.origin);
+    history.replace(relativeUrl);
   };
 
   return (
-    <Container>
+    
       <Security oktaAuth={oktaAuth} restoreOriginalUri={restoreOriginalUri}>
-        <Routes/>
+        { children }
       </Security>
-    </Container>
   );
 };
-export default OktaSecurityProvider;
+export default SecurityProvider;
