@@ -3,7 +3,7 @@ import { Typography, Grid, TextField, Button } from "@mui/material";
 import { makeStyles } from "@material-ui/styles";
 import axios from "axios";
 import { loginReducer, initialLoginState } from "./LoginReducer";
-import useSession from "./SessionManager";
+import useBasicAuth from "./BasicAuth";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -14,8 +14,8 @@ const useStyles = makeStyles(theme => ({
 function BasicLogin () {
   const classes = useStyles();
   const [formState, dispatch] = React.useReducer(loginReducer, initialLoginState);
-  const session = useSession();
-  const isAuthenticated = session.isAuthenticated();
+  const basicAuth = useBasicAuth();
+  const isAuthenticated = basicAuth.isAuthenticated();
 
   function onLogin(){
 
@@ -23,7 +23,7 @@ function BasicLogin () {
       try {
         let response = await axios.post( process.env.REACT_APP_SERVER_URL+'/login', formState );
         if (response.status === 200) {
-          session.signIn({
+          basicAuth.signIn({
             token: response.data.token,
             username: formState.username
           });
@@ -31,7 +31,7 @@ function BasicLogin () {
           return;
         }
       } catch(err) {
-        session.signOut();
+        basicAuth.signOut();
       }
     };
 
@@ -47,7 +47,7 @@ function BasicLogin () {
   }
 
   function onLogout(){
-    session.signOut();
+    basicAuth.signOut();
   }
 
   if(isAuthenticated){

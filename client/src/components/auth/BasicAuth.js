@@ -1,7 +1,7 @@
 import useCookies from "./CookieManager";
 import { getAppContext } from "../context/AppContext";
 
-const useSession = () => {
+const useBasicAuth = () => {
     const cookies = useCookies('user-session-object');
     const userSessionCookie = cookies.get();
     const appContext = getAppContext(); 
@@ -33,4 +33,4 @@ const useSession = () => {
     };
   }
 
-export default useSession;
+export default useBasicAuth;

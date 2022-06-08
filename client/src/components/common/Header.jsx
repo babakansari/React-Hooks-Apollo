@@ -4,7 +4,7 @@ import { makeStyles } from "@material-ui/styles"
 import { Link as RouterLink } from 'react-router-dom';
 import { getRouteByPath, getPaths } from './MenuMap';
 import { getAppContext } from "../context/AppContext";
-import useSession from "../auth/SessionManager";
+import useBasicAuth from "../auth/BasicAuth";
 import { useOktaAuth } from '@okta/okta-react';
 
 const useStyles = makeStyles( t=>({
@@ -15,10 +15,10 @@ const Header = () => {
     const appContext = getAppContext();
     const classes = useStyles();
     const menuIndex = appContext.State.menuIndex ? appContext.State.menuIndex : 0;
-    const session = useSession();
+    const basicAuth = useBasicAuth();
     const { authState } = useOktaAuth();
-    const isAuthenticated = session.isAuthenticated() || (authState && authState.isAuthenticated);
-    const username = session.isAuthenticated() ? session.username : (authState && authState.isAuthenticated ? authState.idToken && authState.idToken.claims.preferred_username : null);
+    const isAuthenticated = basicAuth.isAuthenticated() || (authState && authState.isAuthenticated);
+    const username = basicAuth.isAuthenticated() ? basicAuth.username : (authState && authState.isAuthenticated ? authState.idToken && authState.idToken.claims.preferred_username : null);
     
     const handleChange = (event, value) => {
         appContext.Dispatch({

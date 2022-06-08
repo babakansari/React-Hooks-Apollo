@@ -1,7 +1,7 @@
 import React from 'react';
 import { ApolloClient, ApolloLink, HttpLink, InMemoryCache } from 'apollo-boost';
 import { setContext } from '@apollo/client/link/context';
-import useSession from "./auth/SessionManager";
+import useBasicAuth from "./auth/BasicAuth";
 import { ApolloProvider } from '@apollo/react-hooks';
 import { useOktaAuth } from '@okta/okta-react';
 
@@ -11,11 +11,11 @@ const AuthorizationProvider = ({ children }) => {
 
   const authLink = setContext((_, { headers }) => {
     // get the authentication token from local storage if it exists
-    const session = useSession();
+    const basicAuth = useBasicAuth();
     
     const isAuthenticated = authState && authState.isAuthenticated;
 
-    const token = session.token ? `Bearer ${session.token}` : 
+    const token = basicAuth.token ? `Bearer ${basicAuth.token}` : 
                 isAuthenticated ? `Bearer ${authState.accessToken.accessToken}` : '';
     
     // return the headers to the context so httpLink can read them
@@ -23,7 +23,7 @@ const AuthorizationProvider = ({ children }) => {
       headers: {
         ...headers,
         authorization: token,
-        authorizationType: session.token ? 'babak-basic-auth' : 'babak-okta-auth',
+        authorizationType: basicAuth.token ? 'babak-basic-auth' : 'babak-okta-auth',
       }
     }
   });
