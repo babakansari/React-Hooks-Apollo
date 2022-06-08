@@ -21,10 +21,8 @@ const OktaMiddleWare = (req, res, next) => {
   return (
     oktaJwtVerifier
       .verifyAccessToken(accessToken, audience)
-      // eslint-disable-next-line promise/always-return
       .then((jwt) => {
-        req.jwt = jwt;
-        // eslint-disable-next-line promise/no-callback-in-promise
+        req.user = jwt.claims.sub;
         next();
       })
       .catch((err) => {
