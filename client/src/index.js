@@ -2,27 +2,22 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './components/App';
 import reportWebVitals from './reportWebVitals';
-import theme from "./components/common/Theme";
-import { ThemeProvider } from "@material-ui/styles"
 import axios from "axios";
-import { ApolloProvider } from '@apollo/react-hooks';
-import { apolloClient } from './api/ApolloClient';
 import SecurityProvider from './components/SecurityProvider';
+import ServerProvider from './components/ServerProvider';
 import { BrowserRouter as Router } from 'react-router-dom';
 
 axios.defaults.withCredentials = true;
 
 ReactDOM.render(
-  <React.StrictMode>
-     <ThemeProvider theme={theme}>
-      <Router>
-        <SecurityProvider>
-          <ApolloProvider client={apolloClient}>
-            <App />
-          </ApolloProvider>
-        </SecurityProvider>
-      </Router>
-    </ThemeProvider>
+  <React.StrictMode>     
+    <Router>
+      <SecurityProvider>
+        <ServerProvider>
+          <App />
+        </ServerProvider>
+      </SecurityProvider>
+    </Router>
   </React.StrictMode>,
   document.getElementById('root')
 );
