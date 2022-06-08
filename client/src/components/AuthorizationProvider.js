@@ -1,11 +1,11 @@
 import React from 'react';
 import { ApolloClient, ApolloLink, HttpLink, InMemoryCache } from 'apollo-boost';
 import { setContext } from '@apollo/client/link/context';
-import useSession from "../components/auth/SessionManager";
+import useSession from "./auth/SessionManager";
 import { ApolloProvider } from '@apollo/react-hooks';
 import { useOktaAuth } from '@okta/okta-react';
 
-const ServerProvider = ({ children }) => {
+const AuthorizationProvider = ({ children }) => {
   const endpointURL = process.env.REACT_APP_SERVER_URL + '/graphql';
   const { authState } = useOktaAuth();
 
@@ -16,7 +16,7 @@ const ServerProvider = ({ children }) => {
     const isAuthenticated = authState && authState.isAuthenticated;
 
     const token = session.token ? `Bearer ${session.token}` : 
-                isAuthenticated ? authState.accessToken.accessToken : '';
+                isAuthenticated ? `Bearer ${authState.accessToken.accessToken}` : '';
     
     // return the headers to the context so httpLink can read them
     return {
@@ -42,4 +42,4 @@ const ServerProvider = ({ children }) => {
     </ApolloProvider>
   );
 };
-export default ServerProvider;
+export default AuthorizationProvider;

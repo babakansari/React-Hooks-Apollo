@@ -4,7 +4,7 @@ import App from './components/App';
 import reportWebVitals from './reportWebVitals';
 import axios from "axios";
 import SecurityProvider from './components/SecurityProvider';
-import ServerProvider from './components/ServerProvider';
+import AuthorizationProvider from './components/AuthorizationProvider';
 import { BrowserRouter as Router } from 'react-router-dom';
 
 axios.defaults.withCredentials = true;
@@ -13,9 +13,9 @@ ReactDOM.render(
   <React.StrictMode>     
     <Router>
       <SecurityProvider>
-        <ServerProvider>
+        <AuthorizationProvider>
           <App />
-        </ServerProvider>
+        </AuthorizationProvider>
       </SecurityProvider>
     </Router>
   </React.StrictMode>,

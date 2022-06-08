@@ -9,14 +9,19 @@ import { useQuery } from '@apollo/react-hooks';
 import { blue } from '@mui/material/colors';
 import * as Lodash from 'lodash';
 import useSession from "../auth/SessionManager";
+import { useOktaAuth } from '@okta/okta-react';
 
 function RostersPage () {
   const session = useSession();
   const [foundRows, setFoundRows] = React.useState([]);
   const [totalFound, setTotalFound] = React.useState();
   const gridRef = React.useRef(null);
+  const { authState } = useOktaAuth();
 
-  if(!session.isAuthenticated()) {
+  const isBasicAuthenticated = session.isAuthenticated()
+  const isOktaAuthenticated = authState && authState.isAuthenticated;
+
+  if(!isBasicAuthenticated && !isOktaAuthenticated) {
     return (<div>
       <Typography variant="h2">Requires Authentication...</Typography>
     </div>);
@@ -25,7 +30,7 @@ function RostersPage () {
   const {loading, error, data} = useQuery(rosteringQuery, {
     fetchPolicy: 'no-cache' 
   });
-  
+
   const getContent = React.useCallback((cell) => {
     return getData(cell);
   }, [data, foundRows]);
@@ -72,7 +77,8 @@ function RostersPage () {
 
   if(error){
     return (<div>
-      <Typography variant="h2">Rostering (Error loading page...{error})</Typography>
+      <Typography variant="h2">Rostering (Error loading page...)</Typography>
+      {error.message}
     </div>);
   }
 
@@ -81,6 +87,7 @@ function RostersPage () {
       <Typography variant="h2">Rostering (Loading...)</Typography>
     </div>);
   }
+  
 
   const columns = [
     { title: "id", width: 100 },
@@ -89,6 +96,9 @@ function RostersPage () {
   ];
 
   function getData([col, row]) {
+    if(!data.rostering){
+      return null;
+    }
     const rostering = data.rostering;
     const dataRow = rostering[row];
     const cell = dataRow[columns[col].title];
@@ -113,7 +123,7 @@ function RostersPage () {
               ref={gridRef} 
               getCellContent={getContent} 
               columns={columns} 
-              rows={data.rostering.length}
+              rows={data && data.rostering && data.rostering.length}
               getRowThemeOverride={getRowThemeOverride}
           />}
 

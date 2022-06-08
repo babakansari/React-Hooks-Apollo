@@ -6,8 +6,8 @@ const OktaMiddleWare = (req, res, next) => {
   const match = authHeader.match(/Bearer (.+)/);
 
   if (!match) {
-    res.status(401);
-    return next('Unauthorized');
+    res.status(401).send('Unauthorized access');
+    return next('Unauthorized access: Not a bearer token');
   }
 
   const accessToken = match[1];
