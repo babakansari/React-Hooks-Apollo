@@ -17,7 +17,6 @@ const OktaMiddleWare = (req, res, next) => {
     issuer
   });
 
-
   return (
     oktaJwtVerifier
       .verifyAccessToken(accessToken, audience)

@@ -8,7 +8,7 @@ import useSession from "./auth/SessionManager";
 export const CustomRoute = ({ label, component }) => {
   const { authState } = useOktaAuth();
   const session = useSession();
-  const isBasicAuthenticated = session.isAuthenticated()
+  const isBasicAuthenticated = session.isAuthenticated();
   const isOktaAuthenticated = authState && authState.isAuthenticated;
 
   return isBasicAuthenticated || isOktaAuthenticated

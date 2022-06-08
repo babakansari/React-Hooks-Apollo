@@ -15,6 +15,7 @@ function BasicLogin () {
   const classes = useStyles();
   const [formState, dispatch] = React.useReducer(loginReducer, initialLoginState);
   const session = useSession();
+  const isAuthenticated = session.isAuthenticated();
 
   function onLogin(){
 
@@ -43,6 +44,18 @@ function BasicLogin () {
       name: e.target.name,
       value: e.target.value
     });
+  }
+
+  function onLogout(){
+    session.signOut();
+  }
+
+  if(isAuthenticated){
+    return (
+      <Grid item className={classes.root}>
+        <Button variant="contained" onClick={onLogout}>Logout</Button>
+      </Grid>
+    );
   }
 
   return  (
