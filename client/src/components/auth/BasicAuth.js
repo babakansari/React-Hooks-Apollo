@@ -2,7 +2,7 @@ import useCookies from "./CookieManager";
 import { getAppContext } from "../context/AppContext";
 
 const useBasicAuth = () => {
-    const cookies = useCookies('user-session-object');
+    const cookies = useCookies('basic-auth-object');
     const userSessionCookie = cookies.get();
     const appContext = getAppContext(); 
     
