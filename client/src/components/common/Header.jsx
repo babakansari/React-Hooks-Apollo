@@ -4,8 +4,8 @@ import { makeStyles } from '@material-ui/styles';
 import { Link as RouterLink } from 'react-router-dom';
 import { getRouteByPath, getPaths } from './MenuMap';
 import { getAppContext } from '../context/AppContext';
-import { useBasicAuth } from '../auth/BasicAuth';
 import { useOktaAuth } from '@okta/okta-react';
+import { useBasicAuth } from '../auth/BasicAuth';
 
 const useStyles = makeStyles( t=>({
     toolbar: t.mixins.toolbar

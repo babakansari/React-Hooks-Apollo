@@ -1,8 +1,8 @@
 import React from 'react';
-import { useOktaAuth } from '@okta/okta-react';
 import { makeStyles } from '@material-ui/styles';
 import { Typography, Grid, Button } from '@mui/material';
 import useMenu from './MenuManager';
+import { useOktaAuth } from '@okta/okta-react';
 import { useBasicAuth } from '../auth/BasicAuth';
 
 const useStyles = makeStyles(theme => ({

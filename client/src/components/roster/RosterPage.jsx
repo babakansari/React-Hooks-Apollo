@@ -8,8 +8,8 @@ import { rosteringQuery } from './RosteringQueries';
 import { useQuery } from '@apollo/react-hooks';
 import { blue } from '@mui/material/colors';
 import * as Lodash from 'lodash';
-import { useBasicAuth } from '../auth/BasicAuth';
 import { useOktaAuth } from '@okta/okta-react';
+import { useBasicAuth } from '../auth/BasicAuth';
 
 function RostersPage () {
   const basicAuth = useBasicAuth();
