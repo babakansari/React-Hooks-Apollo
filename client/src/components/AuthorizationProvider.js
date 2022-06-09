@@ -8,13 +8,11 @@ import { useBasicAuth } from './auth/BasicAuth';
 const AuthorizationProvider = ({ children }) => {
   const endpointURL = process.env.REACT_APP_SERVER_URL + '/graphql';
   const oktaAuth = useOktaAuth();
-  
+  const basicAuth = useBasicAuth();
 
   const authLink = setContext((_, { headers }) => {
     // get the authentication token from local storage if it exists
     const isAuthenticated = oktaAuth.authState && oktaAuth.authState.isAuthenticated;
-    const basicAuth = useBasicAuth();
-    
     const token = basicAuth.authState.token ? `Bearer ${basicAuth.authState.token}` : 
                 isAuthenticated ? `Bearer ${oktaAuth.authState.accessToken.accessToken}` : '';
     

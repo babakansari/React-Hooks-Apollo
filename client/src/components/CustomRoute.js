@@ -8,7 +8,7 @@ import { useBasicAuth } from './auth/BasicAuth';
 export const CustomRoute = ({ label, component }) => {
   const oktaAuth = useOktaAuth();
   const basicAuth = useBasicAuth();
-  const isBasicAuthenticated = basicAuth.authState.isAuthenticated();
+  const isBasicAuthenticated = basicAuth.authState.isAuthenticated;
   const isOktaAuthenticated = oktaAuth.authState && oktaAuth.authState.isAuthenticated;
 
   return isBasicAuthenticated || isOktaAuthenticated

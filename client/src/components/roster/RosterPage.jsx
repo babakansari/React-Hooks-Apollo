@@ -18,7 +18,7 @@ function RostersPage () {
   const oktaAuth = useOktaAuth();
   const basicAuth = useBasicAuth();
 
-  const isBasicAuthenticated = basicAuth.authState.isAuthenticated()
+  const isBasicAuthenticated = basicAuth.authState.isAuthenticated;
   const isOktaAuthenticated = oktaAuth.authState && oktaAuth.authState.isAuthenticated;
 
   if(!isBasicAuthenticated && !isOktaAuthenticated) {

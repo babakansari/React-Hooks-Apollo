@@ -15,7 +15,7 @@ function BasicLogin () {
   const classes = useStyles();
   const [formState, dispatch] = React.useReducer(loginReducer, initialLoginState);
   const basicAuth = useBasicAuth();
-  const isAuthenticated = basicAuth.authState.isAuthenticated();
+  const isAuthenticated = basicAuth.authState.isAuthenticated;
 
   function onLogin(){
 

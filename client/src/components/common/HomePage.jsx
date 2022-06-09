@@ -25,7 +25,7 @@ const HomePage = () => {
                       <Button onClick={() => {oktaAuth.oktaAuth.signOut()}} variant="contained">Okta Logout</Button> :
                       <Button onClick={() => {navigateToLabel('OktaLogin')}} variant="contained">Okta Login</Button>;
 
-  const basicButton = basicAuth.authState.isAuthenticated() ?
+  const basicButton = basicAuth.authState.isAuthenticated ?
                       <Button onClick={() => {basicAuth.basicAuth.signOut()}} variant="contained">Basic Logout</Button> :
                       <Button onClick={() => {navigateToLabel('BasicLogin')}} variant="contained">Basic Login</Button>;
   return (

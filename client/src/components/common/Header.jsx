@@ -18,8 +18,8 @@ const Header = () => {
     const oktaAuth = useOktaAuth();
     const basicAuth = useBasicAuth();
 
-    const isAuthenticated = basicAuth.authState.isAuthenticated() || (oktaAuth.authState && oktaAuth.authState.isAuthenticated);
-    const username = basicAuth.authState.isAuthenticated() ? 
+    const isAuthenticated = basicAuth.authState.isAuthenticated || (oktaAuth.authState && oktaAuth.authState.isAuthenticated);
+    const username = basicAuth.authState.isAuthenticated ? 
                         basicAuth.authState.username : 
                     (oktaAuth.authState && oktaAuth.authState.isAuthenticated ? 
                         oktaAuth.authState.idToken && oktaAuth.authState.idToken.claims.preferred_username : null);
