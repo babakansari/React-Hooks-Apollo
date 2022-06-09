@@ -3,7 +3,7 @@ import { Route } from 'react-router-dom';
 import { SecureRoute } from '@okta/okta-react';
 import { getPathByLabel } from './common/MenuMap';
 import { useOktaAuth } from '@okta/okta-react';
-import useBasicAuth from "./auth/BasicAuth";
+import { useBasicAuth } from './auth/BasicAuth';
 
 export const CustomRoute = ({ label, component }) => {
   const { authState } = useOktaAuth();

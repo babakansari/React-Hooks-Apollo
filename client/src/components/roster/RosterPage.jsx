@@ -1,14 +1,14 @@
-import React from "react";
+import React from 'react';
 import {
   DataEditor,
   GridCellKind
-} from "@glideapps/glide-data-grid";
-import { Typography, Grid, TextField } from "@mui/material";
+} from '@glideapps/glide-data-grid';
+import { Typography, Grid, TextField } from '@mui/material';
 import { rosteringQuery } from './RosteringQueries';
 import { useQuery } from '@apollo/react-hooks';
 import { blue } from '@mui/material/colors';
 import * as Lodash from 'lodash';
-import useBasicAuth from "../auth/BasicAuth";
+import { useBasicAuth } from '../auth/BasicAuth';
 import { useOktaAuth } from '@okta/okta-react';
 
 function RostersPage () {

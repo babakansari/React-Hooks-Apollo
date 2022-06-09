@@ -1,9 +1,9 @@
 import React from 'react';
 import { ApolloClient, ApolloLink, HttpLink, InMemoryCache } from 'apollo-boost';
 import { setContext } from '@apollo/client/link/context';
-import useBasicAuth from "./auth/BasicAuth";
 import { ApolloProvider } from '@apollo/react-hooks';
 import { useOktaAuth } from '@okta/okta-react';
+import { useBasicAuth } from './auth/BasicAuth';
 
 const AuthorizationProvider = ({ children }) => {
   const endpointURL = process.env.REACT_APP_SERVER_URL + '/graphql';

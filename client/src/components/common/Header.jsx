@@ -1,10 +1,10 @@
 import * as React from 'react';
-import { AppBar, Container, Typography, Tabs, Tab, Toolbar } from "@mui/material";
-import { makeStyles } from "@material-ui/styles"
+import { AppBar, Container, Typography, Tabs, Tab, Toolbar } from '@mui/material';
+import { makeStyles } from '@material-ui/styles';
 import { Link as RouterLink } from 'react-router-dom';
 import { getRouteByPath, getPaths } from './MenuMap';
-import { getAppContext } from "../context/AppContext";
-import useBasicAuth from "../auth/BasicAuth";
+import { getAppContext } from '../context/AppContext';
+import { useBasicAuth } from '../auth/BasicAuth';
 import { useOktaAuth } from '@okta/okta-react';
 
 const useStyles = makeStyles( t=>({

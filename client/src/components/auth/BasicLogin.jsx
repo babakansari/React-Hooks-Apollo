@@ -1,9 +1,9 @@
-import React from "react";
-import { Typography, Grid, TextField, Button } from "@mui/material";
-import { makeStyles } from "@material-ui/styles";
-import axios from "axios";
-import { loginReducer, initialLoginState } from "./LoginReducer";
-import useBasicAuth from "./BasicAuth";
+import React from 'react';
+import { Typography, Grid, TextField, Button } from '@mui/material';
+import { makeStyles } from '@material-ui/styles';
+import axios from 'axios';
+import { loginReducer, initialLoginState } from './LoginReducer';
+import { useBasicAuth } from './BasicAuth';
 
 const useStyles = makeStyles(theme => ({
   root: {
