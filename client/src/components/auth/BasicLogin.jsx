@@ -15,7 +15,7 @@ function BasicLogin () {
   const classes = useStyles();
   const [formState, dispatch] = React.useReducer(loginReducer, initialLoginState);
   const basicAuth = useBasicAuth();
-  const isAuthenticated = basicAuth.isAuthenticated();
+  const isAuthenticated = basicAuth.authState.isAuthenticated();
 
   function onLogin(){
 
@@ -23,7 +23,7 @@ function BasicLogin () {
       try {
         let response = await axios.post( process.env.REACT_APP_SERVER_URL+'/login', formState );
         if (response.status === 200) {
-          basicAuth.signIn({
+          basicAuth.basicAuth.signIn({
             token: response.data.token,
             username: formState.username
           });
@@ -31,7 +31,7 @@ function BasicLogin () {
           return;
         }
       } catch(err) {
-        basicAuth.signOut();
+        basicAuth.basicAuth.signOut();
       }
     };
 
@@ -47,7 +47,7 @@ function BasicLogin () {
   }
 
   function onLogout(){
-    basicAuth.signOut();
+    basicAuth.basicAuth.signOut();
   }
 
   if(isAuthenticated){

@@ -15,10 +15,14 @@ const Header = () => {
     const appContext = getAppContext();
     const classes = useStyles();
     const menuIndex = appContext.State.menuIndex ? appContext.State.menuIndex : 0;
+    const oktaAuth = useOktaAuth();
     const basicAuth = useBasicAuth();
-    const { authState } = useOktaAuth();
-    const isAuthenticated = basicAuth.isAuthenticated() || (authState && authState.isAuthenticated);
-    const username = basicAuth.isAuthenticated() ? basicAuth.username : (authState && authState.isAuthenticated ? authState.idToken && authState.idToken.claims.preferred_username : null);
+
+    const isAuthenticated = basicAuth.authState.isAuthenticated() || (oktaAuth.authState && oktaAuth.authState.isAuthenticated);
+    const username = basicAuth.authState.isAuthenticated() ? 
+                        basicAuth.authState.username : 
+                    (oktaAuth.authState && oktaAuth.authState.isAuthenticated ? 
+                        oktaAuth.authState.idToken && oktaAuth.authState.idToken.claims.preferred_username : null);
     
     const handleChange = (event, value) => {
         appContext.Dispatch({

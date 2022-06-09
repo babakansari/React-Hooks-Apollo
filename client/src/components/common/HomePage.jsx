@@ -13,20 +13,20 @@ const useStyles = makeStyles(theme => ({
 
 const HomePage = () => {
   const classes = useStyles();
-  const { authState, oktaAuth } = useOktaAuth();
   const { navigateToLabel } = useMenu();
+  const oktaAuth = useOktaAuth();
   const basicAuth = useBasicAuth(); 
 
-  if (!authState) {
+  if (!oktaAuth.authState) {
     return <div>Loading...</div>;
   }
 
-  const oktaButton = authState.isAuthenticated ?
-                      <Button onClick={() => {oktaAuth.signOut()}} variant="contained">Okta Logout</Button> :
+  const oktaButton = oktaAuth.authState.isAuthenticated ?
+                      <Button onClick={() => {oktaAuth.oktaAuth.signOut()}} variant="contained">Okta Logout</Button> :
                       <Button onClick={() => {navigateToLabel('OktaLogin')}} variant="contained">Okta Login</Button>;
 
-  const basicButton = basicAuth.isAuthenticated() ?
-                      <Button onClick={() => {basicAuth.signOut()}} variant="contained">Basic Logout</Button> :
+  const basicButton = basicAuth.authState.isAuthenticated() ?
+                      <Button onClick={() => {basicAuth.basicAuth.signOut()}} variant="contained">Basic Logout</Button> :
                       <Button onClick={() => {navigateToLabel('BasicLogin')}} variant="contained">Basic Login</Button>;
   return (
     <Grid>

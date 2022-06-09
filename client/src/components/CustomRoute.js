@@ -6,10 +6,10 @@ import { useOktaAuth } from '@okta/okta-react';
 import { useBasicAuth } from './auth/BasicAuth';
 
 export const CustomRoute = ({ label, component }) => {
-  const { authState } = useOktaAuth();
+  const oktaAuth = useOktaAuth();
   const basicAuth = useBasicAuth();
-  const isBasicAuthenticated = basicAuth.isAuthenticated();
-  const isOktaAuthenticated = authState && authState.isAuthenticated;
+  const isBasicAuthenticated = basicAuth.authState.isAuthenticated();
+  const isOktaAuthenticated = oktaAuth.authState && oktaAuth.authState.isAuthenticated;
 
   return isBasicAuthenticated || isOktaAuthenticated
     ? <Route path={getPathByLabel(label)} component={component} />

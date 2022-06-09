@@ -12,14 +12,14 @@ import { useOktaAuth } from '@okta/okta-react';
 import { useBasicAuth } from '../auth/BasicAuth';
 
 function RostersPage () {
-  const basicAuth = useBasicAuth();
   const [foundRows, setFoundRows] = React.useState([]);
   const [totalFound, setTotalFound] = React.useState();
   const gridRef = React.useRef(null);
-  const { authState } = useOktaAuth();
+  const oktaAuth = useOktaAuth();
+  const basicAuth = useBasicAuth();
 
-  const isBasicAuthenticated = basicAuth.isAuthenticated()
-  const isOktaAuthenticated = authState && authState.isAuthenticated;
+  const isBasicAuthenticated = basicAuth.authState.isAuthenticated()
+  const isOktaAuthenticated = oktaAuth.authState && oktaAuth.authState.isAuthenticated;
 
   if(!isBasicAuthenticated && !isOktaAuthenticated) {
     return (<div>

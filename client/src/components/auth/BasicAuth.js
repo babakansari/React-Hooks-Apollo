@@ -7,28 +7,31 @@ export const useBasicAuth = () => {
     const appContext = getAppContext(); 
     
     return {
-        ...userSessionCookie,
-        signIn: (session) => {
-            cookies.set(session, 1);
-            if(appContext) {
-                appContext.Dispatch({
-                    type: "LOGGED_IN"
-                });
+        authState: {
+            ...userSessionCookie,
+            isAuthenticated: () => {
+                const isAuthenticated = (appContext && appContext.State.authenticated) || (cookies && userSessionCookie);
+                return isAuthenticated ? true : false;
             }
         },
-
-        signOut: () => {
-            cookies.remove();
-            if(appContext) {
-                appContext.Dispatch({
-                    type: "LOGGED_OUT"
-                });
-            }
-        },
-
-        isAuthenticated: () => {
-            const isAuthenticated = (appContext && appContext.State.authenticated) || (cookies && userSessionCookie);
-            return isAuthenticated ? true : false;
-        },
+        basicAuth: {
+            signIn: (session) => {
+                cookies.set(session, 1);
+                if(appContext) {
+                    appContext.Dispatch({
+                        type: "LOGGED_IN"
+                    });
+                }
+            },
+    
+            signOut: () => {
+                cookies.remove();
+                if(appContext) {
+                    appContext.Dispatch({
+                        type: "LOGGED_OUT"
+                    });
+                }
+            },
+        }
     };
   }
