@@ -8,20 +8,15 @@ import { rosteringQuery } from './RosteringQueries';
 import { useQuery } from '@apollo/react-hooks';
 import { blue } from '@mui/material/colors';
 import * as Lodash from 'lodash';
-import { useOktaAuth } from '@okta/okta-react';
-import { useBasicAuth } from '../auth/BasicAuth';
+import { useSession } from '../auth/SessionManager';
 
 function RostersPage () {
   const [foundRows, setFoundRows] = React.useState([]);
   const [totalFound, setTotalFound] = React.useState();
   const gridRef = React.useRef(null);
-  const oktaAuth = useOktaAuth();
-  const basicAuth = useBasicAuth();
+  const session = useSession();
 
-  const isBasicAuthenticated = basicAuth.authState.isAuthenticated;
-  const isOktaAuthenticated = oktaAuth.authState && oktaAuth.authState.isAuthenticated;
-
-  if(!isBasicAuthenticated && !isOktaAuthenticated) {
+  if(!session.isAuthenticated) {
     return (<div>
       <Typography variant="h2">Requires Authentication...</Typography>
     </div>);
