@@ -1,5 +1,6 @@
 import { useOktaAuth } from '@okta/okta-react';
 import { useBasicAuth } from './BasicAuth';
+import axios from 'axios';
 
 export const useSession = () => {
     const basicAuth = useBasicAuth();
@@ -46,6 +47,16 @@ export const useSession = () => {
 
       basicSignOut: () => {
         basicAuth.basicAuth.signOut();
+      },
+
+      basicSignIn: async (username, password) => {
+        let response = await axios.post( process.env.REACT_APP_SERVER_URL+'/login', {username, password} );
+        if (response.status === 200) {
+          basicAuth.basicAuth.signIn({
+            token: response.data.token,
+            username: username
+          });
+        }
       }
     };
   }

@@ -1,9 +1,8 @@
 import React from 'react';
 import { Typography, Grid, TextField, Button } from '@mui/material';
 import { makeStyles } from '@material-ui/styles';
-import axios from 'axios';
 import { loginReducer, initialLoginState } from './LoginReducer';
-import { useBasicAuth } from './BasicAuth';
+import { useSession } from './SessionManager';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -14,27 +13,17 @@ const useStyles = makeStyles(theme => ({
 function BasicLogin () {
   const classes = useStyles();
   const [formState, dispatch] = React.useReducer(loginReducer, initialLoginState);
-  const basicAuth = useBasicAuth();
-  const isAuthenticated = basicAuth.authState.isAuthenticated;
+  const session = useSession();
 
   function onLogin(){
-
     const authenticate = async () => {
       try {
-        let response = await axios.post( process.env.REACT_APP_SERVER_URL+'/login', formState );
-        if (response.status === 200) {
-          basicAuth.basicAuth.signIn({
-            token: response.data.token,
-            username: formState.username
-          });
-          
-          return;
-        }
+        await session.basicSignIn(formState.username, formState.password);
+        return;
       } catch(err) {
-        basicAuth.basicAuth.signOut();
+        session.basicSignOut();
       }
     };
-
     authenticate();
   }
 
@@ -47,10 +36,10 @@ function BasicLogin () {
   }
 
   function onLogout(){
-    basicAuth.basicAuth.signOut();
+    session.basicSignOut();
   }
 
-  if(isAuthenticated){
+  if(session.isBasicAuthenticated){
     return (
       <Grid item className={classes.root}>
         <Button variant="contained" onClick={onLogout}>Logout</Button>
