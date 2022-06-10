@@ -25,6 +25,17 @@ export const useSession = () => {
                         oktaAuth.authState.idToken && oktaAuth.authState.idToken.claims.preferred_username : null);
       },
 
+      get token() {
+        return this.isBasicAuthenticated ? `Bearer ${basicAuth.authState.token}` : 
+                this.isOktaAuthenticated ? `Bearer ${oktaAuth.authState.accessToken.accessToken}` : '';
+      },
+
+      get type() {
+        return this.isBasicAuthenticated ? 'babak-basic-auth' : 
+                this.isOktaAuthenticated ? 'babak-okta-auth' :
+                '';
+      },
+
       get initialized() {
         return oktaAuth.authState || basicAuth.authState;
       },
