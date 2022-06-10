@@ -45,6 +45,20 @@ export const useSession = () => {
         oktaAuth.oktaAuth.signOut();
       },
 
+      oktaSignIn: (username, password, resultCallback) => {
+        oktaAuth.oktaAuth.signInWithCredentials({ username, password })
+          .then(res => {
+            const sessionToken = res.sessionToken;
+            oktaAuth.oktaAuth.tokenManager.setTokens(sessionToken);
+            resultCallback(sessionToken);
+            oktaAuth.oktaAuth.signInWithRedirect({ sessionToken });
+          })
+          .catch(err => {
+            console.log('Okta authentication error!', err);
+            resultCallback(null);
+          });
+      },
+
       basicSignOut: () => {
         basicAuth.basicAuth.signOut();
       },

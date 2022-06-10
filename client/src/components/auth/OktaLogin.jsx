@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { useOktaAuth } from '@okta/okta-react';
 import { makeStyles } from "@material-ui/styles";
 import { Typography, Grid, TextField, Button, Snackbar, Alert } from "@mui/material";
 import { loginReducer, initialLoginState } from "./LoginReducer";
+import { useSession } from './SessionManager';
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -11,12 +11,12 @@ const useStyles = makeStyles(theme => ({
   }));
   
 const Oktalogin = () => {
-  const { authState, oktaAuth } = useOktaAuth();
   const [sessionToken, setSessionToken] = useState();
   const classes = useStyles();
   const [formState, dispatch] = React.useReducer(loginReducer, initialLoginState);
   const [authenticationFailed, setAuthenticationFailed] = React.useState(false);
-  const isAuthenticated = authState && authState.isAuthenticated;
+  const session = useSession();
+
   const handleClose = (event, reason) => {
     if (reason === 'clickaway') {
       return;
@@ -25,18 +25,14 @@ const Oktalogin = () => {
   };
 
   function onLogin(){
-    oktaAuth.signInWithCredentials({ username: formState.username, password: formState.password })
-    .then(res => {
-      const sessionToken = res.sessionToken;
-      oktaAuth.tokenManager.setTokens(sessionToken);
-      setSessionToken(sessionToken);
-      // sessionToken is a one-use token, so make sure this is only called once
-      oktaAuth.signInWithRedirect({ sessionToken });
-    })
-    .catch(err => {
-        console.log('Found an error', err);
+    session.oktaSignIn( formState.username, formState.password, (token) =>{
+      if(token) {
+        setSessionToken(token);
+      } else {
         setAuthenticationFailed(true);
+      }
     });
+
   }
 
   if (sessionToken) {
@@ -45,7 +41,7 @@ const Oktalogin = () => {
   }
 
   function onLogout(){
-    oktaAuth.signOut();
+    session.oktaSignOut();
   }
 
   function onInputFormData(e){
@@ -55,7 +51,7 @@ const Oktalogin = () => {
       value: e.target.value
     });
   }
-  const loginForm = (isAuthenticated) ? 
+  const loginForm = (session.isOktaAuthenticated) ? 
                     <div>
                       <Grid item className={classes.root}>
                         <Button variant="contained" onClick={onLogout}>Logout</Button>
