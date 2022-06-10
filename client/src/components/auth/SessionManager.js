@@ -6,11 +6,16 @@ export const useSession = () => {
     const oktaAuth = useOktaAuth();
     
     return {
-      get isAuthenticated() {
-        const isBasicAuthenticated = basicAuth.authState.isAuthenticated;
-        const isOktaAuthenticated = oktaAuth.authState && oktaAuth.authState.isAuthenticated;
+      get isBasicAuthenticated() {
+        return basicAuth.authState && basicAuth.authState.isAuthenticated;
+      },
 
-        return isBasicAuthenticated || isOktaAuthenticated;
+      get isOktaAuthenticated() {
+        return oktaAuth.authState && oktaAuth.authState.isAuthenticated;
+      },
+
+      get isAuthenticated() {
+        return this.isBasicAuthenticated || this.isOktaAuthenticated;
       },
 
       get username() {
@@ -18,6 +23,18 @@ export const useSession = () => {
                         basicAuth.authState.username : 
                     (oktaAuth.authState && oktaAuth.authState.isAuthenticated ? 
                         oktaAuth.authState.idToken && oktaAuth.authState.idToken.claims.preferred_username : null);
+      },
+
+      get initialized() {
+        return oktaAuth.authState || basicAuth.authState;
+      },
+
+      oktaSignOut: () => {
+        oktaAuth.oktaAuth.signOut();
+      },
+
+      basicSignOut: () => {
+        basicAuth.basicAuth.signOut();
       }
     };
   }

@@ -2,8 +2,7 @@ import React from 'react';
 import { makeStyles } from '@material-ui/styles';
 import { Typography, Grid, Button } from '@mui/material';
 import useMenu from './MenuManager';
-import { useOktaAuth } from '@okta/okta-react';
-import { useBasicAuth } from '../auth/BasicAuth';
+import { useSession } from '../auth/SessionManager';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -13,20 +12,19 @@ const useStyles = makeStyles(theme => ({
 
 const HomePage = () => {
   const classes = useStyles();
-  const { navigateToLabel } = useMenu();
-  const oktaAuth = useOktaAuth();
-  const basicAuth = useBasicAuth(); 
+  const { navigateToLabel } = useMenu(); 
+  const session = useSession();
 
-  if (!oktaAuth.authState) {
+  if (!session.initialized) {
     return <div>Loading...</div>;
   }
 
-  const oktaButton = oktaAuth.authState.isAuthenticated ?
-                      <Button onClick={() => {oktaAuth.oktaAuth.signOut()}} variant="contained">Okta Logout</Button> :
+  const oktaButton = session.isOktaAuthenticated ?
+                      <Button onClick={() => {session.oktaSignOut()}} variant="contained">Okta Logout</Button> :
                       <Button onClick={() => {navigateToLabel('OktaLogin')}} variant="contained">Okta Login</Button>;
 
-  const basicButton = basicAuth.authState.isAuthenticated ?
-                      <Button onClick={() => {basicAuth.basicAuth.signOut()}} variant="contained">Basic Logout</Button> :
+  const basicButton = session.isBasicAuthenticated ?
+                      <Button onClick={() => {session.basicSignOut()}} variant="contained">Basic Logout</Button> :
                       <Button onClick={() => {navigateToLabel('BasicLogin')}} variant="contained">Basic Login</Button>;
   return (
     <Grid>
