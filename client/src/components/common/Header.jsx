@@ -4,8 +4,7 @@ import { makeStyles } from '@material-ui/styles';
 import { Link as RouterLink } from 'react-router-dom';
 import { getRouteByPath, getPaths } from './MenuMap';
 import { getAppContext } from '../context/AppContext';
-import { useOktaAuth } from '@okta/okta-react';
-import { useBasicAuth } from '../auth/BasicAuth';
+import { useSession } from '../auth/SessionManager';
 
 const useStyles = makeStyles( t=>({
     toolbar: t.mixins.toolbar
@@ -15,14 +14,7 @@ const Header = () => {
     const appContext = getAppContext();
     const classes = useStyles();
     const menuIndex = appContext.State.menuIndex ? appContext.State.menuIndex : 0;
-    const oktaAuth = useOktaAuth();
-    const basicAuth = useBasicAuth();
-
-    const isAuthenticated = basicAuth.authState.isAuthenticated || (oktaAuth.authState && oktaAuth.authState.isAuthenticated);
-    const username = basicAuth.authState.isAuthenticated ? 
-                        basicAuth.authState.username : 
-                    (oktaAuth.authState && oktaAuth.authState.isAuthenticated ? 
-                        oktaAuth.authState.idToken && oktaAuth.authState.idToken.claims.preferred_username : null);
+    const session = useSession();
     
     const handleChange = (event, value) => {
         appContext.Dispatch({
@@ -47,8 +39,8 @@ const Header = () => {
                 <Container maxWidth="x3">
                     <Toolbar>
                         { 
-                            isAuthenticated ?
-                                <Typography variant='h6'> ( User - {username} ) </Typography>
+                            session.isAuthenticated ?
+                                <Typography variant='h6'> ( User - {session.username} ) </Typography>
                             :
                                 <Typography variant='h6'> ( Not Authenticated ) </Typography> }
                         

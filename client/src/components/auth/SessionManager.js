@@ -1,33 +1,23 @@
 import { useOktaAuth } from '@okta/okta-react';
-import { useBasicAuth } from './auth/BasicAuth';
+import { useBasicAuth } from './BasicAuth';
 
 export const useSession = () => {
-    // const basicAuth = useBasicAuth();
-    // const { authState } = useOktaAuth();
+    const basicAuth = useBasicAuth();
+    const oktaAuth = useOktaAuth();
     
-    // return {
-    //     ...userSessionCookie,
-    //     signIn: (session) => {
-    //         cookies.set(session, 1);
-    //         if(appContext) {
-    //             appContext.Dispatch({
-    //                 type: "LOGGED_IN"
-    //             });
-    //         }
-    //     },
+    return {
+      get isAuthenticated() {
+        const isBasicAuthenticated = basicAuth.authState.isAuthenticated;
+        const isOktaAuthenticated = oktaAuth.authState && oktaAuth.authState.isAuthenticated;
 
-    //     signOut: () => {
-    //         cookies.remove();
-    //         if(appContext) {
-    //             appContext.Dispatch({
-    //                 type: "LOGGED_OUT"
-    //             });
-    //         }
-    //     },
+        return isBasicAuthenticated || isOktaAuthenticated;
+      },
 
-    //     isAuthenticated: () => {
-    //         const isAuthenticated = (appContext && appContext.State.authenticated) || (cookies && userSessionCookie);
-    //         return isAuthenticated ? true : false;
-    //     },
-    // };
+      get username() {
+        return basicAuth.authState.isAuthenticated ? 
+                        basicAuth.authState.username : 
+                    (oktaAuth.authState && oktaAuth.authState.isAuthenticated ? 
+                        oktaAuth.authState.idToken && oktaAuth.authState.idToken.claims.preferred_username : null);
+      }
+    };
   }
