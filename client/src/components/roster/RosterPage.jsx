@@ -15,16 +15,9 @@ function RostersPage() {
   const [cols, setCols] = React.useState(columns);
   const [foundRows, setFoundRows] = React.useState([]);
   const [totalFound, setTotalFound] = React.useState();
-
-  const [position, setPosition] = React.useState();
-  const [scrollTo, SetScrollTo] = React.useState(0);
-
-  const [firstRow, setFirstRow] = React.useState(-1);
+  const [position, setPosition] = React.useState(0);
 
   const getContent1 = React.useCallback((cell) => {
-    if(firstRow==-1){
-      setFirstRow(cell[1]);
-    }
     return getData(data, cell);
   }, [data, foundRows]);
 
@@ -90,14 +83,11 @@ function RostersPage() {
           }));
   }, [data]);
 
-  const onScrollClicked = () => {
-    let y = scrollTo;
+  const ScrollToTop = (y) => {
     // console.log(`y = ${y}, top = ${top}, bottom = ${bottom}`);
-
     if(y>position.top){
       y = position.height+y-3;
     }
- 
     //console.log(`Bounds = ${JSON.stringify(gridRef1.current.getBounds(1,2))}`);
     gridRef1.current.scrollTo(0,y);
   }
@@ -107,7 +97,7 @@ function RostersPage() {
     if(isNaN(y)){
       y = 0;
     }
-    SetScrollTo(y);
+    ScrollToTop(y);
   }, [position]);
 
 
@@ -117,11 +107,10 @@ function RostersPage() {
         <TextField id="search" label="Search county" variant="standard" helperText={ totalFound } onChange={ onSearch }/>
       </Grid>
       <Grid container>
-        <Typography id="Scroll"  variant="standard" >Scroll position: {JSON.stringify(position)} --- Redndered Row: {firstRow}</Typography>
+        <Typography id="Scroll"  variant="standard" >Scroll position: {JSON.stringify(position)} </Typography>
       </Grid>
       <Grid container>
-        <TextField id="scrollTo" label="Scroll To" variant="standard" onChange={ onScrollTo }/>
-        <Button onClick={onScrollClicked}>Scroll</Button>
+        <TextField id="scrollTo" label="Scroll To" variant="standard" value={position ? position.top : 0} onChange={ onScrollTo }/>
       </Grid>
       {/* <ScrollSync> */}
         <div>
