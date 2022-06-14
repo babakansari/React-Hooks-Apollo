@@ -3,7 +3,7 @@ import {
   GridCellKind
 } from "@glideapps/glide-data-grid";
 
-export const ROW_COUNT = 11150;
+export const ROW_COUNT = 30;
 const COL_COUNT = 22;
 const COLUMN_WIDTH = 100;
 
@@ -73,6 +73,7 @@ function createFakeRow(index) {
 }
 
 export function getData(data, [col, row]) {
+  
   const dataRow = data[row];
   // dumb but simple way to do this
   const indexes = [
