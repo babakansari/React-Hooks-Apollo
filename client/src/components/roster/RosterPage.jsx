@@ -7,6 +7,7 @@ import createRowData, {getData, getColumn, getSearchData, ROW_COUNT} from "./cre
 import {Grid, TextField, Button , Typography } from '@mui/material';
 import { blue } from '@mui/material/colors';
 import * as Lodash from 'lodash';
+import { RosteringGrid } from './RosteringGrid';
 
 const data = createRowData();
 const columns = getColumn();
@@ -27,7 +28,6 @@ function RostersPage() {
 
   const gridRef1 = React.useRef(null);
   const gridRef2 = React.useRef(null);
-  const scrollRef = React.useRef(null);
   
 
   const getRowThemeOverride = React.useCallback((row) => {
@@ -66,7 +66,7 @@ function RostersPage() {
     setFoundRows(indexes);
     const matches = indexes.length;
     if(matches>0){
-      gridRef1.current.scrollTo(0, indexes[0].toString());
+      // gridRef1.current.scrollTo(0, indexes[0].toString());
       gridRef2.current.scrollTo(0, indexes[0].toString());
       setTotalFound((matches==1) ? `${matches} match` : `${matches} matches`);
     } else {
@@ -75,31 +75,18 @@ function RostersPage() {
 
   }
 
-  const onVisibleRegionChanged = React.useCallback(( range, tx, ty ) => {
-    //console.log(`range: ${JSON.stringyfy(range)}, tx: ${JSON.stringyfy(tx)}, ty: ${JSON.stringyfy(ty)}` );
-    setPosition(({
-            top: range.y,
-            height: range.height
-          }));
-  }, [data]);
-
-  const ScrollToTop = (y) => {
-    // console.log(`y = ${y}, top = ${top}, bottom = ${bottom}`);
-    if(y>position.top){
-      y = position.height+y-3;
-    }
-    //console.log(`Bounds = ${JSON.stringify(gridRef1.current.getBounds(1,2))}`);
-    gridRef1.current.scrollTo(0,y);
-  }
-
-  const onScrollTo = React.useCallback((e) => {
+  const onScrollTo = (e) => {
     let y = parseInt(e.target.value.toUpperCase());
     if(isNaN(y)){
       y = 0;
     }
-    ScrollToTop(y);
-  }, [position]);
-
+    gridRef1.current.ScrollTo(y);
+  };
+  
+  const onScroll = (position) =>{
+    console.log(`position = ${JSON.stringify(position)}`);
+    setPosition(position);
+  };
 
   return (
     <Grid container spacing={5} >
@@ -107,36 +94,26 @@ function RostersPage() {
         <TextField id="search" label="Search county" variant="standard" helperText={ totalFound } onChange={ onSearch }/>
       </Grid>
       <Grid container>
-        <Typography id="Scroll"  variant="standard" >Scroll position: {JSON.stringify(position)} </Typography>
+        {/* <Typography id="Scroll"  variant="standard" >Scroll position: {JSON.stringify(position)} </Typography> */}
+        <Typography id="Scroll"  variant="standard" >Scroll position: ??? </Typography>
       </Grid>
       <Grid container>
         <TextField id="scrollTo" label="Scroll To" variant="standard" value={position ? position.top : 0} onChange={ onScrollTo }/>
+        {/* <TextField id="scrollTo" label="Scroll To" variant="standard" onChange={ onScrollTo }/> */}
       </Grid>
       {/* <ScrollSync> */}
         <div>
-          <Grid item>            
-              <DataEditorContainer width={1000} height={292}>
-                  <DataEditor 
-                      ref={gridRef1} 
-                      scrollRef={scrollRef}
-                      getCellContent={getContent1} 
-                      onVisibleRegionChanged={ onVisibleRegionChanged }
-                      columns={cols} 
-                      rows={data.length} 
-                      freezeColumns={4} 
-                      getRowThemeOverride={getRowThemeOverride}
-                      onHeaderClicked={(colIndex, event) =>{
-                          const newColumns = [...columns];
-                          newColumns[0].icon = newColumns[0].icon ? undefined : "headerMarkdown";
-                          setCols(newColumns);
-
-                        }
-                      }
-                      showSearch={true} 
-                      getCellsForSelection={ cellsForSelection } 
-                  />
-              </DataEditorContainer>
-            
+          <Grid item>
+              <RosteringGrid
+                ref={gridRef1}
+                columns={cols} 
+                getCellContent={getContent1} 
+                rows={data.length} 
+                onScroll={onScroll}
+                freezeColumns={4} 
+                getRowThemeOverride={getRowThemeOverride}
+                getCellsForSelection={ cellsForSelection } 
+              />
           </Grid>
           <Grid item>
             
@@ -144,20 +121,21 @@ function RostersPage() {
                   <DataEditor 
                       ref={gridRef2} 
                       getCellContent={getContent2} 
-                      columns={cols} 
+                      
                       rows={data.length} 
-                      freezeColumns={4} 
-                      getRowThemeOverride={getRowThemeOverride}
+                      columns={cols} 
+                      // freezeColumns={4} 
+                      // getRowThemeOverride={getRowThemeOverride}
 
-                      onHeaderClicked={(colIndex, event) =>{
-                          const newColumns = [...columns];
-                          newColumns[0].icon = newColumns[0].icon ? undefined : "headerMarkdown";
-                          setCols(newColumns);
-                        }
-                      }
+                      // onHeaderClicked={(colIndex, event) =>{
+                      //     const newColumns = [...columns];
+                      //     newColumns[0].icon = newColumns[0].icon ? undefined : "headerMarkdown";
+                      //     setCols(newColumns);
+                      //   }
+                      // }
 
-                      showSearch={true} 
-                      getCellsForSelection={ cellsForSelection } 
+                      // showSearch={true} 
+                      // getCellsForSelection={ cellsForSelection } 
                   />
               </DataEditorContainer>
             
