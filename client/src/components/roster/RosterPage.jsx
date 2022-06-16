@@ -84,7 +84,7 @@ function RostersPage() {
   };
   
   const onScroll = (position) =>{
-    console.log(`position = ${JSON.stringify(position)}`);
+    //console.log(`position = ${JSON.stringify(position)}`);
     setPosition(position);
   };
 
@@ -101,7 +101,6 @@ function RostersPage() {
         <TextField id="scrollTo" label="Scroll To" variant="standard" value={position ? position.top : 0} onChange={ onScrollTo }/>
         {/* <TextField id="scrollTo" label="Scroll To" variant="standard" onChange={ onScrollTo }/> */}
       </Grid>
-      {/* <ScrollSync> */}
         <div>
           <Grid item>
               <RosteringGrid
@@ -109,12 +108,14 @@ function RostersPage() {
                 columns={cols} 
                 getCellContent={getContent1} 
                 rows={data.length} 
+                visibleRows={6}
                 onScroll={onScroll}
                 freezeColumns={4} 
                 getRowThemeOverride={getRowThemeOverride}
                 getCellsForSelection={ cellsForSelection } 
               />
           </Grid>
+          <br/>
           <Grid item>
             
               <DataEditorContainer width={1000} height={280} >
@@ -124,21 +125,20 @@ function RostersPage() {
                       
                       rows={data.length} 
                       columns={cols} 
-                      // freezeColumns={4} 
-                      // getRowThemeOverride={getRowThemeOverride}
+                      freezeColumns={4} 
+                      getRowThemeOverride={getRowThemeOverride}
 
-                      // onHeaderClicked={(colIndex, event) =>{
-                      //     const newColumns = [...columns];
-                      //     newColumns[0].icon = newColumns[0].icon ? undefined : "headerMarkdown";
-                      //     setCols(newColumns);
-                      //   }
-                      // }
+                      onHeaderClicked={(colIndex, event) =>{
+                          const newColumns = [...columns];
+                          newColumns[0].icon = newColumns[0].icon ? undefined : "headerMarkdown";
+                          setCols(newColumns);
+                        }
+                      }
 
-                      // showSearch={true} 
-                      // getCellsForSelection={ cellsForSelection } 
+                      showSearch={true} 
+                      getCellsForSelection={ cellsForSelection } 
                   />
               </DataEditorContainer>
-            
           </Grid>
         </div>
     </Grid>
