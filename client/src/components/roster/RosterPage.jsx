@@ -69,18 +69,15 @@ function RostersPage() {
     }
 
   }
-
-  const onScrollTo = (e) => {
-    let y = parseInt(e.target.value.toUpperCase());
-    if(isNaN(y)){
-      y = 0;
-    }
-    gridRef1.current.ScrollTo(y);
-  };
   
-  const onScroll = (position) =>{
+  const onScroll1 = React.useCallback((position) =>{
     setPosition(position);
-  };
+    gridRef2.current.ScrollTo(position.top);
+  });
+
+  const onScroll2 = React.useCallback((position) =>{
+    gridRef1.current.ScrollTo(position.top);
+  });
 
   return (
     <Grid container spacing={5} >
@@ -90,9 +87,6 @@ function RostersPage() {
       <Grid container>
         <Typography id="Scroll"  variant="standard" >Scroll position: {JSON.stringify(position)} </Typography>
       </Grid>
-      <Grid container>
-        <TextField id="scrollTo" label="Scroll To" variant="standard" value={position ? position.top : 0} onChange={ onScrollTo }/>
-      </Grid>
         <div>
           <Grid item>
               <RosteringGrid
@@ -101,7 +95,7 @@ function RostersPage() {
                 getCellContent={getContent1} 
                 rows={data.length} 
                 visibleRows={6}
-                onScroll={onScroll}
+                onScroll={onScroll1}
                 freezeColumns={4} 
                 getRowThemeOverride={getRowThemeOverride}
                 getCellsForSelection={ cellsForSelection } 
@@ -115,6 +109,7 @@ function RostersPage() {
                 getCellContent={getContent1} 
                 rows={data.length} 
                 visibleRows={6}
+                onScroll={onScroll2}
                 freezeColumns={4} 
                 getRowThemeOverride={getRowThemeOverride}
                 getCellsForSelection={ cellsForSelection } 
