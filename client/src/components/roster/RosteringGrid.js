@@ -14,12 +14,16 @@ const RosteringGridComponent = (props, forwardedRef) => {
     const gridHeight = visibleRows*(rowHeight+1) + headerHeight+1 + epsilon;
 
     const onVisibleRegionChanged = ( range, tx, ty ) => {
+        if(!props.onScroll){
+            return;
+        }
         const currentPosition = {
             top: range.y,
             left: range.x,
             height: range.height,
             width: range.width
         };
+        
         props.onScroll(currentPosition);
         setPosition(currentPosition);
     };
