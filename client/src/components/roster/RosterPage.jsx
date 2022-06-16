@@ -99,7 +99,6 @@ function RostersPage() {
       </Grid>
       <Grid container>
         <TextField id="scrollTo" label="Scroll To" variant="standard" value={position ? position.top : 0} onChange={ onScrollTo }/>
-        {/* <TextField id="scrollTo" label="Scroll To" variant="standard" onChange={ onScrollTo }/> */}
       </Grid>
         <div>
           <Grid item>

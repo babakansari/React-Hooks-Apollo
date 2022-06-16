@@ -27,12 +27,6 @@ const RosteringGridComponent = (props, forwardedRef) => {
     const ScrollTo =  React.useCallback( (top, left) => {
         let y = (top>position.top) ? position.height+top-3 : top; 
         gridRef.current.scrollTo(0,y);
-
-        // const cellBounds = gridRef.current.getBounds(1,1);
-        // console.log(`cellBounds = ${JSON.stringify(cellBounds)}`);
-        
-        // const headerBounds = gridRef.current.getBounds(0,0);
-        // console.log(`headerBounds = ${JSON.stringify(headerBounds)}`);
       });
 
     React.useImperativeHandle(
