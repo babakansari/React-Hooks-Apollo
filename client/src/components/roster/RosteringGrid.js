@@ -7,14 +7,15 @@ import {
 const RosteringGridComponent = (props, forwardedRef) => {
     const gridRef = React.useRef(null);
     const [position, setPosition] = React.useState(0);
+    const [scrollEnabled, setScrollEnabled] = React.useState(true);
     const rowHeight = props.rowHeight ? props.rowHeight : 34;
     const headerHeight = props.headerHeight ? props.headerHeight : 36;
     const visibleRows = props.visibleRows;
     const epsilon = 20;
     const gridHeight = visibleRows*(rowHeight+1) + headerHeight+1 + epsilon;
 
-    const onVisibleRegionChanged = ( range, tx, ty ) => {
-        if(!props.onScroll){
+    const onVisibleRegionChanged = React.useCallback( ( range, tx, ty ) => {
+        if(!props.onScroll || !scrollEnabled){
             return;
         }
         const currentPosition = {
@@ -23,22 +24,32 @@ const RosteringGridComponent = (props, forwardedRef) => {
             height: range.height,
             width: range.width
         };
-        
-        props.onScroll(currentPosition);
+        const event = {
+            target: forwardedRef,
+            position: currentPosition
+        }
+
+        props.onScroll(event);
         setPosition(currentPosition);
-    };
+
+    }, [scrollEnabled]);
     
-    const ScrollTo =  React.useCallback( (top, left) => {
+    const ScrollTo =  (top, left) => {
         let y = (top>position.top) ? position.height+top-3 : top; 
         gridRef.current.scrollTo(0,y);
-      });
+      };
+
+    const OnScrollEnabled = (enabled) => {
+        setScrollEnabled(enabled);
+    }
 
     React.useImperativeHandle(
         forwardedRef,
         () => ({
             ScrollTo,
+            OnScrollEnabled
         }),
-        [ ScrollTo ]
+        [ ScrollTo, OnScrollEnabled ]
     );
     
     return (

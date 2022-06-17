@@ -13,12 +13,9 @@ function RostersPage() {
   const [foundRows, setFoundRows] = React.useState([]);
   const [totalFound, setTotalFound] = React.useState();
   const [position, setPosition] = React.useState(0);
+  const [scrollingGrid, setScrollingGrid] = React.useState();
 
-  const getContent1 = React.useCallback((cell) => {
-    return getData(data, cell);
-  }, [data, foundRows]);
-
-  const getContent2 = React.useCallback((cell) => {
+  const getContent = React.useCallback((cell) => {
     return getData(data, cell);
   }, [data, foundRows]);
 
@@ -70,14 +67,32 @@ function RostersPage() {
 
   }
   
-  const onScroll1 = React.useCallback((position) =>{
-    setPosition(position);
-    gridRef2.current.ScrollTo(position.top);
-  });
+  const onScroll1 =(e) =>{
+    gridRef1.current.OnScrollEnabled(false);
+    gridRef2.current.OnScrollEnabled(false);
+    gridRef2.current.ScrollTo(e.position.top);
+    gridRef2.current.OnScrollEnabled(true);
+    gridRef1.current.OnScrollEnabled(true);
 
-  const onScroll2 = React.useCallback((position) =>{
-    gridRef1.current.ScrollTo(position.top);
-  });
+    setPosition(e.position);
+  };
+
+  const onScroll2 = (e) =>{
+    gridRef1.current.OnScrollEnabled(false);
+    gridRef2.current.OnScrollEnabled(false);
+    gridRef1.current.ScrollTo(e.position.top);
+    gridRef2.current.OnScrollEnabled(true);
+    gridRef1.current.OnScrollEnabled(true);
+  };
+
+  const onScroll = React.useCallback((e) =>{
+  
+    //if(e.target && e.target.current &&  e.target.current.ScrollTo){
+      e.target.current.ScrollTo(e.position.top);
+    //}
+    
+
+  }, []);
 
   return (
     <Grid container spacing={5} >
@@ -92,7 +107,7 @@ function RostersPage() {
               <RosteringGrid
                 ref={gridRef1}
                 columns={cols} 
-                getCellContent={getContent1} 
+                getCellContent={getContent} 
                 rows={data.length} 
                 visibleRows={6}
                 onScroll={onScroll1}
@@ -106,7 +121,7 @@ function RostersPage() {
               <RosteringGrid
                 ref={gridRef2}
                 columns={cols} 
-                getCellContent={getContent1} 
+                getCellContent={getContent} 
                 rows={data.length} 
                 visibleRows={6}
                 onScroll={onScroll2}
