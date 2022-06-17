@@ -3,7 +3,7 @@ import createRowData, {getData, getColumn, getSearchData} from "./createRowData"
 import {Grid, TextField , Typography } from '@mui/material';
 import { blue } from '@mui/material/colors';
 import * as Lodash from 'lodash';
-import { RosteringGrid } from './RosteringGrid';
+import { ScrollableGrid } from './ScrollableGrid';
 
 const data = createRowData();
 const columns = getColumn();
@@ -94,7 +94,7 @@ function RostersPage() {
       </Grid>
         <div>
           <Grid item>
-              <RosteringGrid
+              <ScrollableGrid
                 ref={gridRef1}
                 columns={cols} 
                 getCellContent={getContent} 
@@ -108,7 +108,7 @@ function RostersPage() {
           </Grid>
           <br/>
           <Grid item>
-              <RosteringGrid
+              <ScrollableGrid
                 ref={gridRef2}
                 columns={cols} 
                 getCellContent={getContent} 

@@ -4,7 +4,7 @@ import {
     DataEditor
   } from "@glideapps/glide-data-grid";
 
-const RosteringGridComponent = (props, forwardedRef) => {
+const ScrollableGridImpl = (props, forwardedRef) => {
     const gridRef = React.useRef(null);
     const [position, setPosition] = React.useState(0);
     const [scrollEnabled, setScrollEnabled] = React.useState(true);
@@ -71,4 +71,4 @@ const RosteringGridComponent = (props, forwardedRef) => {
     );
 }
 
-export const RosteringGrid = React.forwardRef(RosteringGridComponent);
+export const ScrollableGrid = React.forwardRef(ScrollableGridImpl);
