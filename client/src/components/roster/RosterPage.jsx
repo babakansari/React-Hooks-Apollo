@@ -13,7 +13,6 @@ function RostersPage() {
   const [foundRows, setFoundRows] = React.useState([]);
   const [totalFound, setTotalFound] = React.useState();
   const [position, setPosition] = React.useState(0);
-  const [scrollingGrid, setScrollingGrid] = React.useState();
 
   const getContent = React.useCallback((cell) => {
     return getData(data, cell);
@@ -68,21 +67,12 @@ function RostersPage() {
   }
   
   const onScroll1 =(e) =>{
-    gridRef1.current.OnScrollEnabled(false);
-    gridRef2.current.OnScrollEnabled(false);
     gridRef2.current.ScrollTo(e.position.top);
-    gridRef2.current.OnScrollEnabled(true);
-    gridRef1.current.OnScrollEnabled(true);
-
     setPosition(e.position);
   };
 
   const onScroll2 = (e) =>{
-    gridRef1.current.OnScrollEnabled(false);
-    gridRef2.current.OnScrollEnabled(false);
     gridRef1.current.ScrollTo(e.position.top);
-    gridRef2.current.OnScrollEnabled(true);
-    gridRef1.current.OnScrollEnabled(true);
   };
 
   const onScroll = React.useCallback((e) =>{

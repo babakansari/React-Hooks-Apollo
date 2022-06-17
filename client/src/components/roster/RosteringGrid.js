@@ -39,17 +39,18 @@ const RosteringGridComponent = (props, forwardedRef) => {
         gridRef.current.scrollTo(0,y);
       };
 
-    const OnScrollEnabled = (enabled) => {
-        setScrollEnabled(enabled);
-    }
-
     React.useImperativeHandle(
         forwardedRef,
         () => ({
             ScrollTo,
-            OnScrollEnabled
+            get IsScrollEnabled (){
+                return scrollEnabled;
+            },
+            set IsScrollEnabled (value){
+                setScrollEnabled(value);
+            }
         }),
-        [ ScrollTo, OnScrollEnabled ]
+        [ ScrollTo ]
     );
     
     return (
