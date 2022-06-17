@@ -21,6 +21,9 @@ function RostersPage() {
   const gridRef1 = React.useRef(null);
   const gridRef2 = React.useRef(null);
   
+  const scrollableGridRefs = [gridRef1, gridRef2];
+
+
 
   const getRowThemeOverride = React.useCallback((row) => {
       if( foundRows.indexOf(row.toString())>=0 ) {
@@ -66,23 +69,20 @@ function RostersPage() {
 
   }
   
-  const onScroll1 =(e) =>{
-    gridRef2.current.ScrollTo(e.position.top);
-    setPosition(e.position);
+  const onScroll = (e) =>{
+
+    if(!e.target || !e.target.current){
+      return;
+    }
+
+    for(const gridRef of scrollableGridRefs){
+      if(gridRef === e.target){
+        // setPosition(e.position);
+        continue;
+      }
+      gridRef.current.ScrollTo(e.position.top);
+    }
   };
-
-  const onScroll2 = (e) =>{
-    gridRef1.current.ScrollTo(e.position.top);
-  };
-
-  const onScroll = React.useCallback((e) =>{
-  
-    //if(e.target && e.target.current &&  e.target.current.ScrollTo){
-      e.target.current.ScrollTo(e.position.top);
-    //}
-    
-
-  }, []);
 
   return (
     <Grid container spacing={5} >
@@ -100,7 +100,7 @@ function RostersPage() {
                 getCellContent={getContent} 
                 rows={data.length} 
                 visibleRows={6}
-                onScroll={onScroll1}
+                onScroll={onScroll}
                 freezeColumns={4} 
                 getRowThemeOverride={getRowThemeOverride}
                 getCellsForSelection={ cellsForSelection } 
@@ -114,7 +114,7 @@ function RostersPage() {
                 getCellContent={getContent} 
                 rows={data.length} 
                 visibleRows={6}
-                onScroll={onScroll2}
+                onScroll={onScroll}
                 freezeColumns={4} 
                 getRowThemeOverride={getRowThemeOverride}
                 getCellsForSelection={ cellsForSelection } 
