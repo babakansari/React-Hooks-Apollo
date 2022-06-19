@@ -13,9 +13,10 @@ const ScrollableGridImpl = (props, forwardedRef) => {
     const visibleRows = props.visibleRows;
     const epsilon = 20;
     const gridHeight = visibleRows*(rowHeight+1) + headerHeight+1 + epsilon;
+    let OnScrollEvent;
 
     const onVisibleRegionChanged = React.useCallback( ( range, tx, ty ) => {
-        if(!props.onScroll || !scrollEnabled){
+        if(!OnScrollEvent || !scrollEnabled){
             return;
         }
         const currentPosition = {
@@ -29,7 +30,10 @@ const ScrollableGridImpl = (props, forwardedRef) => {
             position: currentPosition
         }
 
-        props.onScroll(event);
+        if(OnScrollEvent){
+            OnScrollEvent(event);
+        }
+        
         setPosition(currentPosition);
 
     }, [scrollEnabled]);
@@ -43,7 +47,10 @@ const ScrollableGridImpl = (props, forwardedRef) => {
         forwardedRef,
         () => ({
             ScrollTo,
-            get IsScrollEnabled (){
+            set OnScroll (value) {
+                OnScrollEvent = value;
+            }, 
+            get IsScrollEnabled () {
                 return scrollEnabled;
             },
             set IsScrollEnabled (value){
