@@ -20,7 +20,7 @@ function RostersPage() {
 
   const gridRef1 = React.useRef(null);
   const gridRef2 = React.useRef(null);  
-  const scrollableGridRefs = [gridRef1, gridRef2];
+  const gridRefs = React.useRef([gridRef1, gridRef2]);
 
   const getRowThemeOverride = React.useCallback((row) => {
       if( foundRows.indexOf(row.toString())>=0 ) {
@@ -70,7 +70,7 @@ function RostersPage() {
     if(!e.target || !e.target.current){
       return;
     }
-    for(const gridRef of scrollableGridRefs){
+    for(const gridRef of gridRefs.current){
       if(gridRef === e.target){
         // setPosition(e.position);
         continue;
@@ -81,7 +81,7 @@ function RostersPage() {
 
   React.useEffect( ()=>{
 
-    for(const gridRef of scrollableGridRefs){
+    for(const gridRef of gridRefs.current){
       gridRef.current.OnScroll = (e) => {
         onScroll(e);
       };
