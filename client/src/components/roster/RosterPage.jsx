@@ -4,6 +4,7 @@ import {Grid, TextField , Typography } from '@mui/material';
 import { blue } from '@mui/material/colors';
 import * as Lodash from 'lodash';
 import { ScrollableGrid } from './ScrollableGrid';
+import { useScrollableGrids } from './useScrollableGrids';
 
 const data = createRowData();
 const columns = getColumn();
@@ -21,6 +22,7 @@ function RostersPage() {
   const gridRef1 = React.useRef(null);
   const gridRef2 = React.useRef(null);  
   const gridRefs = React.useRef([gridRef1, gridRef2]);
+  useScrollableGrids(gridRefs);
 
   const getRowThemeOverride = React.useCallback((row) => {
       if( foundRows.indexOf(row.toString())>=0 ) {
@@ -65,29 +67,6 @@ function RostersPage() {
     }
 
   }
-
-  const onScroll = (e) =>{
-    if(!e.target || !e.target.current){
-      return;
-    }
-    for(const gridRef of gridRefs.current){
-      if(gridRef === e.target){
-        // setPosition(e.position);
-        continue;
-      }
-      gridRef.current.ScrollTo(e.position.top);
-    }
-  };
-
-  React.useEffect( ()=>{
-
-    for(const gridRef of gridRefs.current){
-      gridRef.current.OnScroll = (e) => {
-        onScroll(e);
-      };
-    }
-
-  }, [gridRef1, gridRef2] );
 
   return (
     <Grid container spacing={5} >

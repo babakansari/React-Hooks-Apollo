@@ -36,7 +36,7 @@ const ScrollableGridImpl = (props, forwardedRef) => {
         
         setPosition(currentPosition);
 
-    }, [scrollEnabled]);
+    }, [OnScrollEvent, scrollEnabled, forwardedRef]);
     
     const ScrollTo =  (top, left) => {
         let y = (top>position.top) ? position.height+top-3 : top; 
