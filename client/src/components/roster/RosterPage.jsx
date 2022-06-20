@@ -22,7 +22,9 @@ function RostersPage() {
   const gridRef1 = React.useRef(null);
   const gridRef2 = React.useRef(null);  
   const gridRefs = React.useRef([gridRef1, gridRef2]);
-  useScrollableGrids(gridRefs);
+  useScrollableGrids(gridRefs, (e) => {
+    setPosition(e.position);
+  });
 
   const getRowThemeOverride = React.useCallback((row) => {
       if( foundRows.indexOf(row.toString())>=0 ) {
