@@ -17,7 +17,7 @@ function RostersPage() {
 
   const getContent = React.useCallback((cell) => {
     return getData(data, cell);
-  }, [data, foundRows]);
+  }, []);
 
   const gridRef1 = React.useRef(null);
   const gridRef2 = React.useRef(null);  
@@ -38,7 +38,7 @@ function RostersPage() {
   const cellsForSelection = React.useCallback((selection) => 
   {
     return getSearchData(data, selection);
-  }, [data]);
+  }, []);
 
   
   function onSearch(e){
@@ -63,7 +63,7 @@ function RostersPage() {
     const matches = indexes.length;
     if(matches>0){
       gridRef2.current.scrollTo(0, indexes[0].toString());
-      setTotalFound((matches==1) ? `${matches} match` : `${matches} matches`);
+      setTotalFound((matches===1) ? `${matches} match` : `${matches} matches`);
     } else {
       setTotalFound();
     }
