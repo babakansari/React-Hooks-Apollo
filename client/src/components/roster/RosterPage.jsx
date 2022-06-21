@@ -22,7 +22,7 @@ function RostersPage() {
   const gridRef1 = React.useRef(null);
   const gridRef2 = React.useRef(null);  
   const gridRefs = React.useRef([gridRef1, gridRef2]);
-  useScrollableGrids(gridRefs, (e) => {
+  useScrollableGrids(gridRefs.current, (e) => {
     setPosition(e.position);
   });
 
@@ -81,7 +81,7 @@ function RostersPage() {
         <div>
           <Grid item>
               <ScrollableGrid
-                ref={gridRef1}
+                ref={gridRefs.current[0]}
                 columns={cols} 
                 getCellContent={getContent} 
                 rows={data.length} 
@@ -94,7 +94,7 @@ function RostersPage() {
           <br/>
           <Grid item>
               <ScrollableGrid
-                ref={gridRef2}
+                ref={gridRefs.current[1]}
                 columns={cols} 
                 getCellContent={getContent} 
                 rows={data.length} 
