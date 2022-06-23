@@ -1,42 +1,36 @@
 import * as React from 'react';
 
-export const useScrollableGrids = (gridRefs,  isLock, setLock, onScrolling) => {
-    
-    React.useEffect( ()=>{
+export const useScrollableGrids = (gridRefs,  onScrolling) => {
+  const locksRef = React.useRef(0);
 
-      const onScroll = (e) => {
-        if (!e.target || !e.target.current) {
-          return;
-        }
-        try{
-          if(isLock){
-            return;
-          }
-          setLock(true); // Acquire lock
-  
-          for (const gridRef of gridRefs) {
-            if (gridRef === e.target) {
-              if (onScrolling) {
-                onScrolling(e);
-              }
-              continue;
-            }
-            gridRef.current.ScrollTo(e.position.top);
-          }
-  
-        } finally {
-          setLock(false); // Acquire lock
-        }
-        
-      };
+  React.useEffect( ()=>{
 
-      for (const [key, gridRef] of gridRefs) {
-        gridRef.current.Name = key;
-        gridRef.current.OnScroll = onScroll;
+    const onScroll = (e) => {
+      if (!e.target || !e.target.current) {
+        return;
       }
-    
-    }, [gridRefs] );
+      
+      if (locksRef.current > 0) {
+        locksRef.current -= 1; // Release a lock
+        return;
+      }
+      locksRef.current = gridRefs.current.length - 1; // Acquire locks
 
-    return {
+      for (const gridRef of gridRefs.current) {
+        if (gridRef === e.target) {
+          if (onScrolling) {
+            onScrolling(e);
+          }
+          continue;
+        }
+        gridRef.current.ScrollTo(e.position.top);
+      }
     };
+
+    for (const gridRef of gridRefs.current) {
+      gridRef.current.OnScroll = onScroll;
+    }
+  
+  }, [gridRefs, onScrolling] );
+
 }
