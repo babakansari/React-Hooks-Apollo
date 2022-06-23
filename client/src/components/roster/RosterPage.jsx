@@ -14,17 +14,48 @@ function RostersPage() {
   const [foundRows, setFoundRows] = React.useState([]);
   const [totalFound, setTotalFound] = React.useState();
   const [position, setPosition] = React.useState(0);
-
   const getContent = React.useCallback((cell) => {
     return getData(data, cell);
+  }, []); 
+  const gridRef1 = React.useRef(null);
+  const gridRef2 = React.useRef(null); 
+  const gridRef3 = React.useRef(null);
+  const gridRef4 = React.useRef(null);
+  const locksRef = React.useRef(0);
+  const gridRefs = React.useRef([gridRef1, gridRef2, gridRef3, gridRef4]);
+  
+  React.useEffect(() => {
+
+    const onScroll = (e) => {
+      if (!e.target || !e.target.current) {
+        return;
+      }
+     
+      if (locksRef.current > 0) {
+        locksRef.current -= 1; // Release a lock
+        return;
+      }
+      locksRef.current = gridRefs.current.length - 1; // Acquire locks
+
+      for (const gridRef of gridRefs.current) {
+        if (gridRef === e.target) {
+          // if (onScrolling) {
+          //   onScrolling(e);
+          // }
+          setPosition(e);
+          continue;
+        }
+        gridRef.current.ScrollTo(e.position.top);
+      }
+    };
+   
+    for (const gridRef of gridRefs.current) {
+      gridRef.current.OnScroll = onScroll;
+    }
+
   }, []);
 
-  const gridRef1 = React.useRef(null);
-  const gridRef2 = React.useRef(null);  
-  const gridRefs = React.useRef([gridRef1, gridRef2]);
-  useScrollableGrids(gridRefs.current, (e) => {
-    setPosition(e.position);
-  });
+  
 
   const getRowThemeOverride = React.useCallback((row) => {
       if( foundRows.indexOf(row.toString())>=0 ) {
@@ -40,7 +71,7 @@ function RostersPage() {
     return getSearchData(data, selection);
   }, []);
 
-  
+
   function onSearch(e){
     const value = e.target.value.toUpperCase();
 
@@ -70,6 +101,25 @@ function RostersPage() {
 
   }
 
+  let scrollableGrids=[];
+  for(let i=0; i<4; i++) {
+    scrollableGrids.push(
+      <Grid item key={i}>
+        <ScrollableGrid
+          ref={gridRefs.current[i]}
+          name={`Grid_${i}`}
+          columns={cols} 
+          getCellContent={getContent} 
+          rows={data.length} 
+          visibleRows={3}
+          freezeColumns={4} 
+          getRowThemeOverride={getRowThemeOverride}
+          getCellsForSelection={ cellsForSelection } 
+        />
+      </Grid>
+    );
+  }
+
   return (
     <Grid container spacing={5} >
       <Grid container>
@@ -79,31 +129,7 @@ function RostersPage() {
         <Typography id="Scroll"  variant="standard" >Scroll position: {JSON.stringify(position)} </Typography>
       </Grid>
         <div>
-          <Grid item>
-              <ScrollableGrid
-                ref={gridRefs.current[0]}
-                columns={cols} 
-                getCellContent={getContent} 
-                rows={data.length} 
-                visibleRows={6}
-                freezeColumns={4} 
-                getRowThemeOverride={getRowThemeOverride}
-                getCellsForSelection={ cellsForSelection } 
-              />
-          </Grid>
-          <br/>
-          <Grid item>
-              <ScrollableGrid
-                ref={gridRefs.current[1]}
-                columns={cols} 
-                getCellContent={getContent} 
-                rows={data.length} 
-                visibleRows={6}
-                freezeColumns={4} 
-                getRowThemeOverride={getRowThemeOverride}
-                getCellsForSelection={ cellsForSelection } 
-              />
-          </Grid>
+          {scrollableGrids}
         </div>
     </Grid>
   );
