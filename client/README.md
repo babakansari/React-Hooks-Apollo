@@ -17,6 +17,9 @@ Setup Okta:
     - Add your website ([localhost](http://localhost:3000)) to the trusted origins in API security for CORS access
   - Create or use an Okta user to login to the app
     - Use the provided hint for Basic Login password
+- To add and use custom claims:
+  - Add custom claims to [Okta API security](https://developer.okta.com/docs/guides/customize-tokens-returned-from-okta/main/#add-a-custom-claim-to-a-token)
+  - It would be available in the access or id tokens depending where it is addeds
 
 ## Available Scripts
 
