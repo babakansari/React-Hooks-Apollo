@@ -1,7 +1,9 @@
 import * as React from 'react';
 
-export const useScrollableGrids = (gridRefs,  onScrolling) => {
+export const useScrollableGrids = (gridRefs) => {
   const locksRef = React.useRef(0);
+  let onScrolling = null;
+  const OnScroll = (scrollEvent) => {onScrolling = scrollEvent};
 
   const ScrollTo = (top, left) => {
     const y = _convertToNumber(top);
@@ -25,7 +27,7 @@ export const useScrollableGrids = (gridRefs,  onScrolling) => {
   const _syncScrollTo = React.useCallback( (target, top, left) => {
     for (const gridRef of gridRefs.current) {
       if (gridRef === target) {
-        if (onScrolling) {
+        if(onScrolling) {
           onScrolling({target, top, left});
         }
         continue;
@@ -53,9 +55,10 @@ export const useScrollableGrids = (gridRefs,  onScrolling) => {
       gridRef.current.OnScroll = onScroll;
     }
   
-  }, [gridRefs, onScrolling, _syncScrollTo] );
+  }, [gridRefs, _syncScrollTo] );
 
   return {
-    ScrollTo
+    ScrollTo,
+    OnScroll
   };
 }

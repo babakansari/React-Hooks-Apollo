@@ -23,7 +23,10 @@ function RostersPage() {
   const gridRef4 = React.useRef(null);
   const gridRefs = React.useRef([gridRef1, gridRef2, gridRef3, gridRef4]);
   
-  const { ScrollTo } = useScrollableGrids(gridRefs, (e) => {
+
+  const { ScrollTo, OnScroll } = useScrollableGrids(gridRefs);
+
+  OnScroll((e) => {
     setPosition(e);
   });
 
