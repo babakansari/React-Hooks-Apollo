@@ -9,11 +9,14 @@ const ScrollableGridImpl = (props, forwardedRef) => {
     const gridRef = React.useRef(null);
     const gridName = React.useRef(props.name);
     const [position, setPosition] = React.useState(0);
+    const epsilon = 20;
     const rowHeight = props.rowHeight ? props.rowHeight : 34;
     const headerHeight = props.headerHeight ? props.headerHeight : 36;
-    const visibleRows = props.visibleRows;
-    const epsilon = 20;
-    const gridHeight = visibleRows*(rowHeight+1) + headerHeight+1 + epsilon;
+    const height = props.height;
+    const rowsTotalHeight = height - headerHeight - epsilon - 1;
+    const visibleRows =
+      props.visibleRows || Math.floor(rowsTotalHeight / (rowHeight + 1)) - 1;
+    const gridHeight = visibleRows * (rowHeight + 1) + headerHeight + 1 + epsilon;
     const onScrollEventRef = React.useRef(null);
 
     const onVisibleRegionChanged = React.useCallback( ( range, tx, ty ) => {
