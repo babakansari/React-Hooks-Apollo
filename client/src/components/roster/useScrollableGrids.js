@@ -11,7 +11,7 @@ export const useScrollableGrids = (gridRefs,  onScrolling) => {
     }
     const gridRef = gridRefs.current[0];
     
-    _syncScrollTo(gridRef, y, left);
+    gridRef.current.ScrollTo(y, left);
   }
 
   const _convertToNumber = (value) => {
