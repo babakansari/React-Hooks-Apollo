@@ -19,7 +19,8 @@ Setup Okta:
     - Use the provided hint for Basic Login password
 - To add and use custom claims:
   - Add custom claims to [Okta API security](https://developer.okta.com/docs/guides/customize-tokens-returned-from-okta/main/#add-a-custom-claim-to-a-token)
-  - It would be available in the access or id tokens depending where it is addeds
+  - It would be available in the access or id tokens depending where it is added
+  - Use [Okta Expression Language overview] (https://developer.okta.com/docs/reference/okta-expression-language) to construct the value for the claim
 
 ## Available Scripts
 
