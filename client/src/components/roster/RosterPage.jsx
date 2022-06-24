@@ -12,7 +12,7 @@ const columns = getColumn();
 function RostersPage() {
   const [cols] = React.useState(columns);
   const [foundRows, setFoundRows] = React.useState([]);
-  const [totalFound, setTotalFound] = React.useState();
+  const [totalFound, setTotalFound] = React.useState(`Search result ...`);
   const [position, setPosition] = React.useState(0);
   const getContent = React.useCallback((cell) => {
     return getData(data, cell);
@@ -23,7 +23,7 @@ function RostersPage() {
   const gridRef4 = React.useRef(null);
   const gridRefs = React.useRef([gridRef1, gridRef2, gridRef3, gridRef4]);
   
-  useScrollableGrids(gridRefs, (e) => {
+  const { ScrollTo } = useScrollableGrids(gridRefs, (e) => {
     setPosition(e);
   });
 
@@ -47,14 +47,14 @@ function RostersPage() {
 
     if(value.length<1){
       setFoundRows([]);
-      setTotalFound();
+      setTotalFound(0);
       return;
     }
   
     const indexes = Lodash.keys(Lodash.pickBy(data, 
       function(v, k){
-        //if( v.county.startsWith(value) ) {
-        if( v.county.toUpperCase().indexOf(value)>=0 ) {
+        if( v.county.toUpperCase().startsWith(value) ) {
+        //if( v.county.toUpperCase().indexOf(value)>=0 ) {
           return true;
         }
       }
@@ -63,16 +63,16 @@ function RostersPage() {
     setFoundRows(indexes);
     const matches = indexes.length;
     if(matches>0){
-      gridRef2.current.scrollTo(0, indexes[0].toString());
+      ScrollTo(parseInt(indexes[0]), 0);
       setTotalFound((matches===1) ? `${matches} match` : `${matches} matches`);
     } else {
-      setTotalFound();
+      setTotalFound(`Search result ...`);
     }
 
   }
 
   let scrollableGrids=[];
-  for(let i=0; i<4; i++) {
+  for(let i=0; i<gridRefs.current.length; i++) {
     scrollableGrids.push(
       <Grid item key={i}>
         <ScrollableGrid

@@ -3,6 +3,7 @@ import {
     DataEditorContainer,
     DataEditor
   } from "@glideapps/glide-data-grid";
+import { GridEvent, GridPosition } from './ScrollableGridTypes';
 
 const ScrollableGridImpl = (props, forwardedRef) => {
     const gridRef = React.useRef(null);
@@ -19,16 +20,8 @@ const ScrollableGridImpl = (props, forwardedRef) => {
         if(!onScrollEventRef){
             return;
         }
-        const currentPosition = {
-            top: range.y,
-            left: range.x,
-            height: range.height,
-            width: range.width
-        };
-        const event = {
-            target: forwardedRef,
-            position: currentPosition
-        }
+        const currentPosition = GridPosition(range.y, range.x,  range.height, range.width);
+        const event = GridEvent(forwardedRef, currentPosition); 
 
         if(onScrollEventRef.current){
             onScrollEventRef.current(event);

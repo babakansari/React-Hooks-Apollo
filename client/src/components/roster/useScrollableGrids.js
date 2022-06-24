@@ -3,8 +3,38 @@ import * as React from 'react';
 export const useScrollableGrids = (gridRefs,  onScrolling) => {
   const locksRef = React.useRef(0);
 
-  React.useEffect( ()=>{
+  const ScrollTo = (top, left) => {
+    const y = _convertToNumber(top);
 
+    if( gridRefs.current.length <1){
+      throw new RangeError("No grid is in the set");
+    }
+    const gridRef = gridRefs.current[0];
+    
+    _syncScrollTo(gridRef, y, left);
+  }
+
+  const _convertToNumber = (value) => {
+    const number = parseInt(value);
+    if (isNaN(number)) { 
+      throw new TypeError(`${value} is not a number`);
+    }
+    return number;
+  }
+
+  const _syncScrollTo = React.useCallback( (target, top, left) => {
+    for (const gridRef of gridRefs.current) {
+      if (gridRef === target) {
+        if (onScrolling) {
+          onScrolling({target, top, left});
+        }
+        continue;
+      }
+      gridRef.current.ScrollTo(top, left);
+    }
+  }, [gridRefs, onScrolling]);
+
+  React.useEffect( ()=>{
     const onScroll = (e) => {
       if (!e.target || !e.target.current) {
         return;
@@ -16,21 +46,16 @@ export const useScrollableGrids = (gridRefs,  onScrolling) => {
       }
       locksRef.current = gridRefs.current.length - 1; // Acquire locks
 
-      for (const gridRef of gridRefs.current) {
-        if (gridRef === e.target) {
-          if (onScrolling) {
-            onScrolling(e);
-          }
-          continue;
-        }
-        gridRef.current.ScrollTo(e.position.top);
-      }
+      _syncScrollTo(e.target, e.position.top, e.position.left);
     };
 
     for (const gridRef of gridRefs.current) {
       gridRef.current.OnScroll = onScroll;
     }
   
-  }, [gridRefs, onScrolling] );
+  }, [gridRefs, onScrolling, _syncScrollTo] );
 
+  return {
+    ScrollTo
+  };
 }
