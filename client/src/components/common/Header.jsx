@@ -57,6 +57,12 @@ const Header = () => {
                 </Container>
             </AppBar>
             <div className={classes.toolbar}/>
+            <hr
+                style={{
+                    height: 5,
+                    border: 0
+                }}
+            />
         </div>
         
      );
