@@ -1,5 +1,5 @@
 import React from 'react';
-import { ApolloClient, ApolloLink, HttpLink, InMemoryCache } from 'apollo-boost';
+import { ApolloClient, ApolloLink, HttpLink, InMemoryCache } from '@apollo/client';
 import { setContext } from '@apollo/client/link/context';
 import { ApolloProvider } from '@apollo/react-hooks';
 import { useSession } from './auth/SessionManager';

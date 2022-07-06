@@ -1,6 +1,7 @@
 import gql from 'graphql-tag';
 
-export const rosteringQuery = gql`query{
+export const rosteringQuery = gql`
+query {
     rostering {
         id
         name

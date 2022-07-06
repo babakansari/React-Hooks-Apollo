@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@apollo/client": "^3.6.9",
     "@apollo/react-hooks": "^4.0.0",
     "@emotion/react": "^11.8.2",
     "@emotion/styled": "^11.8.1",
@@ -14,7 +15,6 @@
     "@testing-library/jest-dom": "^5.14.1",
     "@testing-library/react": "^12.0.0",
     "@testing-library/user-event": "^13.2.1",
-    "apollo-boost": "^0.4.9",
     "axios": "^0.26.1",
     "dotenv": "^16.0.1",
     "graphql": "^16.3.0",
