@@ -46,6 +46,31 @@ const ScrollableGridImpl = (props, forwardedRef) => {
         event.preventDefault();
     };
 
+    const onDrawCustomCell = (ctx, cell, theme, rect, hoverAmount) => {
+    
+        const underlinedText = (ctx, text, rect, leftOffset, color, thickness) => {
+            const { x, y, height } = rect;
+            const textMeasure = ctx.measureText(text);
+            const textWidth = textMeasure.width;
+            const textHeight = textMeasure.fontBoundingBoxAscent + textMeasure.fontBoundingBoxDescent;
+
+            ctx.save();
+            ctx.fillStyle = color ;
+            ctx.fillText(text, x + leftOffset, y + textHeight);
+            ctx.fillRect(x + leftOffset, y + height - 2, textWidth-2, thickness);
+            ctx.restore();
+          }
+
+        if (cell.kind !== "text" )
+            return false;
+
+        if (cell.displayData.indexOf("an")>=0){
+            underlinedText(ctx, cell.displayData, rect, 10, "black" ,1);
+            return true;
+        }
+        return false;
+    };
+    
     const handleClose = () => {
         setAnchorEl(null);
       };
@@ -71,44 +96,43 @@ const ScrollableGridImpl = (props, forwardedRef) => {
     
     return (
         <div onContextMenu={(e)=> e.preventDefault()} ref={divRef}>
-            <>
-                <DataEditor 
-                    ref={gridRef}
-                    width={1000}
-                    height={gridHeight}
-                    getCellContent={props.getCellContent} 
-                    columns={props.columns} 
-                    rows={props.rows}
-                    onVisibleRegionChanged={ onVisibleRegionChanged }
-                    freezeColumns={props.freezeColumns}
-                    getRowThemeOverride={props.getRowThemeOverride}
-                    getCellsForSelection={props.getCellsForSelection}
-                    rowHeight={rowHeight}
-                    headerHeight={headerHeight}
-                    onCellContextMenu={onCellContextMenu}
-                />
-                <Menu
-                    id="basic-menu"
-                    anchorEl={anchorEl}
-                    open={open}
-                    onClose={handleClose}
-                    MenuListProps={{
-                        'aria-labelledby': 'basic-button',
-                    }}
-                    anchorOrigin={{
-                        vertical: anchorPos.y,
-                        horizontal: anchorPos.x,
-                    }}
-                    transformOrigin={{
-                        vertical: 'top',
-                        horizontal: 'left',
-                    }}
-                >
-                    <MenuItem onClick={handleClose}>Profile</MenuItem>
-                    <MenuItem onClick={handleClose}>My account</MenuItem>
-                    <MenuItem onClick={handleClose}>Logout</MenuItem>
-                </Menu>
-            </>
+            <DataEditor 
+                ref={gridRef}
+                width={1000}
+                height={gridHeight}
+                getCellContent={props.getCellContent} 
+                columns={props.columns} 
+                rows={props.rows}
+                onVisibleRegionChanged={ onVisibleRegionChanged }
+                freezeColumns={props.freezeColumns}
+                getRowThemeOverride={props.getRowThemeOverride}
+                getCellsForSelection={props.getCellsForSelection}
+                rowHeight={rowHeight}
+                headerHeight={headerHeight}
+                onCellContextMenu={onCellContextMenu}
+                drawCustomCell={onDrawCustomCell}
+            />
+            <Menu
+                id="basic-menu"
+                anchorEl={anchorEl}
+                open={open}
+                onClose={handleClose}
+                MenuListProps={{
+                    'aria-labelledby': 'basic-button',
+                }}
+                anchorOrigin={{
+                    vertical: anchorPos.y,
+                    horizontal: anchorPos.x,
+                }}
+                transformOrigin={{
+                    vertical: 'top',
+                    horizontal: 'left',
+                }}
+            >
+                <MenuItem onClick={handleClose}>Profile</MenuItem>
+                <MenuItem onClick={handleClose}>My account</MenuItem>
+                <MenuItem onClick={handleClose}>Logout</MenuItem>
+            </Menu>
         </div>
     );
 }

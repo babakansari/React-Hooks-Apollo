@@ -111,11 +111,19 @@ function RostersPage () {
     const dataRow = rostering[row];
     const cell = dataRow[columns[col].title];
 
+    const cellTheme = (cell && cell.indexOf && cell.toLowerCase().indexOf("m", )>=0) ? 
+                      {
+                          textDark: "#225588",
+                          baseFontStyle: "bold 13px",
+                          bgCell: "#F2F9FF",
+                      } : null;
+
     return {
         kind: GridCellKind.Text,
         allowOverlay: false,
         displayData: JSON.stringify(cell),
         data: cell,
+        themeOverride: cellTheme,
     };
   }
 
