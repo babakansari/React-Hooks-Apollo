@@ -64,11 +64,14 @@ const ScrollableGridImpl = (props, forwardedRef) => {
 
         if (cell.kind !== "text" )
             return false;
-
-        if( OnDecorateCell && OnDecorateCell(cell) ){
-        //if (cell.displayData.indexOf("an")>=0){
-            underlinedText(ctx, cell.displayData, rect, 10, "black" ,1);
-            return true;
+        
+        if(OnDecorateCell){
+            switch(OnDecorateCell(cell)){
+                case "overline":
+                case "underline":
+                    underlinedText(ctx, cell.displayData, rect, 10, "black" ,1);
+                    return true;
+            }
         }
         return false;
     };

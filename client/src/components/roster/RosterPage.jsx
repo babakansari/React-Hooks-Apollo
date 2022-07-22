@@ -43,7 +43,7 @@ function RostersPage () {
   });
 
   const onDecorateCell = (cell) => {
-    return cell.displayData.indexOf("an")>=0;
+    return (cell.displayData.indexOf("an")>=0) ? "underline" : null;
   };
 
   const getRowThemeOverride = React.useCallback((row) => {
