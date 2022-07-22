@@ -42,6 +42,10 @@ function RostersPage () {
     setPosition(e);
   });
 
+  const onDecorateCell = (cell) => {
+    return cell.displayData.indexOf("an")>=0;
+  };
+
   const getRowThemeOverride = React.useCallback((row) => {
     if( foundRows.indexOf(row.toString())>=0 ) {
       return {
@@ -95,8 +99,6 @@ function RostersPage () {
     </div>);
   }
   
-
-  
   const columns = [
     { title: "id", width: 100 },
     { title: "name", width: 100 },
@@ -140,6 +142,7 @@ function RostersPage () {
           rows={data && data.rostering && data.rostering.length}
           visibleRows={3}
           getRowThemeOverride={getRowThemeOverride}
+          OnDecorateCell={onDecorateCell}
         />
       </Grid>
     );

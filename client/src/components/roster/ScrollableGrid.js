@@ -23,6 +23,7 @@ const ScrollableGridImpl = (props, forwardedRef) => {
     const [anchorPos, setAnchorPos] = React.useState({x:0,y:0});
     const open = Boolean(anchorEl);
     const divRef = React.useRef();  
+    const OnDecorateCell = props.OnDecorateCell;
 
     const onVisibleRegionChanged = React.useCallback( ( range, tx, ty ) => {
         if(!onScrollEventRef){
@@ -64,7 +65,8 @@ const ScrollableGridImpl = (props, forwardedRef) => {
         if (cell.kind !== "text" )
             return false;
 
-        if (cell.displayData.indexOf("an")>=0){
+        if( OnDecorateCell && OnDecorateCell(cell) ){
+        //if (cell.displayData.indexOf("an")>=0){
             underlinedText(ctx, cell.displayData, rect, 10, "black" ,1);
             return true;
         }
