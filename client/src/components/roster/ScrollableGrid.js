@@ -49,16 +49,17 @@ const ScrollableGridImpl = (props, forwardedRef) => {
 
     const onDrawCustomCell = (ctx, cell, theme, rect, hoverAmount) => {
     
-        const underlinedText = (ctx, text, rect, leftOffset, color, thickness) => {
+        const underlinedText = (ctx, text, rect, leftOffset, topOffset, color, thickness) => {
             const { x, y, height } = rect;
             const textMeasure = ctx.measureText(text);
             const textWidth = textMeasure.width;
-            const textHeight = textMeasure.fontBoundingBoxAscent + textMeasure.fontBoundingBoxDescent;
-
+            const textHeight = textMeasure.fontBoundingBoxAscent && textMeasure.fontBoundingBoxDescent ?
+                                (textMeasure.fontBoundingBoxAscent + textMeasure.fontBoundingBoxDescent)/2 :
+                                height/2 - topOffset;
             ctx.save();
             ctx.fillStyle = color ;
-            ctx.fillText(text, x + leftOffset, y + textHeight);
-            ctx.fillRect(x + leftOffset, y + height - 2, textWidth-2, thickness);
+            ctx.fillText(text, x + leftOffset, y + textHeight + topOffset);
+            ctx.fillRect(x + leftOffset, y + height - textHeight + 2, textWidth, thickness);
             ctx.restore();
           }
 
@@ -69,7 +70,7 @@ const ScrollableGridImpl = (props, forwardedRef) => {
             switch(OnDecorateCell(cell)){
                 case "overline":
                 case "underline":
-                    underlinedText(ctx, cell.displayData, rect, 10, "black" ,1);
+                    underlinedText(ctx, cell.displayData, rect, 10, 8, "black" ,1);
                     return true;
             }
         }
