@@ -1,7 +1,7 @@
 type Query {
     rank(id: ID!): Rank
     crew(id: ID!): Crew
-    rostering: [Crew] 
+    rostering(filter: String): [Crew] 
 }
 
 input cerateCrewInput {

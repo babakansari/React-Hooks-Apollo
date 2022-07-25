@@ -109,6 +109,7 @@ function RostersPage () {
     if(!data.rostering){
       return null;
     }
+    
     const rostering = data.rostering;
     const dataRow = rostering[row];
     const cell = dataRow[columns[col].title];

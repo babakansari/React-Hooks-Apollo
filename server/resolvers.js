@@ -4,11 +4,20 @@ import db from './db.js';
 const Query = {
     rank: (root, {id}) => db.ranks.get(id),
     crew: (root, {id}) => db.rostering.get(id), 
-    rostering: (root, {}, context) => {
+    rostering: (root, {filter}, context) => {
         if(!context.user){
             throw new AuthenticationError("Authentication error");
         }
-        return db.rostering.list()
+        if(!filter){
+            return db.rostering.list();
+        } else {
+            // Sample filter would be like:
+            // {
+            //     "filter": "record.name.indexOf('an')>=0"
+            // }
+            const filterFunc = (new Function("record", `return (${filter})`));
+            return db.rostering.list().filter( filterFunc );
+        }
     },
 };
 
