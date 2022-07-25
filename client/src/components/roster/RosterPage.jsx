@@ -19,9 +19,9 @@ function RostersPage () {
 
   const gridRef1 = React.useRef(null);
   const gridRef2 = React.useRef(null); 
-  const gridRef3 = React.useRef(null);
-  const gridRef4 = React.useRef(null);
-  const gridRefs = React.useRef([gridRef1, gridRef2, gridRef3, gridRef4]);
+  // const gridRef3 = React.useRef(null);
+  const gridRefs = React.useRef([gridRef1, gridRef2]);
+  // const gridRefs = React.useRef([gridRef1, gridRef2, gridRef3]);
 
   if(!session.isAuthenticated) {
     return (<div>
@@ -43,7 +43,7 @@ function RostersPage () {
   });
 
   const onDecorateCell = (cell) => {
-    return (cell.displayData.indexOf("an")>=0) ? "underline" : null;
+    return (cell.displayData.indexOf("an")>=0 && cell.displayData.indexOf("Rank")<0) ? "underline" : null;
   };
 
   const getRowThemeOverride = React.useCallback((row) => {
@@ -140,7 +140,7 @@ function RostersPage () {
           columns={columns} 
           getCellContent={getContent} 
           rows={data && data.rostering && data.rostering.length}
-          visibleRows={3}
+          visibleRows={9}
           getRowThemeOverride={getRowThemeOverride}
           OnDecorateCell={onDecorateCell}
         />

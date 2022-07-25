@@ -57,6 +57,8 @@ const ScrollableGridImpl = (props, forwardedRef) => {
                                 (textMeasure.fontBoundingBoxAscent + textMeasure.fontBoundingBoxDescent)/2 :
                                 height/2 - topOffset;
             ctx.save();
+            
+            
             ctx.fillStyle = color ;
             ctx.fillText(text, x + leftOffset, y + textHeight + topOffset);
             ctx.fillRect(x + leftOffset, y + height - textHeight + 2, textWidth, thickness);
@@ -67,10 +69,11 @@ const ScrollableGridImpl = (props, forwardedRef) => {
             return false;
         
         if(OnDecorateCell){
+            const color = cell.themeOverride ? cell.themeOverride.textDark : "black";
             switch(OnDecorateCell(cell)){
                 case "overline":
                 case "underline":
-                    underlinedText(ctx, cell.displayData, rect, 10, 8, "black" ,1);
+                    underlinedText(ctx, cell.displayData, rect, 10, 8, color, 1);
                     return true;
             }
         }
