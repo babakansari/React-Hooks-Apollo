@@ -15,6 +15,7 @@ function RostersPage () {
   const [foundRows, setFoundRows] = React.useState([]);
   const [totalFound, setTotalFound] = React.useState();
   const [position, setPosition] = React.useState(0);
+  const [filter,] = React.useState();
   const session = useSession();
 
   const gridRef1 = React.useRef(null);
@@ -30,11 +31,25 @@ function RostersPage () {
   }
 
   const {loading, error, data} = useQuery(rosteringQuery, {
-    fetchPolicy: 'no-cache' 
+    fetchPolicy: 'no-cache',
+    variables: {
+      filter
+    },
   });
 
-  const getContent = React.useCallback((cell) => {
-    return getData(cell);
+  const getContent = React.useCallback((gridId, cell) => {
+    const result = getData(cell);
+    result.themeOverride = (cell[0] !== 0 && result.data && result.data.indexOf && result.data.toLowerCase().indexOf("m", )>=0) ? 
+    {
+        textDark: "#225588",
+        baseFontStyle: "bold 13px",
+        bgCell: "#F2F9FF",
+    } : (cell[0] === 0) ?
+    {
+      bgCell: "#" + (gridId*100).toString(16).padStart(6, 'B'), // To color code the if for identifying the grid
+    } : null;
+    
+    return result;
   }, [data, foundRows]);
 
   const { ScrollTo, OnScroll } = useScrollableGrids(gridRefs, [data, foundRows]);
@@ -112,21 +127,13 @@ function RostersPage () {
     
     const rostering = data.rostering;
     const dataRow = rostering[row];
-    const cell = dataRow[columns[col].title];
-
-    const cellTheme = (cell && cell.indexOf && cell.toLowerCase().indexOf("m", )>=0) ? 
-                      {
-                          textDark: "#225588",
-                          baseFontStyle: "bold 13px",
-                          bgCell: "#F2F9FF",
-                      } : null;
+    const cellData = dataRow[columns[col].title];
 
     return {
         kind: GridCellKind.Text,
         allowOverlay: false,
-        displayData: JSON.stringify(cell),
-        data: cell,
-        themeOverride: cellTheme,
+        displayData: JSON.stringify(cellData),
+        data: cellData,
     };
   }
 
@@ -139,7 +146,7 @@ function RostersPage () {
           rowHeight={26}
           name={`Grid_${i}`}
           columns={columns} 
-          getCellContent={getContent} 
+          getCellContent={ (cell) => getContent( i, cell ) } 
           rows={data && data.rostering && data.rostering.length}
           visibleRows={9}
           getRowThemeOverride={getRowThemeOverride}

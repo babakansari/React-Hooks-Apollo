@@ -1,13 +1,15 @@
 import gql from 'graphql-tag';
 
 export const rosteringQuery = gql`
-query {
-    rostering {
+query Query($filter: String) {
+    rostering(filter: $filter){
         id
         name
         rank {
             id
             title
+            __typename 
         }
+    __typename 
     }
 }`;

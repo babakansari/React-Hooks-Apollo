@@ -75,6 +75,8 @@ const ScrollableGridImpl = (props, forwardedRef) => {
                 case "underline":
                     underlinedText(ctx, cell.displayData, rect, 10, 8, color, 1);
                     return true;
+                default:
+                    return false;
             }
         }
         return false;
