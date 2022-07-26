@@ -69,7 +69,6 @@
     "name": "Naghi",
     "rankId": "HJRa-0"
   },
-
   {
     "id": "BkytmUW19",
     "name": "Charles",
@@ -98,6 +97,51 @@
   {
     "id": "B5ytmUW69",
     "name": "Arezoo",
+    "rankId": "HJRa-1"
+  },
+  {
+    "id": "Bkyt1UW19",
+    "name": "Bitta",
+    "rankId": "HJRa-1"
+  },
+  {
+    "id": "B1yt2UW29",
+    "name": "Nima",
+    "rankId": "HJRa-1"
+  },
+  {
+    "id": "B2yt3UW39",
+    "name": "Avahia",
+    "rankId": "HJRa-1"
+  },
+  {
+    "id": "B3yt4UW49",
+    "name": "Sanaz",
+    "rankId": "HJRa-1"
+  },
+  {
+    "id": "B4yt5UW59",
+    "name": "Layla",
+    "rankId": "HJRa-0"
+  },
+  {
+    "id": "B5yt6UW69",
+    "name": "Roham",
+    "rankId": "HJRa-1"
+  },
+  {
+    "id": "B3yt7UW49",
+    "name": "Kambiz",
+    "rankId": "HJRa-1"
+  },
+  {
+    "id": "B4yt8UW59",
+    "name": "Aboli",
+    "rankId": "HJRa-1"
+  },
+  {
+    "id": "B5yt9UW69",
+    "name": "Pooneh",
     "rankId": "HJRa-1"
   }
 ]

@@ -11,6 +11,12 @@ import { useSession } from '../auth/SessionManager';
 import { ScrollableGrid } from './ScrollableGrid';
 import { useScrollableGrids } from './useScrollableGrids';
 
+const columns = [
+  { title: "id", width: 100 },
+  { title: "name", width: 100 },
+  { title: "rank", width: 500 },
+];
+
 function RostersPage () {
   const [foundRows, setFoundRows] = React.useState([]);
   const [totalFound, setTotalFound] = React.useState();
@@ -29,28 +35,28 @@ function RostersPage () {
     </div>);
   }
 
-  const { loading, error, data } = useQuery(rosteringQuery, {
+  const result = useQuery(rosteringQuery, {
     fetchPolicy: 'no-cache',
   });
 
-  const { loading2, error2, data2 } = useQuery(rosteringQuery, {
+  const result2 = useQuery(rosteringQuery, {
     fetchPolicy: 'no-cache',
-      // variables: {
-      //   filter: "record.rankId.indexOf('1')>=0"
-      // },
+      variables: {
+        filter: "record.rankId.indexOf('1')>=0"
+      },
   });
 
   const getContent = React.useCallback((cell) => {
-    if(!data || !data.rostering)
+    if(!result || !result.data || !result.data.rostering)
       return null;
-    return getData(data.rostering, cell);
-  }, [data, foundRows]);
+    return getData(result.data.rostering, cell);
+  }, [result, foundRows]);
 
   const getContent2 = React.useCallback((cell) => {
-    if(!data2 || !data2.rostering)
+    if(!result2 || !result2.data || !result2.data.rostering)
       return null;
-    return getData(data2.rostering, cell);
-  }, [data2]);
+    return getData(result2.data.rostering, cell);
+  }, [result2]);
 
   const { ScrollTo, OnScroll } = useScrollableGrids(gridRefs);
   OnScroll((e) => {
@@ -79,7 +85,7 @@ function RostersPage () {
       return;
     }
   
-    const found = Lodash.pickBy(data.rostering, 
+    const found = Lodash.pickBy(result.data.rostering, 
       function(v, k){
         //if( v.name && v.name.startsWith(value) ) {
         if( v.name && v.name.toUpperCase().indexOf(value)>=0 ) {
@@ -98,27 +104,20 @@ function RostersPage () {
     } else {
       setTotalFound();
     }
-
   }
 
-  if(error || error2){
+  if(result.error || result2.error){
     return (<div>
       <Typography variant="h2">Rostering (Error loading page...)</Typography>
-      {error.message}
+      {result.error.message}
     </div>);
   }
 
-  if(loading || loading2){
+  if(result.loading || result2.loading){
     return (<div>
       <Typography variant="h2">Rostering (Loading...)</Typography>
     </div>);
   }
-  
-  const columns = [
-    { title: "id", width: 100 },
-    { title: "name", width: 100 },
-    { title: "rank", width: 500 },
-  ];
 
   function getData(rostering, [col, row]) {
     const dataRow = rostering[row];
@@ -134,15 +133,12 @@ function RostersPage () {
 
   let scrollableGrids=[];
   for(let i=0; i<gridRefs.length; i++) {
-    // const rows = (i===1) ? 
-    //                 data2 && data2.rostering && data2.rostering.length : 
-    //                 data && data.rostering && data.rostering.length;
-    // const getCellContent = (i===1) ? 
-    //                           getContent2 :
-    //                           getContent;
-
-    const rows = data && data.rostering && data.rostering.length;
-    const getCellContent = getContent;
+    const rows = (i===1) ? 
+                    result2.data && result2.data.rostering && result2.data.rostering.length : 
+                    result.data && result.data.rostering && result.data.rostering.length;
+    const getCellContent = (i===1) ? 
+                              getContent2 :
+                              getContent ;
 
     scrollableGrids.push(
       <Grid item key={i}>
@@ -153,7 +149,7 @@ function RostersPage () {
           columns={columns} 
           getCellContent={getCellContent} 
           rows={rows}
-          visibleRows={9}
+          visibleRows={6}
           getRowThemeOverride={getRowThemeOverride}
           OnDecorateCell={onDecorateCell}
         />
