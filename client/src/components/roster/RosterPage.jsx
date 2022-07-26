@@ -4,7 +4,7 @@ import {
 } from '@glideapps/glide-data-grid';
 import { Typography, Grid, TextField } from '@mui/material';
 import { rosteringQuery } from './RosteringQueries';
-import { useLazyQuery } from '@apollo/react-hooks';
+import { useQuery } from '@apollo/react-hooks';
 import { blue } from '@mui/material/colors';
 import * as Lodash from 'lodash';
 import { useSession } from '../auth/SessionManager';
@@ -20,8 +20,8 @@ function RostersPage () {
   const gridRef1 = React.useRef(null);
   const gridRef2 = React.useRef(null); 
   // const gridRef3 = React.useRef(null);
-  const gridRefs = React.useRef([gridRef1, gridRef2]);
-  // const gridRefs = React.useRef([gridRef1, gridRef2, gridRef3]);
+  const gridRefs = [gridRef1, gridRef2];
+  // const gridRefs = [gridRef1, gridRef2, gridRef3];
 
   if(!session.isAuthenticated) {
     return (<div>
@@ -29,34 +29,30 @@ function RostersPage () {
     </div>);
   }
 
-  const [getRostering, { loading, error, data }] = useLazyQuery(rosteringQuery, {
+  const { loading, error, data } = useQuery(rosteringQuery, {
     fetchPolicy: 'no-cache',
   });
 
-  React.useEffect( ()=>{
-    getRostering({
+  const { loading2, error2, data2 } = useQuery(rosteringQuery, {
+    fetchPolicy: 'no-cache',
       // variables: {
       //   filter: "record.rankId.indexOf('1')>=0"
       // },
-    });
-  }, [] );
+  });
 
-  const getContent = React.useCallback((gridId, cell) => {
-    const result = getData(cell);
-    result.themeOverride = (cell[0] !== 0 && result.data && result.data.indexOf && result.data.toLowerCase().indexOf("m", )>=0) ? 
-    {
-        textDark: "#225588",
-        baseFontStyle: "bold 13px",
-        bgCell: "#F2F9FF",
-    } : (cell[0] === 0) ?
-    {
-      bgCell: "#" + (gridId*100).toString(16).padStart(6, 'B'), // Color code to identify the grids
-    } : null;
-    
-    return result;
+  const getContent = React.useCallback((cell) => {
+    if(!data || !data.rostering)
+      return null;
+    return getData(data.rostering, cell);
   }, [data, foundRows]);
 
-  const { ScrollTo, OnScroll } = useScrollableGrids(gridRefs, [data, foundRows]);
+  const getContent2 = React.useCallback((cell) => {
+    if(!data2 || !data2.rostering)
+      return null;
+    return getData(data2.rostering, cell);
+  }, [data2]);
+
+  const { ScrollTo, OnScroll } = useScrollableGrids(gridRefs);
   OnScroll((e) => {
     setPosition(e);
   });
@@ -105,14 +101,14 @@ function RostersPage () {
 
   }
 
-  if(error){
+  if(error || error2){
     return (<div>
       <Typography variant="h2">Rostering (Error loading page...)</Typography>
       {error.message}
     </div>);
   }
 
-  if(loading){
+  if(loading || loading2){
     return (<div>
       <Typography variant="h2">Rostering (Loading...)</Typography>
     </div>);
@@ -124,12 +120,7 @@ function RostersPage () {
     { title: "rank", width: 500 },
   ];
 
-  function getData([col, row]) {
-    if(!data.rostering){
-      return null;
-    }
-    
-    const rostering = data.rostering;
+  function getData(rostering, [col, row]) {
     const dataRow = rostering[row];
     const cellData = dataRow[columns[col].title];
 
@@ -142,16 +133,26 @@ function RostersPage () {
   }
 
   let scrollableGrids=[];
-  for(let i=0; i<gridRefs.current.length; i++) {
+  for(let i=0; i<gridRefs.length; i++) {
+    // const rows = (i===1) ? 
+    //                 data2 && data2.rostering && data2.rostering.length : 
+    //                 data && data.rostering && data.rostering.length;
+    // const getCellContent = (i===1) ? 
+    //                           getContent2 :
+    //                           getContent;
+
+    const rows = data && data.rostering && data.rostering.length;
+    const getCellContent = getContent;
+
     scrollableGrids.push(
       <Grid item key={i}>
         <ScrollableGrid
-          ref={gridRefs.current[i]}
+          ref={gridRefs[i]}
           rowHeight={26}
           name={`Grid_${i}`}
           columns={columns} 
-          getCellContent={ (cell) => getContent( i, cell ) } 
-          rows={data && data.rostering && data.rostering.length}
+          getCellContent={getCellContent} 
+          rows={rows}
           visibleRows={9}
           getRowThemeOverride={getRowThemeOverride}
           OnDecorateCell={onDecorateCell}
