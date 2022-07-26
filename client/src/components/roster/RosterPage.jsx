@@ -4,7 +4,7 @@ import {
 } from '@glideapps/glide-data-grid';
 import { Typography, Grid, TextField } from '@mui/material';
 import { rosteringQuery } from './RosteringQueries';
-import { useQuery } from '@apollo/react-hooks';
+import { useLazyQuery } from '@apollo/react-hooks';
 import { blue } from '@mui/material/colors';
 import * as Lodash from 'lodash';
 import { useSession } from '../auth/SessionManager';
@@ -15,7 +15,6 @@ function RostersPage () {
   const [foundRows, setFoundRows] = React.useState([]);
   const [totalFound, setTotalFound] = React.useState();
   const [position, setPosition] = React.useState(0);
-  const [filter,] = React.useState();
   const session = useSession();
 
   const gridRef1 = React.useRef(null);
@@ -30,12 +29,17 @@ function RostersPage () {
     </div>);
   }
 
-  const {loading, error, data} = useQuery(rosteringQuery, {
+  const [getRostering, { loading, error, data }] = useLazyQuery(rosteringQuery, {
     fetchPolicy: 'no-cache',
-    variables: {
-      filter
-    },
   });
+
+  React.useEffect( ()=>{
+    getRostering({
+      // variables: {
+      //   filter: "record.rankId.indexOf('1')>=0"
+      // },
+    });
+  }, [] );
 
   const getContent = React.useCallback((gridId, cell) => {
     const result = getData(cell);
@@ -46,7 +50,7 @@ function RostersPage () {
         bgCell: "#F2F9FF",
     } : (cell[0] === 0) ?
     {
-      bgCell: "#" + (gridId*100).toString(16).padStart(6, 'B'), // To color code the if for identifying the grid
+      bgCell: "#" + (gridId*100).toString(16).padStart(6, 'B'), // Color code to identify the grids
     } : null;
     
     return result;
