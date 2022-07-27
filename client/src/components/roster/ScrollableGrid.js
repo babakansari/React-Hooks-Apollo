@@ -109,7 +109,7 @@ const ScrollableGridImpl = (props, forwardedRef) => {
         return visibleRows;
       },
     }),
-    [ScrollTo]
+    [ScrollTo, props.rows, visibleRows]
   );
 
   return (
