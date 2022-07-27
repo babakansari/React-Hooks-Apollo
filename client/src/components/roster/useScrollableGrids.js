@@ -33,8 +33,12 @@ export const useScrollableGrids = (gridRefs) => {
           }
           continue;
         }
+        
         if (gridRef.current && gridRef.current.ScrollTo) {
-          gridRef.current.ScrollTo(top, left);
+          const targetRows = target.current.TotalRows - target.current.VisibleRows;
+          const currentRows = gridRef.current.TotalRows - gridRef.current.VisibleRows;
+          const currentTop = Math.ceil((currentRows/targetRows) * top);
+          gridRef.current.ScrollTo(currentTop, left);
         }
       }
     },

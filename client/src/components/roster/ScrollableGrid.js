@@ -102,6 +102,12 @@ const ScrollableGridImpl = (props, forwardedRef) => {
       get Name() {
         return gridName.current;
       },
+      get TotalRows() {
+        return props.rows;
+      },
+      get VisibleRows() {
+        return visibleRows;
+      },
     }),
     [ScrollTo]
   );
