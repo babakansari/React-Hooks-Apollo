@@ -5,6 +5,7 @@ query Query($filter: String) {
     rostering(filter: $filter){
         id
         name
+        lastname
         rank {
             id
             title

@@ -12,8 +12,9 @@ import { ScrollableGrid } from './ScrollableGrid';
 import { useScrollableGrids } from './useScrollableGrids';
 
 const columns = [
-  { title: "id", width: 100 },
-  { title: "name", width: 100 },
+  { title: "id", width: 120 },
+  { title: "name", width: 150 },
+  { title: "lastname", width: 200 },
   { title: "rank", width: 500 },
 ];
 
@@ -64,11 +65,11 @@ function RostersPage () {
   });
 
   const onDecorateCell = (cell) => {
-    return (cell.displayData.indexOf("an")>=0 && cell.displayData.indexOf("Rank")<0) ? "underline" : null;
+    return (cell.displayData && cell.displayData.indexOf("an")>=0 && cell.displayData.indexOf("Rank")<0) ? "underline" : null;
   };
 
-  const getRowThemeOverride = React.useCallback((row) => {
-    if( foundRows.indexOf(row.toString())>=0 ) {
+  const getRowThemeOverride = React.useCallback((gridId, row) => {
+    if( gridId == 0 && foundRows.indexOf(row.toString())>=0 ) {
       return {
                 bgCell: blue[50]
             }
@@ -150,7 +151,7 @@ function RostersPage () {
           getCellContent={getCellContent} 
           rows={rows}
           visibleRows={6}
-          getRowThemeOverride={getRowThemeOverride}
+          getRowThemeOverride={ (row) => getRowThemeOverride(parseInt(i), row) }
           OnDecorateCell={onDecorateCell}
         />
       </Grid>
@@ -158,7 +159,7 @@ function RostersPage () {
   }
 
   return (
-    <Grid container spacing={5} >
+    <Grid spacing={5} >
       <Grid container>
         <TextField id="search" label="Search name" variant="standard" helperText={ totalFound } onChange={ onSearch }/>
       </Grid>
