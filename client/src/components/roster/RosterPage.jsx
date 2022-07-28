@@ -12,9 +12,11 @@ import { ScrollableGrid } from './ScrollableGrid';
 import { useScrollableGrids } from './useScrollableGrids';
 
 const columns = [
-  { title: "id", width: 120 },
-  { title: "name", width: 150 },
-  { title: "lastname", width: 200 },
+  { title: "id", width: 130 },
+  { title: "name", width: 140 },
+  { title: "lastname", width: 180 },
+  { title: "country", width: 180 },
+  { title: "city", width: 180 },
   { title: "rank", width: 500 },
 ];
 
@@ -69,7 +71,7 @@ function RostersPage () {
   };
 
   const getRowThemeOverride = React.useCallback((gridId, row) => {
-    if( gridId == 0 && foundRows.indexOf(row.toString())>=0 ) {
+    if( gridId === 0 && foundRows.indexOf(row.toString())>=0 ) {
       return {
                 bgCell: blue[50]
             }
@@ -151,6 +153,7 @@ function RostersPage () {
           getCellContent={getCellContent} 
           rows={rows}
           visibleRows={6}
+          freezeColumns={2}
           getRowThemeOverride={ (row) => getRowThemeOverride(parseInt(i), row) }
           OnDecorateCell={onDecorateCell}
         />

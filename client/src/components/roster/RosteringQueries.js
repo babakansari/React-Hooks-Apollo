@@ -6,6 +6,8 @@ query Query($filter: String) {
         id
         name
         lastname
+        country
+        city
         rank {
             id
             title

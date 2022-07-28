@@ -23,5 +23,7 @@ type Crew {
     id: ID!
     name: String!
     lastname: String
+    country: String
+    city: String
     rank: Rank
 }
