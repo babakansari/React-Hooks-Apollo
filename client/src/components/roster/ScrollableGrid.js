@@ -86,8 +86,9 @@ const ScrollableGridImpl = (props, forwardedRef) => {
 
   const ScrollTo = React.useCallback(
     (top, left) => {
-      let y = top > position.top ? position.height + top - 3 : top;
-      gridRef.current.scrollTo(0, y);
+      const y = top > position.top ? position.height + top - 3 : top;
+      const x = top > position.left ? position.width + left - 3 : left;
+      gridRef.current.scrollTo(x, y);
     },
     [position]
   );

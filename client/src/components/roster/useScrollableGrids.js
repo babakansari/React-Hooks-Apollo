@@ -8,12 +8,13 @@ export const useScrollableGrids = (gridRefs) => {
   };
  
   const ScrollTo = (top, left) => {
-    const y = _convertToNumber(top);
     if (gridRefs.length < 1) {
       throw new RangeError('No grid is in the set');
     }
+    const y = _convertToNumber(top);
+    const x = _convertToNumber(left);
     const gridRef = gridRefs[0];
-    gridRef.current.ScrollTo(y, left);
+    gridRef.current.ScrollTo(y, x);
   };
 
   const _convertToNumber = (value) => {
@@ -23,6 +24,13 @@ export const useScrollableGrids = (gridRefs) => {
     }
     return number;
   };
+
+  const _calculateTop = (gridRef, target, top) => {
+    const targetRows = target.current.TotalRows - target.current.VisibleRows;
+    const currentRows = gridRef.current.TotalRows - gridRef.current.VisibleRows;
+    return Math.ceil((currentRows / targetRows) * top);
+  };
+  
 
   const _syncScrollTo = React.useCallback(
     (target, top, left) => {
@@ -35,9 +43,8 @@ export const useScrollableGrids = (gridRefs) => {
         }
         
         if (gridRef.current && gridRef.current.ScrollTo) {
-          const targetRows = target.current.TotalRows - target.current.VisibleRows;
-          const currentRows = gridRef.current.TotalRows - gridRef.current.VisibleRows;
-          const currentTop = Math.ceil((currentRows/targetRows) * top);
+          const currentTop = _calculateTop(gridRef, target, top);
+          
           gridRef.current.ScrollTo(currentTop, left);
         }
       }
