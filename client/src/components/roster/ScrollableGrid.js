@@ -55,7 +55,7 @@ const ScrollableGridImpl = (props, forwardedRef) => {
       const textHeight =
         (textMeasure.fontBoundingBoxAscent +
           textMeasure.fontBoundingBoxDescent) /
-        2;
+        2 | height/2 - 2;
       ctx.save();
       ctx.fillStyle = color;
       ctx.fillText(text, x + leftOffset, y + textHeight + topOffset);

@@ -162,7 +162,7 @@ function RostersPage () {
   }
 
   return (
-    <Grid spacing={5} >
+    <Grid container spacing={5} >
       <Grid container>
         <TextField id="search" label="Search name" variant="standard" helperText={ totalFound } onChange={ onSearch }/>
       </Grid>
