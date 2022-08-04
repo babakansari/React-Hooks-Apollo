@@ -29,7 +29,7 @@ function RostersPage () {
   const gridRef1 = React.useRef(null);
   const gridRef2 = React.useRef(null); 
   // const gridRef3 = React.useRef(null);
-  const gridRefs = [gridRef1, gridRef2];
+  const gridRefs = [gridRef1];
   // const gridRefs = [gridRef1, gridRef2, gridRef3];
 
   if(!session.isAuthenticated) {
@@ -48,6 +48,16 @@ function RostersPage () {
         filter: "record.rankId.indexOf('1')>=0"
       },
   });
+
+  React.useEffect(() => {
+    for(let i=7; i<=100; i++){
+      columns.push({
+        title: `col_${i}`,
+        width : 100,
+        type: "ext"
+      });
+    }
+  }, []);
 
   const getContent = React.useCallback((cell) => {
     if(!result || !result.data || !result.data.rostering)
@@ -81,7 +91,7 @@ function RostersPage () {
 
   function onSearch(e){
     const value = e.target.value.toUpperCase();
-
+    // gridRef1.current.ScrollTo(0, parseFloat(value | 0));
     if(value.length<1){
       setFoundRows([]);
       setTotalFound();
@@ -124,6 +134,15 @@ function RostersPage () {
 
   function getData(rostering, [col, row]) {
     const dataRow = rostering[row];
+    if(columns[col].type === "ext"){
+      return {
+        kind: GridCellKind.Text,
+        allowOverlay: false,
+        displayData: (col|1*row|2).toString(),
+        data: (col|1*row|2).toString(),
+      }
+    }
+
     const cellData = dataRow[columns[col].title];
 
     return {
@@ -153,7 +172,7 @@ function RostersPage () {
           getCellContent={getCellContent} 
           rows={rows}
           visibleRows={6}
-          freezeColumns={2}
+          freezeColumns={3}
           getRowThemeOverride={ (row) => getRowThemeOverride(parseInt(i), row) }
           OnDecorateCell={onDecorateCell}
         />

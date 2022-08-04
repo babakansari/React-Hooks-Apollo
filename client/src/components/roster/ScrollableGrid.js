@@ -32,8 +32,8 @@ const ScrollableGridImpl = (props, forwardedRef) => {
       );
       const event = GridEvent(forwardedRef, currentPosition);
       if (onScrollEventRef.current) {
-        onScrollEventRef.current(event);
-      }
+       onScrollEventRef.current(event);
+      } 
       setPosition(currentPosition);
     },
     [onScrollEventRef, forwardedRef]
@@ -84,6 +84,15 @@ const ScrollableGridImpl = (props, forwardedRef) => {
     return false;
   };
 
+  // const asyncScrollTo = (x, y) => {
+  //   return new Promise(resolve => {
+  //     setTimeout(() => {
+  //       gridRef.current.scrollTo(x, y);
+  //       resolve('resolved');
+  //     }, 1);
+  //   }); 
+  // }
+
   const ScrollTo = React.useCallback(
     (top, left) => {
       const y = top > position.top ? position.height + top - 3 : top;
@@ -108,6 +117,12 @@ const ScrollableGridImpl = (props, forwardedRef) => {
       },
       get VisibleRows() {
         return visibleRows;
+      },
+      get TotalCols() {
+        return props.columns.length;
+      },
+      get VisibleCols() {
+        return position.width | 0;
       },
     }),
     [ScrollTo, props.rows, visibleRows]
