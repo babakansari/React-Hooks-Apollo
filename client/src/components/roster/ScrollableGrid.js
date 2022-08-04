@@ -2,12 +2,10 @@ import * as React from 'react';
 import { DataEditor } from '@glideapps/glide-data-grid';
 import { GridEvent, GridPosition } from './ScrollableGridTypes';
 
- 
-
 const ScrollableGridImpl = (props, forwardedRef) => {
   const gridRef = React.useRef(null);
   const gridName = React.useRef(props.name);
-  const [position, setPosition] = React.useState(0);
+  const [position, setPosition] = React.useState(GridPosition(0,0,0,0));
   const epsilon = 20;
   const rowHeight = props.rowHeight ? props.rowHeight : 34;
   const headerHeight = props.headerHeight ? props.headerHeight : 36;
@@ -18,6 +16,7 @@ const ScrollableGridImpl = (props, forwardedRef) => {
   const gridHeight = visibleRows * (rowHeight + 1) + headerHeight + 1 + epsilon;
   const onScrollEventRef = React.useRef(null);
   const OnDecorateCell = props.OnDecorateCell;
+  const [p, setP] = React.useState(GridPosition(0,0,0,0));
 
   const onVisibleRegionChanged = React.useCallback(
     (range, tx, ty) => {
@@ -34,10 +33,28 @@ const ScrollableGridImpl = (props, forwardedRef) => {
       if (onScrollEventRef.current) {
        onScrollEventRef.current(event);
       } 
+      console.log(`grid, position = (${gridName.current}, ${JSON.stringify(currentPosition)})`);
       setPosition(currentPosition);
     },
     [onScrollEventRef, forwardedRef]
   );
+
+  const _getEffectiveWidth =  React.useCallback(() => {
+    if(!gridRef.current){
+      return props.width;
+    }
+    let totalWith = 0;
+    let col = 0;
+    while( totalWith<=props.width ){
+      const bounds = gridRef.current.getBounds(col,1);
+      if(!bounds){
+        break;
+      }
+      totalWith += bounds.width;
+      col++;
+    }
+    return totalWith-col+1;
+  }, [gridRef.current]);
 
   const onDrawCustomCell = (ctx, cell, theme, rect, hoverAmount) => {
     const underlinedText = (
@@ -84,20 +101,16 @@ const ScrollableGridImpl = (props, forwardedRef) => {
     return false;
   };
 
-  // const asyncScrollTo = (x, y) => {
-  //   return new Promise(resolve => {
-  //     setTimeout(() => {
-  //       gridRef.current.scrollTo(x, y);
-  //       resolve('resolved');
-  //     }, 1);
-  //   }); 
-  // }
-
   const ScrollTo = React.useCallback(
     (top, left) => {
+      left = left + props.freezeColumns;
+      const currentLeft = position.left ;
+      const currentWidth = position.width - props.freezeColumns;
       const y = top > position.top ? position.height + top - 3 : top;
-      const x = top > position.left ? position.width + left - 3 : left;
+      const x = left > currentLeft ? currentWidth + left - 3 : left;
+
       gridRef.current.scrollTo(x, y);
+      setP(GridPosition(y,x,position.heigh,position.width));
     },
     [position]
   );
@@ -128,12 +141,26 @@ const ScrollableGridImpl = (props, forwardedRef) => {
     [ScrollTo, props.rows, visibleRows]
   );
 
+  const getCellContent2 =(cell) => {
+    const [col, row] = cell;
+    const result = props.getCellContent(cell);
+    if(col.toString() === p.left.toString() && row.toString() === p.top.toString()){
+        result.themeOverride = {
+          textDark: "#115588",
+          baseFontStyle: "bold 13px",
+          bgCell: "#F2F9FF",
+      }
+    }
+    
+    return result;
+  }
+
   return (
     <DataEditor
       ref={gridRef}
-      width={1000}
+      width={_getEffectiveWidth()}
       height={gridHeight}
-      getCellContent={props.getCellContent}
+      getCellContent={getCellContent2}
       onItemHovered={props.onItemHovered}
       columns={props.columns}
       rows={props.rows}

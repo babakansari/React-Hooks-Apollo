@@ -28,14 +28,13 @@ export const useScrollableGrids = (gridRefs) => {
   const _calculateTop = (gridRef, target, top) => {
     const targetRows = target.current.TotalRows - target.current.VisibleRows;
     const currentRows = gridRef.current.TotalRows - gridRef.current.VisibleRows;
-    return Math.ceil((currentRows / targetRows) * top);
+    return Math.ceil((currentRows / targetRows) * top) | top;
   };
   
   const _calculateLeft = (gridRef, target, left) => {
     const targetCols = target.current.TotalCols - target.current.VisibleCols;
     const currentCols = gridRef.current.TotalCols - gridRef.current.VisibleCols;
-    const currentLeft = Math.round((currentCols / targetCols) * left) | left;
-    console.log(`(targetCols, currentCols, currentLeft, left) = (${targetCols}, ${currentCols}, ${currentLeft}, ${left})`);
+    const currentLeft = Math.ceil((currentCols / targetCols) * left) | left;
     return currentLeft;
   };
 

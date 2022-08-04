@@ -12,12 +12,12 @@ import { ScrollableGrid } from './ScrollableGrid';
 import { useScrollableGrids } from './useScrollableGrids';
 
 const columns = [
-  { title: "id", width: 130 },
-  { title: "name", width: 140 },
-  { title: "lastname", width: 180 },
-  { title: "country", width: 180 },
-  { title: "city", width: 180 },
-  { title: "rank", width: 500 },
+  // { title: "id", width: 85 },
+  { title: "name", width: 85 },
+  { title: "lastname", width: 85 },
+  { title: "country", width: 85 },
+  // { title: "city", width: 110 },
+  { title: "rank", width: 250 },
 ];
 
 function RostersPage () {
@@ -29,7 +29,7 @@ function RostersPage () {
   const gridRef1 = React.useRef(null);
   const gridRef2 = React.useRef(null); 
   // const gridRef3 = React.useRef(null);
-  const gridRefs = [gridRef1];
+  const gridRefs = [gridRef1, gridRef2];
   // const gridRefs = [gridRef1, gridRef2, gridRef3];
 
   if(!session.isAuthenticated) {
@@ -50,7 +50,7 @@ function RostersPage () {
   });
 
   React.useEffect(() => {
-    for(let i=7; i<=100; i++){
+    for(let i=0; i<=100; i++){
       columns.push({
         title: `col_${i}`,
         width : 100,
@@ -138,8 +138,8 @@ function RostersPage () {
       return {
         kind: GridCellKind.Text,
         allowOverlay: false,
-        displayData: (col|1*row|2).toString(),
-        data: (col|1*row|2).toString(),
+        displayData: (col+1|1*row+col|2).toString(),
+        data: (col+1|1*row+col|2).toString(),
       }
     }
 
@@ -167,12 +167,13 @@ function RostersPage () {
         <ScrollableGrid
           ref={gridRefs[i]}
           rowHeight={26}
+          width={1000}
           name={`Grid_${i}`}
           columns={columns} 
           getCellContent={getCellContent} 
           rows={rows}
           visibleRows={6}
-          freezeColumns={3}
+          freezeColumns={4}
           getRowThemeOverride={ (row) => getRowThemeOverride(parseInt(i), row) }
           OnDecorateCell={onDecorateCell}
         />
