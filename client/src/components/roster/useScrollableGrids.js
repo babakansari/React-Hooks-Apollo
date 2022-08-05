@@ -35,7 +35,7 @@ export const useScrollableGrids = (gridRefs) => {
     const targetCols = target.current.TotalCols - target.current.VisibleCols;
     const currentCols = gridRef.current.TotalCols - gridRef.current.VisibleCols;
     const currentLeft = Math.ceil((currentCols / targetCols) * left) | left;
-    return currentLeft;
+    return currentLeft - gridRef.current.FixedColumns;
   };
 
   const _syncScrollTo = React.useCallback(

@@ -29,7 +29,7 @@ function RostersPage () {
   const gridRef1 = React.useRef(null);
   const gridRef2 = React.useRef(null); 
   // const gridRef3 = React.useRef(null);
-  const gridRefs = [gridRef1, gridRef2];
+  const gridRefs = [gridRef1,gridRef2];
   // const gridRefs = [gridRef1, gridRef2, gridRef3];
 
   if(!session.isAuthenticated) {
