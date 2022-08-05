@@ -16,7 +16,6 @@ const ScrollableGridImpl = (props, forwardedRef) => {
   const gridHeight = visibleRows * (rowHeight + 1) + headerHeight + 1 + epsilon;
   const onScrollEventRef = React.useRef(null);
   const OnDecorateCell = props.OnDecorateCell;
-  //const [p, setP] = React.useState(GridPosition(0,props.freezeColumns,0,0));
 
   const onVisibleRegionChanged = React.useCallback(
     (range, tx, ty) => {
@@ -32,8 +31,7 @@ const ScrollableGridImpl = (props, forwardedRef) => {
       const event = GridEvent(forwardedRef, currentPosition);
       if (onScrollEventRef.current) {
        onScrollEventRef.current(event);
-      } 
-      //console.log(`grid, position = (${gridName.current}, ${JSON.stringify(range.x)})`);
+      }
       setPosition(currentPosition);
     },
     [onScrollEventRef, forwardedRef]
@@ -107,9 +105,7 @@ const ScrollableGridImpl = (props, forwardedRef) => {
       const currentWidth = position.width - props.freezeColumns;
       const y = top > position.top ? position.height + top - 3 : top;
       const x = left > position.left ? currentWidth + left - 3 : left;
-
       gridRef.current.scrollTo(x, y);
-      //setP(GridPosition(y,x,position.heigh,position.width));
     },
     [position]
   );
@@ -142,20 +138,6 @@ const ScrollableGridImpl = (props, forwardedRef) => {
     }),
     [ScrollTo, props.rows, visibleRows]
   );
-
-  // const getCellContent2 =(cell) => {
-  //   const [col, row] = cell;
-  //   const result = props.getCellContent(cell);
-  //   if(col.toString() === p.left.toString() && row.toString() === p.top.toString()){
-  //       result.themeOverride = {
-  //         textDark: "#115588",
-  //         baseFontStyle: "bold 13px",
-  //         bgCell: "#F2F9FF",
-  //     }
-  //   }
-    
-  //   return result;
-  // }
 
   return (
     <DataEditor
