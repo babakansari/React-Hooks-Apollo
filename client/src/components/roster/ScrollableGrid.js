@@ -16,6 +16,9 @@ const ScrollableGridImpl = (props, forwardedRef) => {
   const gridHeight = visibleRows * (rowHeight + 1) + headerHeight + 1 + epsilon;
   const onScrollEventRef = React.useRef(null);
   const OnDecorateCell = props.OnDecorateCell;
+  const totalRows = props.rows;
+  const totalCols = props.columns.length;
+  const visibleCols = position.width | 0;
 
   const onVisibleRegionChanged = React.useCallback(
     (range, tx, ty) => {
@@ -110,10 +113,25 @@ const ScrollableGridImpl = (props, forwardedRef) => {
     [position]
   );
 
+  const GetTop = (target, top) => {
+    const targetRows = target.current.TotalRows - target.current.VisibleRows;
+    const currentRows = totalRows - visibleRows;
+    return Math.ceil((currentRows / targetRows) * top) | top;
+  };
+
+  const GetLeft = (target, left) => {
+    const targetCols = target.current.TotalCols - target.current.VisibleCols;
+    const currentCols = totalCols - visibleCols;
+    const currentLeft = Math.ceil((currentCols / targetCols) * left) | left;
+    return currentLeft - props.freezeColumns;
+  };
+
   React.useImperativeHandle(
     forwardedRef,
     () => ({
       ScrollTo,
+      GetTop,
+      GetLeft,
       set OnScroll(value) {
         onScrollEventRef.current = value;
       },
@@ -121,22 +139,19 @@ const ScrollableGridImpl = (props, forwardedRef) => {
         return gridName.current;
       },
       get TotalRows() {
-        return props.rows;
+        return totalRows;
       },
       get VisibleRows() {
         return visibleRows;
       },
       get TotalCols() {
-        return props.columns.length;
+        return totalCols;
       },
       get VisibleCols() {
-        return position.width | 0;
-      },
-      get FixedColumns() {
-        return props.freezeColumns;
-      },
+        return visibleCols;
+      }
     }),
-    [ScrollTo, props.rows, visibleRows]
+    [ScrollTo, GetTop, GetLeft, props.rows, visibleRows]
   );
 
   return (

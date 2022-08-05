@@ -25,19 +25,6 @@ export const useScrollableGrids = (gridRefs) => {
     return number;
   };
 
-  const _calculateTop = (gridRef, target, top) => {
-    const targetRows = target.current.TotalRows - target.current.VisibleRows;
-    const currentRows = gridRef.current.TotalRows - gridRef.current.VisibleRows;
-    return Math.ceil((currentRows / targetRows) * top) | top;
-  };
-  
-  const _calculateLeft = (gridRef, target, left) => {
-    const targetCols = target.current.TotalCols - target.current.VisibleCols;
-    const currentCols = gridRef.current.TotalCols - gridRef.current.VisibleCols;
-    const currentLeft = Math.ceil((currentCols / targetCols) * left) | left;
-    return currentLeft - gridRef.current.FixedColumns;
-  };
-
   const _syncScrollTo = React.useCallback(
     (target, top, left) => {
       for (const gridRef of gridRefs) {
@@ -49,8 +36,8 @@ export const useScrollableGrids = (gridRefs) => {
         }
         
         if (gridRef.current && gridRef.current.ScrollTo) {
-          const currentTop = _calculateTop(gridRef, target, top);
-          const currentLeft = _calculateLeft(gridRef, target, left);
+          const currentTop = gridRef.current.GetTop(target, top);
+          const currentLeft = gridRef.current.GetLeft(target, left);
           gridRef.current.ScrollTo(currentTop, currentLeft);
         }
       }
