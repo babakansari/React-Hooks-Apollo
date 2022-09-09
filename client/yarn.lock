@@ -1341,13 +1341,13 @@
   resolved "https://registry.yarnpkg.com/@emotion/weak-memoize/-/weak-memoize-0.2.5.tgz#8eed982e2ee6f7f4e44c253e12962980791efd46"
   integrity sha512-6U71C2Wp7r5XtFtQzYrW5iKFT67OixrSxjI4MptCHzdSVlgabczzqLe0ZSgnub/5Kp4hSbpDB1tMytZY9pwxxA==
 
-"@glideapps/glide-data-grid@^4.0.3":
-  version "4.2.1"
-  resolved "https://registry.yarnpkg.com/@glideapps/glide-data-grid/-/glide-data-grid-4.2.1.tgz#3e08715b7816f8b2184c2da534036fa96b0b9a74"
-  integrity sha512-9A2dPuoeCSrqLbbqUFBsQtEap/h7DQ43q9s6vwQeU6Ybnd77mH9J6n+hV4Xu2p6dpnIFp5cPw+LjG9OknKG/kg==
+"@glideapps/glide-data-grid@v5.1.0-alpha5":
+  version "5.1.0-alpha5"
+  resolved "https://registry.yarnpkg.com/@glideapps/glide-data-grid/-/glide-data-grid-5.1.0-alpha5.tgz#b6d7a1c0210ba5dfe1827f8202861913cfd8725c"
+  integrity sha512-4OHGLsZ0HOGw6lKZQIro57QnKGg4fFyTQ3atdhIUFiit0fhteL68sNOyJNKVIXHnO3WXgNbptHUDDeHQfzFoiA==
   dependencies:
+    canvas-hypertxt "^0.0.3"
     react-number-format "^4.4.1"
-    react-virtualized-auto-sizer "^1.0.2"
 
 "@graphql-typed-document-node/core@^3.1.1":
   version "3.1.1"
@@ -3229,6 +3229,11 @@ caniuse-lite@^1.0.0, caniuse-lite@^1.0.30000918, caniuse-lite@^1.0.30000929, can
   version "1.0.30001363"
   resolved "https://registry.yarnpkg.com/caniuse-lite/-/caniuse-lite-1.0.30001363.tgz#26bec2d606924ba318235944e1193304ea7c4f15"
   integrity sha512-HpQhpzTGGPVMnCjIomjt+jvyUu8vNFo3TaDiZ/RcoTrlOq/5+tC8zHdsbgFB6MxmaY+jCpsH09aD80Bb4Ow3Sg==
+
+canvas-hypertxt@^0.0.3:
+  version "0.0.3"
+  resolved "https://registry.yarnpkg.com/canvas-hypertxt/-/canvas-hypertxt-0.0.3.tgz#2d09f3f8bae812d2d2aeba77162ac69ff3b8deb8"
+  integrity sha512-Wmi0bfM+T6BAwFg3wZ1q3vXmltAcO/zPPfHSblJkOeuO9fwhSDMCIbaBLok71PONoOQHYnsk4CQ/GS1Ai7+OnQ==
 
 capture-exit@^1.2.0:
   version "1.2.0"
@@ -9945,11 +9950,6 @@ react-transition-group@^4.4.2:
     dom-helpers "^5.0.1"
     loose-envify "^1.4.0"
     prop-types "^15.6.2"
-
-react-virtualized-auto-sizer@^1.0.2:
-  version "1.0.6"
-  resolved "https://registry.yarnpkg.com/react-virtualized-auto-sizer/-/react-virtualized-auto-sizer-1.0.6.tgz#66c5b1c9278064c5ef1699ed40a29c11518f97ca"
-  integrity sha512-7tQ0BmZqfVF6YYEWcIGuoR3OdYe8I/ZFbNclFlGOC3pMqunkYF/oL30NCjSGl9sMEb17AnzixDz98Kqc3N76HQ==
 
 react@^17.0.2:
   version "17.0.2"
