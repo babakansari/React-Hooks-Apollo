@@ -1,12 +1,15 @@
 import * as React from 'react';
 import { DataEditor } from '@glideapps/glide-data-grid';
-import "@glideapps/glide-data-grid/dist/index.css";
+import '@glideapps/glide-data-grid/dist/index.css';
 import { GridEvent, GridPosition } from './ScrollableGridTypes';
 
 const ScrollableGridImpl = (props, forwardedRef) => {
   const gridRef = React.useRef(null);
+  const portalRef = React.useRef(null);
   const gridName = React.useRef(props.name);
-  const [position, setPosition] = React.useState(GridPosition(0,props.freezeColumns,0,0));
+  const [position, setPosition] = React.useState(
+    GridPosition(0, props.freezeColumns, 0, 0)
+  );
   const epsilon = 20;
   const rowHeight = props.rowHeight ? props.rowHeight : 34;
   const headerHeight = props.headerHeight ? props.headerHeight : 36;
@@ -21,42 +24,23 @@ const ScrollableGridImpl = (props, forwardedRef) => {
   const totalCols = props.columns.length;
   const visibleCols = position.width | 0;
 
-  const onVisibleRegionChanged = React.useCallback(
-    (range, tx, ty) => {
-      if (!onScrollEventRef) {
-        return;
-      }
-      const currentPosition = GridPosition(
-        range.y,
-        range.x,
-        range.height,
-        range.width
-      );
-      const event = GridEvent(forwardedRef, currentPosition);
-      if (onScrollEventRef.current) {
-       onScrollEventRef.current(event);
-      }
-      setPosition(currentPosition);
-    },
-    [onScrollEventRef, forwardedRef]
-  );
+  const onVisibleRegionChanged = (range, tx, ty) => {
+    if (!onScrollEventRef) {
+      return;
+    }
+    const currentPosition = GridPosition(
+      range.y,
+      range.x,
+      range.height,
+      range.width
+    );
+    const event = GridEvent(forwardedRef, currentPosition);
+    if (onScrollEventRef.current) {
+      onScrollEventRef.current(event);
+    }
 
-  const _getEffectiveWidth =  React.useCallback(() => {
-    if(!gridRef.current){
-      return props.width;
-    }
-    let totalWith = 0;
-    let col = 0;
-    while( totalWith<=props.width ){
-      const bounds = gridRef.current.getBounds(col,1);
-      if(!bounds){
-        break;
-      }
-      totalWith += bounds.width;
-      col++;
-    }
-    return totalWith-col+1;
-  }, [gridRef.current]);
+    setPosition(currentPosition);
+  };
 
   const onDrawCustomCell = (ctx, cell, theme, rect, hoverAmount) => {
     const underlinedText = (
@@ -72,9 +56,10 @@ const ScrollableGridImpl = (props, forwardedRef) => {
       const textMeasure = ctx.measureText(text);
       const textWidth = textMeasure.width;
       const textHeight =
-        (textMeasure.fontBoundingBoxAscent +
+        ((textMeasure.fontBoundingBoxAscent +
           textMeasure.fontBoundingBoxDescent) /
-        2 | height/2 - 2;
+          2) |
+        (height / 2 - 2);
       ctx.save();
       ctx.fillStyle = color;
       ctx.fillText(text, x + leftOffset, y + textHeight + topOffset);
@@ -87,8 +72,7 @@ const ScrollableGridImpl = (props, forwardedRef) => {
       ctx.restore();
     };
 
-    if (cell.kind !== 'text') 
-        return false;
+    if (cell.kind !== 'text') return false;
 
     if (OnDecorateCell) {
       switch (OnDecorateCell(cell)) {
@@ -105,13 +89,39 @@ const ScrollableGridImpl = (props, forwardedRef) => {
 
   const ScrollTo = React.useCallback(
     (top, left) => {
+      const _getVisibleCols = () => {
+        if (!gridRef.current || !portalRef) {
+          return props.width;
+        }
+        let totalWith = 0;
+        let col = 0;
+        const portalEle =
+          portalRef.current.getElementsByClassName('dvn-scroller')[0];
+        while (totalWith < portalEle.clientWidth) {
+          const bounds = gridRef.current.getBounds(col, 0);
+          if (!bounds) {
+            break;
+          }
+          totalWith += bounds.width;
+          col++;
+        }
+        return col;
+      };
+
+      const visibleCols = _getVisibleCols();
       left = left + props.freezeColumns;
-      const currentWidth = position.width - props.freezeColumns;
+      const currentWidth = visibleCols - props.freezeColumns;
       const y = top > position.top ? position.height + top - 3 : top;
-      const x = left > position.left ? currentWidth + left - 3 : left;
+      const x = left > position.left ? currentWidth + left - 1 : left;
       gridRef.current.scrollTo(x, y);
     },
-    [position]
+    [
+      position.height,
+      position.left,
+      position.top,
+      props.freezeColumns,
+      props.width,
+    ]
   );
 
   const GetTop = (target, top) => {
@@ -150,31 +160,32 @@ const ScrollableGridImpl = (props, forwardedRef) => {
       },
       get VisibleCols() {
         return visibleCols;
-      }
+      },
     }),
     [ScrollTo, GetTop, GetLeft, props.rows, visibleRows]
   );
 
   return (
-    <DataEditor
-      ref={gridRef}
-      width={_getEffectiveWidth()}
-      height={gridHeight}
-      getCellContent={props.getCellContent}
-      onItemHovered={props.onItemHovered}
-      columns={props.columns}
-      rows={props.rows}
-      onVisibleRegionChanged={onVisibleRegionChanged}
-      freezeColumns={props.freezeColumns}
-      getRowThemeOverride={props.getRowThemeOverride}
-      getCellsForSelection={props.getCellsForSelection}
-      rowHeight={rowHeight}
-      headerHeight={headerHeight}
-      onCellContextMenu={props.onCellContextMenu}
-      drawCustomCell={onDrawCustomCell}
-    />
+    <div ref={portalRef} id="gridPortal" style={{ width: props.width, height: gridHeight }}>
+      <DataEditor
+        ref={gridRef}
+        width={'100%'}
+        height={'100%'}
+        getCellContent={props.getCellContent}
+        onItemHovered={props.onItemHovered}
+        columns={props.columns}
+        rows={props.rows}
+        onVisibleRegionChanged={onVisibleRegionChanged}
+        freezeColumns={props.freezeColumns}
+        getRowThemeOverride={props.getRowThemeOverride}
+        getCellsForSelection={props.getCellsForSelection}
+        rowHeight={rowHeight}
+        headerHeight={headerHeight}
+        onCellContextMenu={props.onCellContextMenu}
+        drawCustomCell={onDrawCustomCell}
+      />
+    </div>
   );
-
 };
 
 export const ScrollableGrid = React.forwardRef(ScrollableGridImpl);
