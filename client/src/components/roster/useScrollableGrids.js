@@ -6,7 +6,7 @@ export const useScrollableGrids = (gridRefs) => {
   const OnScroll = (scrollEvent) => {
     onScrolling = scrollEvent;
   };
- 
+
   const ScrollTo = (top, left) => {
     if (gridRefs.length < 1) {
       throw new RangeError('No grid is in the set');
@@ -25,26 +25,44 @@ export const useScrollableGrids = (gridRefs) => {
     return number;
   };
 
-  const _syncScrollTo = React.useCallback(
-    (target, top, left) => {
+  const _syncScrollToVert = React.useCallback(
+    (target, top) => {
       for (const gridRef of gridRefs) {
         if (gridRef === target) {
           if (onScrolling) {
-            onScrolling({ target, top, left });
+            onScrolling({ target, top, left: undefined });
           }
           continue;
         }
-        
-        if (gridRef.current && gridRef.current.ScrollTo) {
+
+        if (gridRef.current && gridRef.current.ScrollToVertical) {
           const currentTop = gridRef.current.GetTop(target, top);
-          const currentLeft = gridRef.current.GetLeft(target, left);
-          gridRef.current.ScrollTo(currentTop, currentLeft);
+          gridRef.current.ScrollToVertical(currentTop);
         }
       }
     },
     [gridRefs, onScrolling]
   );
- 
+
+  const _syncScrollToHorz = React.useCallback(
+    (target, left) => {
+      for (const gridRef of gridRefs) {
+        if (gridRef === target) {
+          if (onScrolling) {
+            onScrolling({ target, top: undefined, left });
+          }
+          continue;
+        }
+
+        if (gridRef.current && gridRef.current.ScrollToHorizontal) {
+          const currentLeft = gridRef.current.GetLeft(target, left);
+          gridRef.current.ScrollToHorizontal(currentLeft);
+        }
+      }
+    },
+    [gridRefs, onScrolling]
+  );
+
   React.useEffect(() => {
     const onScroll = (e) => {
       if (!e.target || !e.target.current) {
@@ -56,7 +74,8 @@ export const useScrollableGrids = (gridRefs) => {
         return;
       }
       locksRef.current = gridRefs.length - 1; // Acquire locks
-      _syncScrollTo(e.target, e.position.top, e.position.left);
+      _syncScrollToHorz(e.target, e.position.left);
+      _syncScrollToVert(e.target, e.position.top);
     };
 
     for (const gridRef of gridRefs) {
@@ -66,7 +85,7 @@ export const useScrollableGrids = (gridRefs) => {
 
       gridRef.current.OnScroll = onScroll;
     }
-  }, [gridRefs, _syncScrollTo]);
+  }, [gridRefs, _syncScrollToHorz, _syncScrollToVert]);
 
   return {
     ScrollTo,
