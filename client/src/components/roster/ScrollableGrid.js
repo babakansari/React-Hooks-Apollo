@@ -22,7 +22,7 @@ const ScrollableGridImpl = (props, forwardedRef) => {
   const OnDecorateCell = props.OnDecorateCell;
   const totalRows = props.rows;
   const totalCols = props.columns.length;
-  const visibleCols = position.width | 0;
+  const [visibleCols, setVisibleCols] = React.useState(position.width | 0);
 
   const onVisibleRegionChanged = (range, tx, ty) => {
     if (!onScrollEventRef) {
@@ -108,9 +108,10 @@ const ScrollableGridImpl = (props, forwardedRef) => {
         return col;
       };
 
-      const visibleCols = _getVisibleCols();
+      const _visibleCols = _getVisibleCols();
+      setVisibleCols(_visibleCols);
       left = left + props.freezeColumns;
-      const currentWidth = visibleCols - props.freezeColumns;
+      const currentWidth = _visibleCols - props.freezeColumns;
       const x = left > position.left ? currentWidth + left - 1 : left;
       gridRef.current.scrollTo(x, 0, "horizontal");
     },
