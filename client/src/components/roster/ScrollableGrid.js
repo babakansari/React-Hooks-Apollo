@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { DataEditor } from '@glideapps/glide-data-grid';
-//import '@glideapps/glide-data-grid/dist/index.css';
+import '@glideapps/glide-data-grid/dist/index.css';
 import { GridEvent, GridPosition } from './ScrollableGridTypes';
 
 const ScrollableGridImpl = (props, forwardedRef) => {
