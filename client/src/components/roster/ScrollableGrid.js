@@ -87,8 +87,8 @@ const ScrollableGridImpl = (props, forwardedRef) => {
     return false;
   };
 
-  const ScrollTo = React.useCallback(
-    (top, left) => {
+  const ScrollToHorizontal = React.useCallback(
+    (left) => {
       const _getVisibleCols = () => {
         if (!gridRef.current || !portalRef) {
           return props.width;
@@ -111,16 +111,24 @@ const ScrollableGridImpl = (props, forwardedRef) => {
       const visibleCols = _getVisibleCols();
       left = left + props.freezeColumns;
       const currentWidth = visibleCols - props.freezeColumns;
-      const y = top > position.top ? position.height + top - 3 : top;
       const x = left > position.left ? currentWidth + left - 1 : left;
-      gridRef.current.scrollTo(x, y);
+      gridRef.current.scrollTo(x, 0, "horizontal");
+    },
+    [
+      position.left,
+      props.freezeColumns,
+      props.width,
+    ]
+  );
+
+  const ScrollToVertical = React.useCallback(
+    (top) => {
+      const y = top > position.top ? position.height + top - 3 : top;
+      gridRef.current.scrollTo(0, y, "vertical");
     },
     [
       position.height,
-      position.left,
       position.top,
-      props.freezeColumns,
-      props.width,
     ]
   );
 
@@ -140,7 +148,8 @@ const ScrollableGridImpl = (props, forwardedRef) => {
   React.useImperativeHandle(
     forwardedRef,
     () => ({
-      ScrollTo,
+      ScrollToHorizontal,
+      ScrollToVertical,
       GetTop,
       GetLeft,
       set OnScroll(value) {
@@ -162,7 +171,7 @@ const ScrollableGridImpl = (props, forwardedRef) => {
         return visibleCols;
       },
     }),
-    [ScrollTo, GetTop, GetLeft, props.rows, visibleRows]
+    [ScrollToHorizontal, ScrollToVertical, GetTop, GetLeft, props.rows, visibleRows]
   );
 
   return (
