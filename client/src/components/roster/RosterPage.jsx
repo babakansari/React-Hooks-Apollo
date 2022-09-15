@@ -172,7 +172,7 @@ function RostersPage () {
           columns={columns} 
           getCellContent={getCellContent} 
           rows={rows}
-          visibleRows={6}
+          height={250}
           freezeColumns={4}
           getRowThemeOverride={ (row) => getRowThemeOverride(parseInt(i), row) }
           OnDecorateCell={onDecorateCell}

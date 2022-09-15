@@ -172,7 +172,7 @@ const ScrollableGridImpl = (props, forwardedRef) => {
     <div
       ref={portalRef}
       id="gridPortal"
-      style={{ width: props.width, height: props.width }}
+      style={{ width: props.width, height: props.height }}
     >
       <DataEditor
         ref={gridRef}
