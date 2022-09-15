@@ -99,7 +99,6 @@ const ScrollableGridImpl = (props, forwardedRef) => {
   );
 
   const ScrollToVertical = React.useCallback((top) => {
-    console.log(`Source Scroll to = ${top}`);
     gridRef.current.scrollTo(
       0,
       { amount: top, unit: 'cell' },
