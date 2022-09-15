@@ -89,42 +89,31 @@ const ScrollableGridImpl = (props, forwardedRef) => {
 
   const ScrollToHorizontal = React.useCallback(
     (left) => {
-      const _getVisibleCols = () => {
-        if (!gridRef.current || !portalRef) {
-          return props.width;
-        }
-        let totalWith = 0;
-        let col = 0;
-        const portalEle =
-          portalRef.current.getElementsByClassName('dvn-scroller')[0];
-        while (totalWith < portalEle.clientWidth) {
-          const bounds = gridRef.current.getBounds(col, 0);
-          if (!bounds) {
-            break;
-          }
-          totalWith += bounds.width;
-          col++;
-        }
-        return col;
-      };
-
-      const _visibleCols = _getVisibleCols();
-      visibleColsRef.current = _visibleCols;
-      left = left + props.freezeColumns;
-      const currentWidth = _visibleCols - props.freezeColumns;
-      const x = left > position.left ? currentWidth + left - 1 : left;
-      gridRef.current.scrollTo(x, 0, 'horizontal');
+      const x = left + props.freezeColumns;
+      gridRef.current.scrollTo(
+        { amount: x, unit: 'cell' },
+        0,
+        'horizontal',
+        0,
+        0,
+        { hAlign: 'start' }
+      );
     },
-    [position.left, props.freezeColumns, props.width]
+    [props.freezeColumns]
   );
 
-  const ScrollToVertical = React.useCallback(
-    (top) => {
-      const y = top > position.top ? position.height + top - 3 : top;
-      gridRef.current.scrollTo(0, y, 'vertical');
-    },
-    [position.height, position.top]
-  );
+  const ScrollToVertical = React.useCallback((top) => {
+    gridRef.current.scrollTo(
+      0,
+      { amount: top, unit: 'cell' },
+      'vertical',
+      0,
+      0,
+      {
+        vAlign: 'start',
+      }
+    );
+  }, []);
 
   const GetTop = React.useCallback(
     (target, top) => {
