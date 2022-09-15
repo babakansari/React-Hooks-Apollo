@@ -7,22 +7,18 @@ const ScrollableGridImpl = (props, forwardedRef) => {
   const gridRef = React.useRef(null);
   const portalRef = React.useRef(null);
   const gridName = React.useRef(props.name);
-  const [position, setPosition] = React.useState(
-    GridPosition(0, props.freezeColumns, 0, 0)
-  );
-  const epsilon = 20;
-  const rowHeight = props.rowHeight ? props.rowHeight : 34;
-  const headerHeight = props.headerHeight ? props.headerHeight : 36;
-  const height = props.height;
-  const rowsTotalHeight = height - headerHeight - epsilon - 1;
-  const visibleRows =
-    props.visibleRows || Math.floor(rowsTotalHeight / (rowHeight + 1)) - 1;
-  const gridHeight = visibleRows * (rowHeight + 1) + headerHeight + 1 + epsilon;
   const onScrollEventRef = React.useRef(null);
   const OnDecorateCell = props.OnDecorateCell;
+  const [position, setPosition] = React.useState(GridPosition(0, 0, 0, 0));
+  // Vertical scrolling parameter
+  const rowHeight = props.rowHeight ? props.rowHeight : 34;
+  const headerHeight = props.headerHeight ? props.headerHeight : 36;
+  const visibleRows = position.height | 0;
   const totalRows = props.rows;
+
+  // Horizontal scrolling parameters
+  const visibleCols = position.width | 0;
   const totalCols = props.columns.length;
-  const visibleColsRef = React.useRef(position.width | 0);
 
   const onVisibleRegionChanged = (range, tx, ty) => {
     if (!onScrollEventRef) {
@@ -30,7 +26,7 @@ const ScrollableGridImpl = (props, forwardedRef) => {
     }
     const currentPosition = GridPosition(
       range.y,
-      range.x,
+      range.x - props.freezeColumns,
       range.height,
       range.width
     );
@@ -89,42 +85,32 @@ const ScrollableGridImpl = (props, forwardedRef) => {
 
   const ScrollToHorizontal = React.useCallback(
     (left) => {
-      const _getVisibleCols = () => {
-        if (!gridRef.current || !portalRef) {
-          return props.width;
-        }
-        let totalWith = 0;
-        let col = 0;
-        const portalEle =
-          portalRef.current.getElementsByClassName('dvn-scroller')[0];
-        while (totalWith < portalEle.clientWidth) {
-          const bounds = gridRef.current.getBounds(col, 0);
-          if (!bounds) {
-            break;
-          }
-          totalWith += bounds.width;
-          col++;
-        }
-        return col;
-      };
-
-      const _visibleCols = _getVisibleCols();
-      visibleColsRef.current = _visibleCols;
-      left = left + props.freezeColumns;
-      const currentWidth = _visibleCols - props.freezeColumns;
-      const x = left > position.left ? currentWidth + left - 1 : left;
-      gridRef.current.scrollTo(x, 0, 'horizontal');
+      const x = left + props.freezeColumns;
+      gridRef.current.scrollTo(
+        { amount: x, unit: 'cell' },
+        0,
+        'horizontal',
+        0,
+        0,
+        { hAlign: 'start' }
+      );
     },
-    [position.left, props.freezeColumns, props.width]
+    [props.freezeColumns]
   );
 
-  const ScrollToVertical = React.useCallback(
-    (top) => {
-      const y = top > position.top ? position.height + top - 3 : top;
-      gridRef.current.scrollTo(0, y, 'vertical');
-    },
-    [position.height, position.top]
-  );
+  const ScrollToVertical = React.useCallback((top) => {
+    console.log(`Source Scroll to = ${top}`);
+    gridRef.current.scrollTo(
+      0,
+      { amount: top, unit: 'cell' },
+      'vertical',
+      0,
+      0,
+      {
+        vAlign: 'start',
+      }
+    );
+  }, []);
 
   const GetTop = React.useCallback(
     (target, top) => {
@@ -138,11 +124,11 @@ const ScrollableGridImpl = (props, forwardedRef) => {
   const GetLeft = React.useCallback(
     (target, left) => {
       const targetCols = target.current.TotalCols - target.current.VisibleCols;
-      const currentCols = totalCols - visibleColsRef.current;
+      const currentCols = totalCols - visibleCols;
       const currentLeft = Math.ceil((currentCols / targetCols) * left) | left;
-      return currentLeft - props.freezeColumns;
+      return currentLeft;
     },
-    [props.freezeColumns, totalCols]
+    [totalCols, visibleCols]
   );
 
   React.useImperativeHandle(
@@ -168,7 +154,7 @@ const ScrollableGridImpl = (props, forwardedRef) => {
         return totalCols;
       },
       get VisibleCols() {
-        return visibleColsRef.current;
+        return visibleCols;
       },
     }),
     [
@@ -179,6 +165,7 @@ const ScrollableGridImpl = (props, forwardedRef) => {
       totalRows,
       visibleRows,
       totalCols,
+      visibleCols,
     ]
   );
 
@@ -186,7 +173,7 @@ const ScrollableGridImpl = (props, forwardedRef) => {
     <div
       ref={portalRef}
       id="gridPortal"
-      style={{ width: props.width, height: gridHeight }}
+      style={{ width: props.width, height: props.width }}
     >
       <DataEditor
         ref={gridRef}
