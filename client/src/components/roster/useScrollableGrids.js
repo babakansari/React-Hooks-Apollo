@@ -1,19 +1,35 @@
 import * as React from 'react';
 
-export const useScrollableGrids = (gridRefs) => {
+export const useScrollableGrids = (
+  getGridRefs,
+  syncVertical,
+  syncHorizontal,
+  deps
+) => {
   const locksRef = React.useRef(0);
+  const [syncVert, setSyncVert] = React.useState(syncVertical);
+  const [syncHoriz, setSyncHoriz] = React.useState(syncHorizontal);
+
+  React.useEffect(() => {
+    setSyncVert(syncVertical);
+  }, [syncVertical]);
+
+  React.useEffect(() => {
+    setSyncHoriz(syncHorizontal);
+  }, [syncHorizontal]);
+
   let onScrolling = null;
   const OnScroll = (scrollEvent) => {
     onScrolling = scrollEvent;
   };
 
   const ScrollTo = (top, left) => {
-    if (gridRefs.length < 1) {
+    if (getGridRefs().length < 1) {
       throw new RangeError('No grid is in the set');
     }
     const y = _convertToNumber(top);
     const x = _convertToNumber(left);
-    const gridRef = gridRefs[0];
+    const gridRef = getGridRefs()[0];
     gridRef.current.ScrollTo(y, x);
   };
 
@@ -26,46 +42,65 @@ export const useScrollableGrids = (gridRefs) => {
   };
 
   const _syncScrollToVert = React.useCallback(
-    (target, top) => {
-      for (const gridRef of gridRefs) {
-        if (gridRef === target) {
+    (source, top) => {
+      if (!source.current.TotalRows) {
+        return;
+      }
+      for (const gridRef of getGridRefs()) {
+        // Skip scrolling the source grid
+        if (gridRef === source) {
           if (onScrolling) {
-            onScrolling({ target, top, left: undefined });
+            onScrolling({ source, top, left: undefined });
           }
           continue;
         }
 
-        if (gridRef.current && gridRef.current.ScrollToVertical) {
-          const currentTop = gridRef.current.GetTop(target, top);
+        if (
+          gridRef.current &&
+          gridRef.current.ScrollToVertical &&
+          gridRef.current.TotalRows
+        ) {
+          const currentTop = Math.round(
+            (gridRef.current.TotalRows / source.current.TotalRows) * top
+          );
           gridRef.current.ScrollToVertical(currentTop);
         }
       }
     },
-    [gridRefs, onScrolling]
+    [getGridRefs, onScrolling]
   );
 
   const _syncScrollToHorz = React.useCallback(
-    (target, left) => {
-      for (const gridRef of gridRefs) {
-        if (gridRef === target) {
+    (source, left) => {
+      if (!source.current.TotalCols) {
+        return;
+      }
+      for (const gridRef of getGridRefs()) {
+        if (gridRef === source) {
           if (onScrolling) {
-            onScrolling({ target, top: undefined, left });
+            onScrolling({ source, top: undefined, left });
           }
           continue;
         }
+        if (
+          gridRef.current &&
+          gridRef.current.ScrollToHorizontal &&
+          gridRef.current.TotalCols
+        ) {
+          const currentLeft = Math.round(
+            (gridRef.current.TotalCols / source.current.TotalCols) * left
+          );
 
-        if (gridRef.current && gridRef.current.ScrollToHorizontal) {
-          const currentLeft = gridRef.current.GetLeft(target, left);
           gridRef.current.ScrollToHorizontal(currentLeft);
         }
       }
     },
-    [gridRefs, onScrolling]
+    [getGridRefs, onScrolling]
   );
 
   React.useEffect(() => {
     const onScroll = (e) => {
-      if (!e.target || !e.target.current) {
+      if (!e.source || !e.source.current) {
         return;
       }
 
@@ -73,19 +108,33 @@ export const useScrollableGrids = (gridRefs) => {
         locksRef.current -= 1; // Release a lock
         return;
       }
-      locksRef.current = gridRefs.length - 1; // Acquire locks
-      _syncScrollToHorz(e.target, e.position.left);
-      _syncScrollToVert(e.target, e.position.top);
+      locksRef.current = getGridRefs().length; // Acquire locks
+      if (syncHoriz) {
+        // Horizontal scroll other locked grids in proportion to the source grid
+        _syncScrollToHorz(e.source, e.position.left);
+      }
+      if (syncVert) {
+        // Vertical scroll other locked grids in proportion to the source grid
+        _syncScrollToVert(e.source, e.position.top);
+      }
     };
 
-    for (const gridRef of gridRefs) {
+    // Bind all grids scrolling events
+    for (const gridRef of getGridRefs()) {
       if (!gridRef.current) {
         continue;
       }
 
       gridRef.current.OnScroll = onScroll;
     }
-  }, [gridRefs, _syncScrollToHorz, _syncScrollToVert]);
+  }, [
+    getGridRefs,
+    _syncScrollToHorz,
+    _syncScrollToVert,
+    syncVert,
+    syncHoriz,
+    deps,
+  ]);
 
   return {
     ScrollTo,

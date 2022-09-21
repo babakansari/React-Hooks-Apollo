@@ -74,7 +74,7 @@ const ScrollableGridImpl = (props, forwardedRef) => {
       switch (OnDecorateCell(cell)) {
         case 'overline':
         case 'underline':
-          underlinedText(ctx, cell.displayData, rect, 9, 2, 'black', 1);
+          underlinedText(ctx, cell.displayData, rect, 9, 2, 'darkblue', 1);
           return true;
         default:
           return false;
@@ -111,32 +111,11 @@ const ScrollableGridImpl = (props, forwardedRef) => {
     );
   }, []);
 
-  const GetTop = React.useCallback(
-    (target, top) => {
-      const targetRows = target.current.TotalRows - target.current.VisibleRows;
-      const currentRows = totalRows - visibleRows;
-      return Math.ceil((currentRows / targetRows) * top) | top;
-    },
-    [totalRows, visibleRows]
-  );
-
-  const GetLeft = React.useCallback(
-    (target, left) => {
-      const targetCols = target.current.TotalCols - target.current.VisibleCols;
-      const currentCols = totalCols - visibleCols;
-      const currentLeft = Math.ceil((currentCols / targetCols) * left) | left;
-      return currentLeft;
-    },
-    [totalCols, visibleCols]
-  );
-
   React.useImperativeHandle(
     forwardedRef,
     () => ({
       ScrollToHorizontal,
       ScrollToVertical,
-      GetTop,
-      GetLeft,
       set OnScroll(value) {
         onScrollEventRef.current = value;
       },
@@ -159,8 +138,6 @@ const ScrollableGridImpl = (props, forwardedRef) => {
     [
       ScrollToHorizontal,
       ScrollToVertical,
-      GetTop,
-      GetLeft,
       totalRows,
       visibleRows,
       totalCols,
@@ -190,6 +167,9 @@ const ScrollableGridImpl = (props, forwardedRef) => {
         headerHeight={headerHeight}
         onCellContextMenu={props.onCellContextMenu}
         drawCustomCell={onDrawCustomCell}
+        onHeaderClicked={props.onHeaderClicked}
+        onCellEdited={props.onCellEdited}
+        OnDecorateCell={props.onDecorateCell}
       />
     </div>
   );

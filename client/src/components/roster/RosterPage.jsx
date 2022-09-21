@@ -29,7 +29,6 @@ function RostersPage () {
   const gridRef1 = React.useRef(null);
   const gridRef2 = React.useRef(null); 
   const gridRef3 = React.useRef(null);
-  //const gridRefs = [gridRef1,gridRef2];
   const gridRefs = [gridRef1, gridRef2, gridRef3];
 
   if(!session.isAuthenticated) {
@@ -71,7 +70,13 @@ function RostersPage () {
     return getData(result2.data.rostering, cell);
   }, [result2]);
 
-  const { ScrollTo, OnScroll } = useScrollableGrids(gridRefs);
+  const { ScrollTo, OnScroll } = useScrollableGrids(
+    () => { return gridRefs },
+    true,
+    true,
+    []
+  );
+
   OnScroll((e) => {
     setPosition(e);
   });
