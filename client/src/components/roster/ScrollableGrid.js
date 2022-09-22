@@ -38,43 +38,43 @@ const ScrollableGridImpl = (props, forwardedRef) => {
     setPosition(currentPosition);
   };
 
-  const onDrawCustomCell = (ctx, cell, theme, rect, hoverAmount) => {
+  const onDrawCell = (ctx) => {
     const underlinedText = (
       ctx,
-      text,
-      rect,
       leftOffset,
       topOffset,
       color,
       thickness
     ) => {
-      const { x, y, height } = rect;
-      const textMeasure = ctx.measureText(text);
+      const { x, y, height } = ctx.rect;
+      const text = ctx.cell.displayData;
+      const canvas = ctx.ctx;
+      const textMeasure = canvas.measureText(text);
       const textWidth = textMeasure.width;
       const textHeight =
         ((textMeasure.fontBoundingBoxAscent +
           textMeasure.fontBoundingBoxDescent) /
           2) |
         (height / 2 - 2);
-      ctx.save();
-      ctx.fillStyle = color;
-      ctx.fillText(text, x + leftOffset, y + textHeight + topOffset);
-      ctx.fillRect(
+      canvas.save();
+      canvas.fillStyle = color;
+      canvas.fillText(text, x + leftOffset, y + textHeight + topOffset);
+      canvas.fillRect(
         x + leftOffset,
         y + height - topOffset,
         textWidth,
         thickness
       );
-      ctx.restore();
+      canvas.restore();
     };
 
-    if (cell.kind !== 'text') return false;
+    if (ctx.cell.kind !== 'text') return false;
 
     if (OnDecorateCell) {
-      switch (OnDecorateCell(cell)) {
+      switch (OnDecorateCell(ctx.cell)) {
         case 'overline':
         case 'underline':
-          underlinedText(ctx, cell.displayData, rect, 9, 2, 'darkblue', 1);
+          underlinedText(ctx, 9, 2, 'darkblue', 1);
           return true;
         default:
           return false;
@@ -166,7 +166,7 @@ const ScrollableGridImpl = (props, forwardedRef) => {
         rowHeight={rowHeight}
         headerHeight={headerHeight}
         onCellContextMenu={props.onCellContextMenu}
-        drawCustomCell={onDrawCustomCell}
+        drawCell={onDrawCell}
         onHeaderClicked={props.onHeaderClicked}
         onCellEdited={props.onCellEdited}
         OnDecorateCell={props.onDecorateCell}
